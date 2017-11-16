@@ -1,0 +1,414 @@
+body,
+html {
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+.blue-bg {
+  background-color: #5c85ef;
+}
+.blue-c {
+  color: #5c85ef;
+}
+.blue-bd {
+  border-color: #5c85ef;
+}
+.blue-btn {
+  border: none;
+  background-color: #5c85ef;
+  color: #fff;
+  transition: all .4s;
+  font-size: 14px;
+  -webkit-transition: all .4s;
+}
+.blue-btn:active {
+  background-color: #6ca8f3;
+}
+.red-btn {
+  border: none;
+  background-color: #f98777;
+  color: #fff;
+  transition: all .4s;
+  font-size: 14px;
+  -webkit-transition: all .4s;
+}
+.red-btn:active {
+  background-color: #faa79c;
+}
+.disabled {
+  background-color: #bdbdbd !important;
+}
+.disabled:active {
+  background-color: #bdbdbd !important;
+}
+.radius {
+  border-radius: 4px;
+  overflow: hidden;
+}
+.padding {
+  padding-right: 5%;
+  padding-left: 5%;
+}
+.icon {
+  background-image: url(../images/allicon.png);
+  background-repeat: no-repeat;
+  display: inline-block;
+  position: relative;
+  top: -1px;
+}
+.input-row {
+  position: relative;
+  height: 47px;
+  line-height: 47px;
+  overflow: hidden;
+  border-bottom: 1px solid #dedede;
+}
+.input-row:last-of-type {
+  border-bottom: none;
+}
+.input-row span {
+  position: absolute;
+  height: 100%;
+  top: 0;
+  left: 0;
+  display: table-cell;
+  vertical-align: middle;
+}
+.input-row input {
+  display: block;
+  width: 100%;
+  border: none;
+  font-size: 14px;
+  height: 100%;
+  padding-left: 65px;
+  line-height: 47px;
+}
+.input-row input._3 {
+  padding-left: 50px;
+}
+.input-row input._6 {
+  padding-left: 92px;
+}
+.input-row .right {
+  top: 8px;
+  height: 30px;
+  width: 80px;
+  border: none;
+  background-color: #5c85ef;
+  color: #fff;
+  transition: all .4s;
+  font-size: 14px;
+  -webkit-transition: all .4s;
+  position: absolute;
+}
+.input-row .right:active {
+  background-color: #6ca8f3;
+}
+.conditions {
+  background: #fff;
+  margin-bottom: 9px;
+}
+.select {
+  position: relative;
+  height: 47px;
+  line-height: 47px;
+  border-bottom: 1px solid #e9edf4;
+}
+.select:last-of-type {
+  border-bottom: none;
+}
+.select select {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  opacity: 0;
+}
+.select .surface b {
+  color: #45484d;
+}
+.select .surface .right {
+  color: #757575;
+}
+.select .surface .right:after {
+  content: '';
+  display: inline-block;
+  margin-left: 10px;
+  border-right: 2px solid #e0e0e0;
+  border-top: 2px solid #e0e0e0;
+  width: 12px;
+  height: 12px;
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+  position: relative;
+  top: -1px;
+  vertical-align: middle;
+}
+.navigator {
+  transition: all .2s;
+  -webkit-transition: all .2s;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  z-index: 2;
+  background: #5c85ef;
+  color: #fff;
+}
+.navigator:after {
+  content: '';
+  position: absolute;
+  border-bottom: 100px solid #5C85EF;
+  width: 100%;
+}
+.navigator .nav {
+  overflow: hidden;
+  height: 53px;
+}
+.navigator .nav li {
+  width: 25%;
+  float: left;
+  text-align: center;
+  font-size: 12px;
+  position: relative;
+}
+.navigator .nav li .icon {
+  position: absolute;
+  left: 50%;
+  top: 7px;
+  background-size: auto 100% !important;
+}
+.navigator .nav li .icon.home {
+  width: 25px;
+  height: 22px;
+  margin-left: -12.5px;
+  background: url(../images/navicon_03.png) no-repeat 0 0;
+}
+.navigator .nav li .icon.home.sele {
+  background: url(../images/navicon_03.png) no-repeat -25px 0;
+}
+.navigator .nav li .icon.active {
+  height: 24px;
+  width: 25px;
+  margin-left: -12px;
+  background: url(../images/navicon_06.png) no-repeat 0 0;
+}
+.navigator .nav li .icon.active.sele {
+  background: url(../images/navicon_06.png) no-repeat -25px 0;
+}
+.navigator .nav li .icon.news {
+  width: 22px;
+  height: 22px;
+  margin-left: -10.5px;
+  background: url(../images/navicon_09.png) no-repeat 0 0;
+}
+.navigator .nav li .icon.news.sele {
+  background: url(../images/navicon_09.png) no-repeat -22px 0;
+}
+.navigator .nav li .icon.user {
+  width: 25px;
+  height: 22px;
+  margin-left: -12px;
+  background: url(../images/navicon_12.png) no-repeat 0 0;
+}
+.navigator .nav li .icon.user.sele {
+  background: url(../images/navicon_12.png) no-repeat -25px 0;
+}
+.navigator .nav li span {
+  display: inline-block;
+  transform: scale(.9);
+  -webkit-transform: scale(.9);
+  margin-top: 34px;
+}
+.container {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+
+  /*-webkit-transform: translate3d(0,0,0);*/
+  -webkit-overflow-scrolling: touch;
+}
+.navigator ~ .container {
+  padding-bottom: 53px;
+}
+.layout_top ~ .container {
+  padding-top: 55px;
+}
+.layout_top {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 3;
+}
+.ani-up {
+  transform: translateY(53px);
+  -webkit-transform: translateY(53px);
+}
+.ani-down {
+  transform: translateY(0px) !important;
+  -webkit-transform: translateY(0px) !important;
+}
+.no-ani {
+  transform: translateY(0) !important;
+  -webkit-transform: translateY(0) !important;
+}
+.loading {
+  position: relative;
+  left: 0;
+  bottom: -10px;
+  height: 0;
+  width: 100%;
+  text-align: center;
+}
+.loading.no_line span:after{
+  display: none;
+}
+.loading.begin:after {
+  content: '加载中 ···';
+  color: #b2b2b2;
+}
+.loading.begin:before {
+  content: '';
+  display: inline-block;
+  position: relative;
+  top: -1px;
+  background: url(../images/loading.gif);
+  width: 18px;
+  height: 18px;
+  background-size: 100% 100%;
+  vertical-align: middle;
+}
+.loading span {
+  color: #b2b2b2;
+  display: block;
+  position: relative;
+}
+.loading span:after {
+  content: '';
+  position: absolute;
+  width: 34px;
+  height: 12px;
+  background: url(../images/allicon.png);
+  background-position: 0 -37px;
+  bottom: -18px;
+  left: 50%;
+  margin-left: -17px;
+}
+.activity {
+  background: #fff;
+  margin-bottom: 5px;
+  padding: 19px 17px;
+}
+.activity .top {
+  line-height: 28px;
+  height: 28px;
+  margin-bottom: 13px;
+}
+.activity .top .label {
+  height: 28px;
+  line-height: 28px;
+  color: #fff;
+  background: #fcce4b;
+  display: inline-block;
+  padding-right: 14px;
+  padding-left: 17px;
+  position: relative;
+  left: -17px;
+}
+.activity .top .label:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: -14px;
+  border: 14px solid transparent;
+  border-top-color: #fcce4b;
+}
+.activity .top .label:after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: -14px;
+  border: 14px solid transparent;
+  border-bottom-color: #fcce4b;
+}
+.activity .top .right {
+  font-weight: bold;
+  color: #b7c8f1;
+  font-size: 16px;
+}
+.activity .bottom .dot {
+  line-height: 24px;
+}
+.activity .bottom .txt {
+  font-size: 14px;
+  line-height: 22px;
+  max-height: 110px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  color: #757575;
+  margin-bottom: 13px;
+}
+.activity .bottom .box {
+  overflow: hidden;
+  line-height: 24px;
+}
+.activity .bottom .box .left > * {
+  color: #2b458c;
+  font-size: 13px;
+}
+.activity .bottom .box .left > * .icon {
+  width: 15px;
+  height: 15px;
+  background: url(../images/arrow.png) no-repeat;
+  background-size: 100% 100%;
+  vertical-align: middle;
+}
+.activity .bottom .box .right {
+  font-size: 13px;
+}
+.activity .bottom .box .right .level {
+  padding: 0 7px;
+  background: #5c85ee;
+  color: #fff;
+  margin-right: 7px;
+  margin-left: 5px;
+}
+.activity .bottom .box .right .type {
+  padding: 0 7px;
+  color: #5c85ee;
+  border: 1px solid #5C85EE;
+}
+.activity .bottom .newstime {
+  color: #5c85ef;
+  float: right;
+  height: 1px;
+  position: relative;
+  top: -10px;
+}
+.activity.review {
+  position: relative;
+}
+.activity.review .top .right {
+  color: #424242;
+}
+.activity.review .bottom .reviewtitle {
+  margin-bottom: 40px;
+  color: #757575;
+}
+.activity.review > .clearfix {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 40px;
+}
+.activity.review > .clearfix button {
+  height: inherit;
+}
+/*# sourceMappingURL=layout.css.map */

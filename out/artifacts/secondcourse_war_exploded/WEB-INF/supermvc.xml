@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <bean id= "urlMapping" class= "org.springframework.web.servlet.handler.SimpleUrlHandlerMapping" >
+        <property name="mappings">
+            <props>
+                <prop key="/views/*.form">pagexmlController</prop>
+                <prop key="/views/font/*.form">pagexmlController</prop>
+                <prop key="/views/admin/*.form">pagexmlController</prop>
+                <prop key="/jsons/*.form">pagejsonController</prop>
+            </props>
+        </property>
+        <property name="interceptors">
+            <list>
+                <bean class="com.interceptors.PrivilegeInterceptor"/>
+            </list>
+        </property>
+        <property name= "order" value= "0" />
+    </bean>
+
+    <bean id="pagexmlController" class="com.controllers.PageXmlController" />
+    <bean id="pagejsonController" class="com.superstatemachine.json.PageJsonController" />
+
+    <!--默认配置，建议配置请勿更改-->
+    <bean class="com.superjson.urlmatchers.XmlFilePathUrlMatcher">
+        <!--设置pagexml的根目录-->
+        <property name="pageXmlFolderBase" value="/WEB-INF/pagejsons"/>
+        <!--设置pagexml的requestmapping 的路径 比如：/pagexmls -->
+        <property name="prefixUrlPath" value="/pagejsons"/>
+        <!--待开发功能，映射 url-config-jsp-->
+        <property name="viewSourceMap" >
+            <map>
+                <entry key="products" value="products"/>
+                <entry key="productsSearch" value="products"/>
+            </map>
+        </property>
+    </bean>
+
+
+</beans>

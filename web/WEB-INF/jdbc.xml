@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean class="com.supermapping.jdbcfactories.JdbcFactory">
+        <property name="driverClass" value="com.mysql.jdbc.Driver" />
+        <property name="url" value="jdbc:mysql://192.168.0.166/secondcourse?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true&amp;failOverReadOnly=false" />
+        <property name="username" value="secondcourse" />
+        <property name="password" value="secondcourse.com" />
+
+    </bean>
+
+</beans>

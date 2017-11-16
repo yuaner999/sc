@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.dao.interfaces.Print_transcriptDao">
+
+    <!--* 加载某个学生的成绩单用做成绩计算-->
+    <select id="loadApplies" parameterType="string" resultType="map">
+        SELECT * FROM r_print_activityapply WHERE studentId=#{0} ORDER by applyDate
+    </select>
+
+    <!--* 根据传递的ID集合查询活动申请-->
+    <select id="loadAppliesByIds" parameterType="string" resultType="map">
+        SELECT  applyId as id, `applyId`,`activityAward`,`applyDate`,`activityId`,`activityTitle`,`activityArea`,`activityClass`,`activityLevle`,`activityNature`,`activityPowers`
+        FROM   wh_apply_activites WHERE applyId IN
+        <foreach collection="list" separator="," item="str" open="(" close=")">
+            #{str,jdbcType=VARCHAR}
+        </foreach>
+        ORDER by applyDate
+    </select>
+
+    <!--* 根据学生的学号 查询活动申请-->
+
+    <select id="loadAppliesByUserid" resultType="map" parameterType="string">
+        SELECT  a.applyId as id, a.`applyId`,a.`applyStudentId`,a.`activityAward`,a.`applyDate`,a.`activityId`,a.`activityTitle`,a.`activityArea`,a.`activityClass`,a.`activityLevle`,a.`activityNature`,a.`activityPowers`,b.schoolAuditStaus
+        FROM   wh_apply_activites a
+        LEFT JOIN activityapply b on a.applyId = b.applyId
+            WHERE a.applyStudentId=#{0} AND activityIsDelete='0' AND b.schoolAuditStaus='已通过'
+    </select>
+
+    <!--* 添加打印申请-->
+    <insert id="addPrint" parameterType="string">
+      INSERT INTO print (printId,studentId,createDate) VALUES (#{0},#{1},now())
+    </insert>
+
+    <!--* 删除某个学生的打印申请（清除和打印申请相关联的活动申请）-->
+    <delete id="deletePrintApply" parameterType="string">
+          DELETE FROM r_print_activityapply WHERE printId=#{printId}
+    </delete>
+
+    <!--*添加和打印申请关联的活动申请-->
+    <insert id="addPrintApply" parameterType="map">
+        INSERT INTO r_print_activityapply (id,printId,applyId) VALUES
+        <foreach collection="applyIds" item="applyid" separator=",">
+            (uuid(),#{printId,jdbcType=VARCHAR}, #{applyid,jdbcType=VARCHAR})
+        </foreach>
+    </insert>
+
+    <!--//    ********************************成绩单得分*****************-->
+    <!--* 添加-->
+    <insert id="addPoint" parameterType="list" >
+        INSERT INTO sixelementpoint(id,studentId,pointYear,sibian,zhixing,biaoda,lingdao,chuangxin,chuangye) VALUES
+        <foreach collection="list" item="item" separator=",">
+            (uuid(),#{item.studentId},#{item.pointYear},#{item.sibian},
+            #{item.zhixing},#{item.biaoda},#{item.lingdao},#{item.chuangxin},#{item.chuangye})
+        </foreach>
+    </insert>
+
+    <!--* 删除原有的得分-->
+    <delete id="delPoint" parameterType="string">
+        DELETE FROM sixelementpoint WHERE studentId=#{studentId}
+    </delete>
+
+    <!--* 加载每年的分数-->
+    <select id="loadPointByYears" parameterType="string" resultType="map">
+        SELECT * FROM sixelementpoint WHERE studentId=#{studentId} ORDER BY pointYear
+    </select>
+    <!--通过学生ID获取打印ID-->
+    <select id="loadPrintIdByStudentid" parameterType="string" resultType="list">
+        SELECT printId FROM print WHERE studentId=#{studentId}
+    </select>
+
+    <!--* 根据学生ID加载打印队列中的活动申请-->
+    <select id="loadApplyActivitiesByStudentId" parameterType="string" resultType="map">
+        select studentId,activityAward,activityCredit,worktime,activityTitle,activityClass,getDictActivityScore(activityClass) as totalscore,activityLevle,dict('activityLevle',activityLevle) as activityLevles,FROM_UNIXTIME(UNIX_TIMESTAMP(applyDate),'%Y-%m-%d ') AS applyDate,applyId AS id
+        from wh_print_apply_activity
+        <where>
+            1=1
+            <if test="studentid != null and studentid != ''">
+                AND studentId=#{studentid}
+            </if>
+            <if test="printid != null and printid != ''">
+                AND printId=#{printid}
+            </if>
+        </where>
+        and activityTitle IS NOT NULL
+    </select>
+
+    <!--通过打印ID 获取申请活动ID-->
+    <select id="loadApplyIdByPrintId" parameterType="list" resultType="list">
+        SELECT applyId FROM r_print_activityapply WHERE printId IN
+        <foreach collection="list" item="str" separator="," open="(" close=")">
+            #{str,jdbcType=VARCHAR}
+        </foreach>
+    </select>
+
+
+    <!--通过活动申请ID 获得活动-->
+    <select id="loadAcitivityByApplyId" parameterType="list" resultType="map">
+        SELECT activityTitle,activityClass, activityLevle,activityAward,
+        FROM_UNIXTIME(UNIX_TIMESTAMP(applyDate),'%Y-%m-%d ') AS applyDate
+        FROM wh_apply_activites WHERE applyId IN
+        <foreach collection="list" item="str" separator="," open="(" close=")">
+            #{str,jdbcType=VARCHAR}
+        </foreach>
+    </select>
+
+    <!--通过学生ID获取该学生申请打印过的活动-->
+    <select id="loadActivityByStudentId" parameterType="string" resultType="map">
+        SELECT activityTitle,activityClass,activityLevle,activityAward,
+        FROM_UNIXTIME(UNIX_TIMESTAMP(applyDate),'%Y-%m-%d ') AS applyDate
+        FROM wh_print_apply_activity WHERE studentId=#{studentid}
+        AND createDate=(SELECT MAX(createDate) FROM print)
+        ORDER BY  applyDate
+    </select>
+    <!--查询职务级别-->
+    <select id="workLevle" parameterType="string" resultType="string">
+      SELECT workLevle FROM organization WHERE organizationName=#{0}
+    </select>
+    <!--获取职务部门-->
+    <select id="organizationName" parameterType="string" resultType="string">
+       SELECT dict_key AS organizationName FROM nadict WHERE dict_value=#{0}
+    </select>
+    <!--获取级别得分-->
+    <select id="loadLevlePoint" parameterType="string" resultType="string">
+        SELECT getpoint FROM nadict WHERE dict_key=#{workLevle}
+    </select>
+    <!--查询工作组织得分-->
+    <select id="loadSchoolPoint" parameterType="string" resultType="string">
+        SELECT getpoint FROM nadict WHERE dict_value=#{schoolworkName}
+    </select>
+    <!--查询班级职务得分-->
+    <select id="loadClassPoint" parameterType="string" resultType="string">
+        SELECT getpoint FROM nadict WHERE dict_value=#{classworkName}
+    </select>
+    <!--添加到临时表中-->
+    <insert id="insetToSort" parameterType="map">
+        INSERT INTO sort (id,studentName,orderNumber) VALUES
+        <foreach collection="applyIDs" item="applyid" separator=",">
+            (#{applyid.applyID,jdbcType=VARCHAR},#{studentId,jdbcType=VARCHAR}, #{applyid.orderId,jdbcType=VARCHAR})
+        </foreach>
+    </insert>
+    <delete id="deleteStudentName" parameterType="string">
+        DELETE  FROM sort
+        WHERE studentName = #{studentId};
+    </delete>
+    <!--获取排序-->
+    <select id="loadSort" parameterType="map" resultType="map">
+        SELECT  * FROM sort
+        <where>
+            <if test="studentid != null and studentid != '' ">
+                AND   studentName =#{studentid}
+            </if>
+            <if test="list != null">
+                <foreach collection="list" item="str" open="AND  id in (" separator="," close=")">
+                    #{str}
+                </foreach>
+            </if>
+        </where>
+
+        ORDER BY orderNumber
+    </select>
+</mapper>

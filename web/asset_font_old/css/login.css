@@ -1,0 +1,122 @@
+*{
+	margin: 0px;
+	padding: 0px;
+	font-family: "微软雅黑";
+}
+img{
+	border: 0px;
+	border-style: none;
+}
+a{
+	text-decoration: none;
+	color: #000000;
+	display: block;
+}
+body{
+	width:100%;
+	height: 85%;
+	padding-top: 15%;
+	background-image:url(../img/l_back.png);
+}
+.box{
+	width:346px;
+	height: 386px;
+	margin: 0 auto;
+}
+.head_img {
+	margin:0 auto;
+	width:202px;
+	height:65px;
+}
+.a_btn{
+	width:200px;
+	margin: 20px auto 0;
+}
+.button{
+	border:1px solid #00b1ff;
+	border-radius: 8px;
+	position:relative;
+	behavior: url(../js/PIE.htc);
+	box-shadow: 0 2px 1px #66536c;
+	width:200px;
+	height: 36px;
+	color:#fff;
+	text-align: center;
+	font-size: 18px;
+	line-height: 40px;
+	background-image: url(../img/l_btn.png);
+	background-repeat: repeat-x;
+}
+.input_box{
+	padding: 8px 38px 0;
+	width:270px;
+	height: 214px;
+	background-color: #cbdbef;
+	margin-top: 30px;
+	border-radius: 10px;
+	position:relative;
+	behavior: url(../js/PIE.htc);
+}
+.input_div{
+	width:266px;
+	height: 30px;
+	margin-top:30px;
+}
+.input_user{
+	outline: none;
+	margin-left: 5px;
+	width:164px;
+	height: 26px;
+	border:1px solid #197ffe;
+	border-radius: 10px;
+	position:relative;
+	behavior: url(../js/PIE.htc);
+	padding-left: 10px;
+	padding-right: 10px;
+	font-size: 16px;
+	color:#3598fe;
+}
+.input_pasw{
+	outline: none;
+	margin-left: 5px;
+	width:164px;
+	height: 26px;
+	border:1px solid #197ffe;
+	border-radius: 10px;
+	position:relative;
+	behavior: url(../js/PIE.htc);
+	padding-left: 10px;
+	padding-right: 10px;
+	font-size: 16px;
+	color:#3598fe;
+}
+.img_box{
+	display: inline-block;
+	margin-left: 10px;
+	height: 26px;
+	width:20px;
+}
+.img{
+	display: block;
+	margin-top: 8px;
+}
+.forget{
+	color:#51a1fb;
+	font-size: 12px;
+	margin-left: 40px;
+	margin-top: 10px;
+	width:60px;
+}
+.login{
+	width:174px;
+	height: 34px;
+	background-color: #197ffe;
+	border-radius: 10px;
+	position:relative;
+	behavior: url(../js/PIE.htc);
+	color: #fff;
+	text-align: center;
+	line-height: 34px;
+	font-size: 14px;
+	margin: 10px auto 0;
+}

@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.dao.interfaces.ActivityapplyDao">
+    <!--批量插入-->
+    <insert id="saveActivityapplys" parameterType="list">
+        INSERT INTO `activityapply`
+        (`applyId`, `applyActivityId`, `applyStudentId`,`applyStudentPhoto`,`applyAuditStatus`,`activityAward`,`applyDate`,`signUpStatus`,`signUpTime`,`applyTeamId`,applyAuditStatusDate,activitypoint)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (uuid(),
+            #{item.applyActivityId,jdbcType=VARCHAR},
+            #{item.applyStudentId,jdbcType=VARCHAR},
+            #{item.applyStudentPhoto,jdbcType=VARCHAR},
+            #{item.applyAuditStatus,jdbcType=VARCHAR},
+            #{item.activityAward,jdbcType=VARCHAR},
+            #{item.applyDate,jdbcType=TIMESTAMP},
+            #{item.signUpStatus,jdbcType=VARCHAR},
+            #{item.signUpTime,jdbcType=TIMESTAMP},
+            #{item.applyTeamId,jdbcType=VARCHAR},
+            #{item.applyAuditStatusDate,jdbcType=TIMESTAMP},
+            #{item.activitypoint,jdbcType=VARCHAR})
+        </foreach>
+    </insert>
+
+    <!--批量插入签到的学生，同时还要删除已报名的学生-->
+    <insert id="saveapplysInfo" parameterType="list">
+        INSERT INTO `activityapply`
+        (`applyId`, `applyActivityId`, `applyStudentId`,`activityAward`,`applyDate`,`signUpStatus`,
+          `signUpTime`,regimentAuditStatus,collegeAuditStatus,schoolAuditStaus)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (uuid(),
+            #{item.applyActivityId,jdbcType=VARCHAR},
+            #{item.applyStudentId,jdbcType=VARCHAR},
+            <choose>
+                <when test="item.activityAward!='' and item.activityAward!=null"  >
+                    #{item.activityAward,jdbcType=VARCHAR},
+                </when>
+                <otherwise>
+                    '',
+                </otherwise>
+            </choose>
+            <choose>
+                <when test="item.applyDate!='' and item.applyDate!=null"  >
+                    #{item.applyDate,jdbcType=VARCHAR},'已签到',now(),'待审核','待审核','待审核')
+                </when>
+                <when test="item.signUpTime!='' and item.signUpTime!=null"  >
+                    #{item.signUpTime,jdbcType=VARCHAR},'已签到',#{item.signUpTime,jdbcType=VARCHAR},'待审核','待审核','待审核')
+                </when>
+                <otherwise>
+                    #now(),'已签到',now(),'待审核','待审核','待审核')
+                </otherwise>
+            </choose>
+        </foreach>
+    </insert>
+    <!--删除重复的信息-->
+    <delete id="delapplysInfo" parameterType="list">
+     DELETE FROM activityapply WHERE applyActivityId = #{list[0].applyActivityId} and applyStudentId in
+      <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+          #{item.applyStudentId}
+      </foreach>
+    </delete>
+
+    <!--删除活动的报名信息-->
+    <delete id="deleteByActivity" parameterType="string">
+        DELETE FROM activityapply WHERE applyActivityId=#{0}
+    </delete>
+
+    <!--按ID查询-->
+    <select id="selectStudentID" parameterType="string" resultType="com.model.Student">
+           select  * from    student WHERE studentID=#{ID}
+    </select>
+    <!--selectActivty StudentID activityID-->
+    <select id="selectActivty" parameterType="string" resultType="com.model.activityapply">
+        select  * from  activityapply  WHERE applyStudentId=#{0} AND applyActivityId=#{1}
+    </select>
+    <!--删除一条活动一个申请-->
+    <delete id="delApply" parameterType="string" >
+        delete   from  activityapply  WHERE  applyId=#{0}
+    </delete>
+    <!--删除一条活动一个申请(假删除)-->
+    <delete id="updateApplayIsdelById" parameterType="string" >
+        update activityapply SET isDel = '0'  WHERE  applyId=#{0}
+    </delete>
+    <!--删除一条活动一个申请(假删除)-->
+    <delete id="updateSupplementIsdelById" parameterType="string" >
+        update supplement SET isDel = '0'  WHERE  id=#{0}
+    </delete>
+    <!--删除一条活动所有申请-->
+    <delete id="delApplyActivity" parameterType="string" >
+        delete   from  activityapply  WHERE  applyActivityId=#{0}
+    </delete>
+    <!--按ID查询-->
+    <select id="selectActivities" parameterType="string" resultType="com.model.activities">
+        select  * from    activities WHERE activityId=#{ID}
+    </select>
+    <!--添加其他类活动-->
+    <insert id="saveActivtity" parameterType="com.model.apply_activities">
+        INSERT INTO activities
+        (activityId,activityTitle,activityContent,otherActivityPoint,activityCreatedate,activityPowers,activityClass,activityIsDelete,activityCreator)
+        VALUES
+        (#{applyId},#{activityTitle},#{activityContent},#{otherActivityPoint},#{activityCreatedate},#{activityPowers},"6","0",#{activityCreator})
+    </insert>
+    <!--添加团队活动报名-->
+    <insert id="addTeaminfor" parameterType="com.model.Team">
+        INSERT INTO team
+        (teamId,teamName,teamCreateDate,teamActivityId)
+        VALUES
+        (#{teamId},#{teamName},now(),#{teamActivityId})
+    </insert>
+    <!--添加团体关联的学生-->
+    <insert id="addStudentTeam" parameterType="map">
+        INSERT INTO r_student_team (id,teamId,studentID) VALUES
+        <foreach collection="studentIDs" item="studentID" separator=",">
+            (uuid(),#{teamId,jdbcType=VARCHAR}, #{studentID,jdbcType=VARCHAR})
+        </foreach>
+    </insert>
+    <!--* 修改团队活动报名-->
+    <update id="editTeaminfor" parameterType="com.model.Team">
+        UPDATE team SET teamName=#{teamName},teamActivityId=#{teamActivityId} where teamId=#{teamId}
+    </update>
+    <!--删除原有学生团体关系-->
+    <delete id="delrstudentteam" parameterType="string">
+        DELETE FROM r_student_team WHERE teamId=#{teamId}
+    </delete>
+    <!--selectActivty StudentID activityID-->
+    <select id="selectTeamByname" parameterType="string" resultType="com.model.Team">
+        select  * from  team  WHERE teamName=#{0} and teamActivityId=#{1}
+    </select>
+    <!--加载班级所有学生学号-->
+    <select id="getStudentIds" parameterType="string" resultType="string">
+        SELECT studentID FROM student   where stuClassName=#{0} ORDER BY studentID  DESC
+    </select>
+    <!--根据活动id获取申请该活动的所有学生id-->
+    <select id="getStudentIdsByActivityid" parameterType="string" resultType="string">
+       SELECT applyStudentId FROM activityapply WHERE applyActivityId=#{0} AND applyStudentId IS NOT NULL AND applyStudentId !=''
+    </select>
+    <!--* 活动结束班级审核状态-->
+    <update id="editApplyClass" parameterType="map">
+        update activityapply
+        set
+        regimentAuditStatus=#{regimentAuditStatus},
+        regimentAuditStatusDate=now()
+        where applyId in
+        <foreach collection="idslist" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+    <!--* 活动结束学院审核状态-->
+    <update id="editApplyCollege" parameterType="map">
+        update activityapply
+        set
+        collegeAuditStatus=#{collegeAuditStatus},
+        collegeAuditStatusDate=now()
+        where applyId in
+        <foreach collection="idslist" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+    <!--* 活动结束学校审核状态-->
+    <update id="editApplySchool" parameterType="map">
+        update activityapply
+        set
+        schoolAuditStaus=#{schoolAuditStaus},
+        schoolAuditStausDate=now()
+        where applyId in
+        <foreach collection="idslist" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+    <!--* 活动结束班级审核状态-->
+    <update id="editSupplementClass" parameterType="map">
+        update supplement
+        set
+        <if test="regimentAuditStatus !=null and regimentAuditStatus !=''">
+            regimentAuditStatus=#{regimentAuditStatus},
+        </if>
+        <if test="score !=null and score !=''">
+            supCredit=#{score},
+        </if>
+        regimentAuditStatusDate=now()
+        where id in
+        <foreach collection="idslist" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+    <!--* 活动结束学院审核状态-->
+    <update id="editSupplementCollege" parameterType="map">
+        update supplement
+        set
+        <if test="collegeAuditStatus !=null and collegeAuditStatus !=''">
+            collegeAuditStatus=#{collegeAuditStatus},
+        </if>
+        <if test="score !=null and score !=''">
+            supCredit=#{score},
+        </if>
+        collegeAuditStatusDate=now()
+        where id in
+        <foreach collection="idslist" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+    <!--* 活动结束学校审核状态-->
+    <update id="editSupplementSchool" parameterType="map">
+        update supplement
+        set
+        <if test="schoolAuditStaus !=null and schoolAuditStaus !=''">
+            schoolAuditStaus=#{schoolAuditStaus},
+        </if>
+        <if test="score !=null and score !=''">
+            supCredit=#{score},
+        </if>
+        schoolAuditStausDate=now()
+        where id in
+        <foreach collection="idslist" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+    <!--查找审核信息学生处-->
+    <select id="selectSupplementClass" parameterType="map" resultType="map">
+        SELECT * FROM supplement   where regimentAuditStatus !='待审核' and id in
+        <foreach collection="idslist" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+    <!--查找审核信息 学院-->
+    <select id="selectSupplementCollege" parameterType="map" resultType="map">
+        SELECT * FROM supplement   where collegeAuditStatus !='待审核' and id in
+        <foreach collection="idslist" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+    <!--查找审核信息 学校-->
+    <select id="selectSupplementSchool" parameterType="map" resultType="map">
+        SELECT * FROM supplement   where schoolAuditStaus !='待审核' and id in
+        <foreach collection="idslist" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+    <!--根据班级名称查询班级所有学生id-->
+    <select id="getstudentIdByClassName" parameterType="string" resultType="string">
+       SELECT studentID FROM student WHERE stuClassName=#{0}
+    </select>
+</mapper>

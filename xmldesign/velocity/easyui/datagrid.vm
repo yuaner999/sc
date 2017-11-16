@@ -1,0 +1,65 @@
+#*
+elem:
+<datagrid id="table" title="本公司发布的任务" url="jsons/tasklist.form" >
+    <toolbar>
+        <toolbarline>
+            <button id="tool_add"/>
+            <button id="tool_edit"/>
+            <button id="tool_delete"/>
+        </toolbarline>
+        <toolbarline>
+            <label text="任务状态"/>
+            <combobox id="combo_taskstatus" url=""/>
+        </toolbarline>
+    </toolbar>
+    <headers sql="select * from ttask_view"/>
+</datagrid>
+* *#
+$sql.setConnection(${jdbc_driverclass},${jdbc_url},${jdbc_user},${jdbc_pass})
+#set($id=$xml.xpathobj($elem,"./@id"))
+#set($title=$xml.xpathobj($elem,"./@title"))
+#set($url=$xml.xpathobj($elem,"./@url"))
+#set($height=$xml.xpathobj($elem,"./@height","400px"))
+#set($headersql=$xml.xpathobj($elem,"./headers/@sql"))
+#set($headers=$sql.fieldquery($headersql))
+#set($toolbars=$xml.xpathobjs($elem,"./toolbar/*"))
+#if($toolbars.size()>0)
+<table id="${id}" class="easyui-datagrid" title="${title}" style="height:$height"
+       data-options="
+         pagination:true,
+         rownumbers:true,
+         singleSelect:true,
+         method:'get',
+         toolbar:'#${id}_tb',
+         url:'${pageContext.request.contextPath}/${url}'
+       ">
+    <thead>
+    <tr>
+        #foreach($header in $headers)##
+            <th data-options="field:'${header.fieldname.replace("_","")}'">${header.comment}</th>
+        #end
+    </tr>
+    </thead>
+</table>
+$velocity.render("${basedir}/xmldesign/velocity/easyui/toolbar.vm",{
+    "elem":$xml.xpathobj($elem,"./toolbar"),
+    "id":"${id}_tb"
+})
+#else
+<table id="${id}" class="easyui-datagrid" title="${title}" style="height:$height"
+       data-options="
+         pagination:true,
+         rownumbers:true,
+         singleSelect:true,
+         method:'get',
+         url:'${pageContext.request.contextPath}/${url}'
+       ">
+    <thead>
+    <tr>
+        #foreach($header in $headers)##
+            <th data-options="field:'${header.fieldname.replace("_","")}'">${header.comment}</th>
+        #end
+    </tr>
+    </thead>
+</table>
+#end

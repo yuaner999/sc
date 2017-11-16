@@ -1,0 +1,5 @@
+#*
+elem: <label text="任务状态"/>
+* *#
+#set($text=$xml.xpathobj($elem,"./@text"))
+<span>$text</span>

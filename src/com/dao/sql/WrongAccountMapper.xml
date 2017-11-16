@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.dao.interfaces.WrongAccountDao">
+
+    <!--* 加载账号锁定的状态，只加载30分钟以内的；-->
+    <select id="loadAccountLocked" parameterType="string" resultType="string">
+        SELECT islocked FROM wrongaccount WHERE account=#{0} AND TIMESTAMPDIFF(SECOND ,loginTime,now())&lt;=1800 ORDER BY loginTime DESC limit 1
+    </select>
+    <!--* 添加错误登陆记录-->
+    <insert id="addWrongAccount" parameterType="string">
+        INSERT INTO wrongaccount (id,account,loginTime,islocked) VALUES (uuid(),#{0},now(),#{1})
+    </insert>
+
+    <!--* 加载错误的次数-->
+    <select id="loadWrongTimes" parameterType="string" resultType="Integer">
+        SELECT count(id) FROM wrongaccount WHERE account=#{0} AND TIMESTAMPDIFF(SECOND ,loginTime,now())&lt;=3600
+    </select>
+
+    <!--* 清除某用户的错误次数（提前解除锁定）-->
+    <delete id="delWrongLogs" parameterType="string">
+      DELETE FROM wrongaccount WHERE  account=#{0}
+    </delete>
+
+</mapper>

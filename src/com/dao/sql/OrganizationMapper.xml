@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.dao.interfaces.OrganizationDao">
+    <!--批量插入-->
+    <insert id="saveorganization" parameterType="list">
+        INSERT INTO  organization (orgid,orgclass,orglevel,orgname,orgcollege,workname,worklevel)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.orgid,jdbcType=VARCHAR},
+            #{item.orgclass,jdbcType=VARCHAR},
+            #{item.orglevel,jdbcType=VARCHAR},
+            #{item.orgname,jdbcType=VARCHAR},
+            #{item.orgcollege,jdbcType=VARCHAR},
+            #{item.workname,jdbcType=VARCHAR},
+            #{item.worklevel,jdbcType=VARCHAR})
+        </foreach>
+    </insert>
+</mapper>

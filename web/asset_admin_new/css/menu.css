@@ -1,0 +1,167 @@
+*{
+	margin:0px;
+	padding:0;
+	border:0;
+	font-family:"微软雅黑";
+}
+
+a{
+	text-decoration:none
+}
+ul,li{
+	list-style:none;
+}
+html{
+	width:100% !important;
+}
+.banner{
+	min-width:1440px;
+	height:75px;
+	line-height:75px;
+	background:#1990FE;
+	margin:0 auto;
+	color:#ffffff;
+	font-size:18px;
+	font-weight: bold;
+}
+.newlogo{
+	margin-top:14px;
+	margin-left:14px;
+	margin-right:30px;
+	float:left;
+}
+.banner span{
+	float:left;
+}
+.loginimg{
+	float:right;
+	margin-top:5px;
+}
+span.loginmess{
+	font-size:16px;
+	font-weight:100;
+	float:right;
+	margin:0 20px 0 0;
+}
+.btnexit{
+	width:50px;
+	height:27px;
+	line-height:27px;
+	float:right;
+	background:#fafafa;
+	color:#1990FE;
+	font-size:16px;
+	text-align:center;
+	border-radius:10px;
+    behavior: url(../js/PIE.htc);
+    margin-top:28px;
+    margin-right:32px;
+    cursor:pointer; 
+}
+
+.wrap{
+	overflow: hidden;
+	position: relative;
+	min-width:1440px;
+	margin:20px auto;
+}
+.mainmenu{
+	float: left;
+	width:242px;
+	border:1px solid #1990FE;
+	margin:0 10px;
+}
+.menutitle{
+	width:242px;
+	height:40px;
+	line-height:40px;
+	color:#ffffff;
+	font-size:18px;
+	background:#1990FE;
+}
+.menutitle span{
+	margin-left:20px;
+}
+.menuBody{
+	overflow: auto;
+}
+.btnadd{
+	margin-right:15px;
+	float:right;
+}
+.oneul{
+	width:210px;
+	margin:0 auto;
+	cursor:pointer;
+	margin-bottom: 20px;
+}
+.oneli{
+	position:relative;
+}
+.onetitlewrap{
+	width:210px;
+	height:35px;
+	margin-top:30px;
+	overflow:hidden
+}
+.onetitle{
+	font-size:15px;
+	font-weight:bold;
+	float:left;	
+}
+.onetitlewrap img{
+	float:right;
+	margin-top:5px;
+	margin-right:5px;
+}
+.devide{
+	margin-top:25px;
+	width:210px;
+	overflow:hidden;
+	height:10px;
+}
+.devideleft{
+	width:70px;
+	height:10px;
+	background:#1990FE;
+	float:left;
+}
+.devideright{
+	width:140px;
+	height:10px;
+	background:#FFF799;
+	float:left;
+}
+.twoul{
+	margin-top:20px;
+}
+.twoul li{
+	margin:10px 0;
+	font-size:15px;
+	font-weight:bold;
+}
+.twoul li a{
+	margin-left:5px;
+	color:#555555;
+}
+.twoul li a:hover{
+	color:#1990FE;
+}
+body{
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

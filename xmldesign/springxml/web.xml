@@ -1,0 +1,601 @@
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../schemas/websm.xsd">
+
+    <!--============================系统管理============================-->
+
+    <!--*****************************以下内容禁止修改、删除，直到结尾END*****************************START-->
+
+    <!--**************************系统菜单管理**************************-->
+    <!--获取所有的菜单-->
+    <statemachine id="menu">
+        <state name="init" viewname="menu">
+            <ref beanid="jspPageProcessor"/>
+            <sqlquery key="data" datatype="list">
+                <sql>SELECT * FROM sysmenu order by sort</sql>
+            </sqlquery>
+        </state>
+    </statemachine>
+    <!--**************************系统用户管理**************************-->
+    <!--获取所有的用户角色-->
+    <statemachine id="sysusermanage">
+        <state name="init" viewname="sysusermanage">
+            <ref beanid="jspPageProcessor"/>
+            <sqlquery key="data" datatype="list">
+                <sql>SELECT *,getrolename(sysrole_id) as sysrolename FROM sysrole where is_sysrole!='2654264' and sysrole_id!='instructor' order by ruler_level</sql>
+            </sqlquery>
+            <sqlquery key="collegedata" datatype="list">
+                <sql>SELECT stuCollageName  FROM student group by stuCollageName order by stuCollageName</sql>
+            </sqlquery>
+            <sqlquery key="depts" datatype="list">
+                <sql>SELECT *  FROM department where isDelete = '0' order by deptName </sql>
+            </sqlquery>
+            <sqlquery key="grades" datatype="list">
+                <sql>SELECT stuGradeName  FROM student group by stuGradeName order by stuGradeName </sql>
+            </sqlquery>
+            <sqlquery key="classdata" datatype="list">
+                <sql>SELECT stuClassName  FROM student group by stuClassName order by stuClassName </sql>
+            </sqlquery>
+        </state>
+    </statemachine>
+
+    <!--*****************************以上内容禁止修改、删除*****************************END-->
+
+
+    <!--============================后台管理============================-->
+    <!--**************************专业管理**************************-->
+    <statemachine id="MajorManage">
+        <state name="init" viewname="MajorManage">
+            <ref beanid="jspPageProcessor"/>
+            <!--获取全部学院-->
+            <sqlquery key="colleges" datatype="list">
+                <sql>SELECT stuCollageName FROM student WHERE stuCollageName IS NOT NULL GROUP BY stuCollageName ORDER BY stuCollageName</sql>
+            </sqlquery>
+        </state>
+    </statemachine>
+    <!--**************************班级管理**************************-->
+    <statemachine id="ClassManage">
+        <state name="init" viewname="ClassManage">
+            <ref beanid="jspPageProcessor"/>
+            <!--获取全部学院-->
+            <sqlquery key="colleges" datatype="list">
+                <sql>SELECT stuCollageName FROM student WHERE stuCollageName IS NOT NULL GROUP BY stuCollageName ORDER BY stuCollageName</sql>
+            </sqlquery>
+            <!--获取全部年级-->
+            <sqlquery key="grades" datatype="list">
+                <sql>SELECT stuGradeName FROM student WHERE stuGradeName IS NOT NULL GROUP BY stuGradeName ORDER BY stuGradeName</sql>
+            </sqlquery>
+        </state>
+    </statemachine>
+    <!--&lt;!&ndash;**************************辅导员管理**************************&ndash;&gt;-->
+    <!--<statemachine id="InstructorManage">-->
+        <!--<state name="init" viewname="InstructorManage">-->
+            <!--<ref beanid="jspPageProcessor"/>-->
+            <!--&lt;!&ndash;获取全部学院&ndash;&gt;-->
+            <!--<sqlquery key="colleges" datatype="list">-->
+                <!--<sql>SELECT * FROM college where isDelete='0' order by collegeName</sql>-->
+            <!--</sqlquery>-->
+            <!--&lt;!&ndash;获取全部年级&ndash;&gt;-->
+            <!--<sqlquery key="grades" datatype="list">-->
+                <!--<sql>SELECT * FROM grade where isDelete='0' order by gradeName</sql>-->
+            <!--</sqlquery>-->
+        <!--</state>-->
+    <!--</statemachine>-->
+
+    <!--**************************活动管理**************************-->
+    <statemachine id="activitiesManage">
+        <state name="init" viewname="activitiesManage">
+            <ref beanid="jspPageProcessor"/>
+            <!--获取全部活动类别-->
+            <sqlquery key="activityClasses" datatype="list">
+                <sql>SELECT  * FROM sysdict WHERE dict_key='activityClass' AND dict_value!="6"</sql>
+            </sqlquery>
+            <!--获取全部活动级别-->
+            <sqlquery key="activityLevels" datatype="list">
+                <sql>SELECT  * FROM sysdict WHERE dict_key='activityLevle' order by dict_value</sql>
+            </sqlquery>
+            <!--获取全部活动性质-->
+            <sqlquery key="activNatures" datatype="list">
+                <sql>SELECT  * FROM sysdict WHERE dict_key='activityNature' order by dict_value</sql>
+            </sqlquery>
+            <!--获取全部学院-->
+            <sqlquery key="colleges" datatype="list">
+                <sql>SELECT stuCollageName FROM student WHERE stuCollageName IS NOT NULL GROUP BY stuCollageName ORDER BY stuCollageName</sql>
+            </sqlquery>
+            <!--获取全部年级-->
+            <sqlquery key="grades" datatype="list">
+                <sql>SELECT stuGradeName FROM student WHERE stuGradeName IS NOT NULL GROUP BY stuGradeName ORDER BY stuGradeName</sql>
+            </sqlquery>
+        </state>
+    </statemachine>
+    <statemachine id="activitiesManage_school">
+        <state name="init" viewname="activitiesManage_school">
+            <ref beanid="jspPageProcessor"/>
+            <!--获取全部活动类别-->
+            <sqlquery key="activityClasses" datatype="list">
+                <sql>SELECT  * FROM sysdict WHERE dict_key='activityClass' AND dict_value!="6"</sql>
+            </sqlquery>
+            <!--获取全部活动级别-->
+            <sqlquery key="activityLevels" datatype="list">
+                <sql>SELECT  * FROM sysdict WHERE dict_key='activityLevle'  order by dict_value</sql>
+            </sqlquery>
+            <!--获取全部活动性质-->
+            <sqlquery key="activNatures" datatype="list">
+                <sql>SELECT  * FROM sysdict WHERE dict_key='activityNature' order by dict_value</sql>
+            </sqlquery>
+            <!--获取全部学院-->
+            <sqlquery key="colleges" datatype="list">
+                <sql>SELECT stuCollageName FROM student WHERE stuCollageName IS NOT NULL GROUP BY stuCollageName ORDER BY stuCollageName</sql>
+            </sqlquery>
+            <!--获取全部年级-->
+            <sqlquery key="grades" datatype="list">
+                <sql>SELECT stuGradeName FROM student WHERE stuGradeName IS NOT NULL GROUP BY stuGradeName ORDER BY stuGradeName</sql>
+            </sqlquery>
+        </state>
+    </statemachine>
+    <statemachine id="activitiesManage_college">
+        <state name="init" viewname="activitiesManage_college">
+            <ref beanid="jspPageProcessor"/>
+            <!--获取全部活动类别-->
+            <sqlquery key="activityClasses" datatype="list">
+                <sql>SELECT  * FROM sysdict WHERE dict_key='activityClass' AND dict_value!="6"</sql>
+            </sqlquery>
+            <!--获取全部活动级别-->
+            <sqlquery key="activityLevels" datatype="list">
+                <sql>SELECT  * FROM sysdict WHERE dict_key='activityLevle' order by dict_value</sql>
+            </sqlquery>
+            <!--获取全部活动性质-->
+            <sqlquery key="activNatures" datatype="list">
+                <sql>SELECT  * FROM sysdict WHERE dict_key='activityNature' order by dict_value</sql>
+            </sqlquery>
+            <!--获取全部学院-->
+            <sqlquery key="colleges" datatype="list">
+                <sql>SELECT stuCollageName FROM student WHERE stuCollageName IS NOT NULL GROUP BY stuCollageName ORDER BY stuCollageName</sql>
+            </sqlquery>
+            <!--获取全部年级-->
+            <sqlquery key="grades" datatype="list">
+                <sql>SELECT stuGradeName FROM student WHERE stuGradeName IS NOT NULL GROUP BY stuGradeName ORDER BY stuGradeName</sql>
+            </sqlquery>
+        </state>
+    </statemachine>
+    <statemachine id="activitiesManage_dept">
+        <state name="init" viewname="activitiesManage_dept">
+            <ref beanid="jspPageProcessor"/>
+            <!--获取全部活动类别-->
+            <sqlquery key="activityClasses" datatype="list">
+                <sql>SELECT  * FROM sysdict WHERE dict_key='activityClass' AND dict_value!="6"</sql>
+            </sqlquery>
+            <!--获取全部活动级别-->
+            <sqlquery key="activityLevels" datatype="list">
+                <sql>SELECT  * FROM sysdict WHERE dict_key='activityLevle' order by dict_value</sql>
+            </sqlquery>
+            <!--获取全部活动性质-->
+            <sqlquery key="activNatures" datatype="list">
+                <sql>SELECT  * FROM sysdict WHERE dict_key='activityNature' order by dict_value</sql>
+            </sqlquery>
+            <!--获取全部学院-->
+            <sqlquery key="colleges" datatype="list">
+                <sql>SELECT stuCollageName FROM student WHERE stuCollageName IS NOT NULL GROUP BY stuCollageName ORDER BY stuCollageName</sql>
+            </sqlquery>
+            <!--获取全部年级-->
+            <sqlquery key="grades" datatype="list">
+                <sql>SELECT stuGradeName FROM student WHERE stuGradeName IS NOT NULL GROUP BY stuGradeName ORDER BY stuGradeName</sql>
+            </sqlquery>
+        </state>
+    </statemachine>
+    <statemachine id="activityManage_school">
+        <state name="init" viewname="activityManage_school">
+            <ref beanid="jspPageProcessor"/>
+            <!--获取全部活动类别-->
+            <sqlquery key="activityClasses" datatype="list">
+                <sql>SELECT  * FROM sysdict WHERE dict_key='activityClass' AND dict_value!="6"</sql>
+            </sqlquery>
+            <!--获取全部活动级别-->
+            <sqlquery key="activityLevels" datatype="list">
+                <sql>SELECT  * FROM sysdict WHERE dict_key='activityLevle' order by dict_value</sql>
+            </sqlquery>
+            <!--获取全部活动性质-->
+            <sqlquery key="activNatures" datatype="list">
+                <sql>SELECT  * FROM sysdict WHERE dict_key='activityNature' order by dict_value</sql>
+            </sqlquery>
+            <!--获取全部学院-->
+            <sqlquery key="colleges" datatype="list">
+                <sql>SELECT stuCollageName FROM student WHERE stuCollageName IS NOT NULL GROUP BY stuCollageName ORDER BY stuCollageName</sql>
+            </sqlquery>
+            <!--获取全部年级-->
+            <sqlquery key="grades" datatype="list">
+                <sql>SELECT stuGradeName FROM student WHERE stuGradeName IS NOT NULL GROUP BY stuGradeName ORDER BY stuGradeName</sql>
+            </sqlquery>
+        </state>
+    </statemachine>
+    <statemachine id="activityapplyManage_school">
+        <state name="init" viewname="activityapplyManage_school">
+            <ref beanid="jspPageProcessor"/>
+            <!--获取全部活动类别-->
+            <sqlquery key="activityClasses" datatype="list">
+                <sql>SELECT  * FROM sysdict WHERE dict_key='activityClass' AND dict_value!="6"</sql>
+            </sqlquery>
+            <!--获取全部活动级别-->
+            <sqlquery key="activityLevels" datatype="list">
+                <sql>SELECT  * FROM sysdict WHERE dict_key='activityLevle' order by dict_value</sql>
+            </sqlquery>
+            <!--获取全部活动性质-->
+            <sqlquery key="activNatures" datatype="list">
+                <sql>SELECT  * FROM sysdict WHERE dict_key='activityNature' order by dict_value</sql>
+            </sqlquery>
+            <!--获取全部学院-->
+            <sqlquery key="colleges" datatype="list">
+                <sql>SELECT stuCollageName FROM student WHERE stuCollageName IS NOT NULL GROUP BY stuCollageName ORDER BY stuCollageName</sql>
+            </sqlquery>
+            <!--获取全部年级-->
+            <sqlquery key="grades" datatype="list">
+                <sql>SELECT stuGradeName FROM student WHERE stuGradeName IS NOT NULL GROUP BY stuGradeName ORDER BY stuGradeName</sql>
+            </sqlquery>
+        </state>
+    </statemachine>
+    <statemachine id="activityManage_college">
+    <state name="init" viewname="activityManage_college">
+        <ref beanid="jspPageProcessor"/>
+        <!--获取全部活动类别-->
+        <sqlquery key="activityClasses" datatype="list">
+            <sql>SELECT  * FROM sysdict WHERE dict_key='activityClass' AND dict_value!="6"</sql>
+        </sqlquery>
+        <!--获取全部活动级别-->
+        <sqlquery key="activityLevels" datatype="list">
+            <sql>SELECT  * FROM sysdict WHERE dict_key='activityLevle' order by dict_value</sql>
+        </sqlquery>
+        <!--获取全部活动性质-->
+        <sqlquery key="activNatures" datatype="list">
+            <sql>SELECT  * FROM sysdict WHERE dict_key='activityNature' order by dict_value</sql>
+        </sqlquery>
+        <!--获取全部学院-->
+        <sqlquery key="colleges" datatype="list">
+            <sql>SELECT stuCollageName FROM student WHERE stuCollageName IS NOT NULL GROUP BY stuCollageName ORDER BY stuCollageName</sql>
+        </sqlquery>
+        <!--获取全部年级-->
+        <sqlquery key="grades" datatype="list">
+            <sql>SELECT stuGradeName FROM student WHERE stuGradeName IS NOT NULL GROUP BY stuGradeName ORDER BY stuGradeName</sql>
+        </sqlquery>
+        <sqlquery key="classdata" datatype="list">
+            <sql><![CDATA[SELECT stuClassName  FROM student
+                    where case when ${collegeId} is not null and ${collegeId} !=""  then stuCollageName= ${collegeId} else 1=1 end
+                    group by stuClassName order by stuClassName
+                ]]></sql>
+        </sqlquery>
+    </state>
+</statemachine>
+    <statemachine id="activityManage_dept">
+        <state name="init" viewname="activityManage_dept">
+            <ref beanid="jspPageProcessor"/>
+            <!--获取全部活动类别-->
+            <sqlquery key="activityClasses" datatype="list">
+                <sql>SELECT  * FROM sysdict WHERE dict_key='activityClass' AND dict_value!="6"</sql>
+            </sqlquery>
+            <!--获取全部活动级别-->
+            <sqlquery key="activityLevels" datatype="list">
+                <sql>SELECT  * FROM sysdict WHERE dict_key='activityLevle' order by dict_value</sql>
+            </sqlquery>
+            <!--获取全部活动性质-->
+            <sqlquery key="activNatures" datatype="list">
+                <sql>SELECT  * FROM sysdict WHERE dict_key='activityNature' order by dict_value</sql>
+            </sqlquery>
+            <!--获取全部学院-->
+            <sqlquery key="colleges" datatype="list">
+                <sql>SELECT stuCollageName FROM student WHERE stuCollageName IS NOT NULL GROUP BY stuCollageName ORDER BY stuCollageName</sql>
+            </sqlquery>
+            <!--获取全部年级-->
+            <sqlquery key="grades" datatype="list">
+                <sql>SELECT stuGradeName FROM student WHERE stuGradeName IS NOT NULL GROUP BY stuGradeName ORDER BY stuGradeName</sql>
+            </sqlquery>
+        </state>
+    </statemachine>
+    <!--**************************活动申请管理**************************-->
+    <statemachine id="schoolactivityapplyManage">
+        <state name="init" viewname="schoolactivityapplyManage">
+            <ref beanid="jspPageProcessor"/>
+            <!--获取全部活动获奖类别-->
+            <sqlquery key="activityAwards" datatype="list">
+                <sql>SELECT  * FROM sysdict WHERE dict_key='activityAward'</sql>
+            </sqlquery>
+            <sqlquery key="classdata" datatype="list">
+            <sql>SELECT stuClassName  FROM student group by stuClassName order by stuClassName </sql>
+            </sqlquery>
+        </state>
+    </statemachine>
+    <statemachine id="schoolactivityapplyManage_dept">
+        <state name="init" viewname="schoolactivityapplyManage_dept">
+            <ref beanid="jspPageProcessor"/>
+            <!--获取全部活动获奖类别-->
+            <sqlquery key="activityAwards" datatype="list">
+                <sql>SELECT  * FROM sysdict WHERE dict_key='activityAward'</sql>
+            </sqlquery>
+            <sqlquery key="classdata" datatype="list">
+                <sql>SELECT stuClassName  FROM student group by stuClassName order by stuClassName </sql>
+            </sqlquery>
+        </state>
+    </statemachine>
+    <statemachine id="schoolactivityapplyManage_school">
+        <state name="init" viewname="schoolactivityapplyManage_school">
+            <ref beanid="jspPageProcessor"/>
+            <!--获取全部活动获奖类别-->
+            <sqlquery key="activityAwards" datatype="list">
+                <sql>SELECT  * FROM sysdict WHERE dict_key='activityAward'</sql>
+            </sqlquery>
+            <sqlquery key="classdata" datatype="list">
+                <sql>SELECT stuClassName  FROM student group by stuClassName order by stuClassName </sql>
+            </sqlquery>
+        </state>
+    </statemachine>
+    <statemachine id="schoolactivityapplyManage_grade">
+        <state name="init" viewname="schoolactivityapplyManage_grade">
+            <ref beanid="jspPageProcessor"/>
+            <!--获取全部活动获奖类别-->
+            <sqlquery key="activityAwards" datatype="list">
+                <sql>SELECT  * FROM sysdict WHERE dict_key='activityAward'</sql>
+            </sqlquery>
+            <sqlquery key="classdata" datatype="list">
+                <sql>SELECT stuClassName  FROM student
+
+                    group by stuClassName order by stuClassName </sql>
+            </sqlquery>
+        </state>
+    </statemachine>
+    <statemachine id="schoolactivityapplyManage_class">
+        <state name="init" viewname="schoolactivityapplyManage_class">
+            <ref beanid="jspPageProcessor"/>
+            <!--获取全部活动获奖类别-->
+            <sqlquery key="activityAwards" datatype="list">
+                <sql>SELECT  * FROM sysdict WHERE dict_key='activityAward'</sql>
+            </sqlquery>
+            <sqlquery key="classdata" datatype="list">
+                <sql>SELECT stuClassName  FROM student group by stuClassName order by stuClassName </sql>
+            </sqlquery>
+        </state>
+    </statemachine>
+    <statemachine id="schoolactivityapplyManage_college">
+        <state name="init" viewname="schoolactivityapplyManage_college">
+            <ref beanid="jspPageProcessor"/>
+            <!--获取全部活动获奖类别-->
+            <sqlquery key="activityAwards" datatype="list">
+                <sql>SELECT  * FROM sysdict WHERE dict_key='activityAward'</sql>
+            </sqlquery>
+            <sqlquery key="classdata" datatype="list">
+                <sql><![CDATA[SELECT stuClassName  FROM student
+                    where case when ${collegeId} is not null and ${collegeId} !=""  then stuCollageName= ${collegeId} else 1=1 end
+                    group by stuClassName order by stuClassName
+                ]]></sql>
+            </sqlquery>
+        </state>
+    </statemachine>
+    <!--**************************首页管理**************************-->
+    <statemachine id="index">
+        <state name="init" viewname="index">
+            <ref beanid="jspPageProcessor"/>
+            <!--获取新闻信息-->
+            <sqlquery key="newses" datatype="list">
+                <sql><![CDATA[
+                    SELECT  *,FROM_UNIXTIME(UNIX_TIMESTAMP(newsDate),'%Y-%m-%d') AS newsDate FROM news
+                     ORDER BY newsDate DESC
+                     ]]></sql>
+            </sqlquery>
+            <!--获取学校活动信息-->
+            <sqlquery key="school_activities" datatype="list">
+                <sql><![CDATA[
+                    SELECT  *,FROM_UNIXTIME(UNIX_TIMESTAMP(activityCreatedate),'%Y-%m-%d') AS activityCreatedate
+                     FROM activities where activityArea ='学校'
+                     and activitySdate<>activityEdate
+                     ORDER BY activityCreatedate DESC
+                     ]]></sql>
+            </sqlquery>
+            <!--获取学院活动信息-->
+            <sqlquery key="college_activities" datatype="list">
+                <sql><![CDATA[
+                    SELECT  *,FROM_UNIXTIME(UNIX_TIMESTAMP(activityCreatedate),'%Y-%m-%d') AS activityCreatedate
+                     FROM activities where activityArea ='学院'
+                    and activitySdate<>activityEdate
+                     ORDER BY activityCreatedate DESC
+                     ]]></sql>
+            </sqlquery>
+        </state>
+    </statemachine>
+    <!--获取所有团体活动-->
+    <statemachine id="teamActivitiesManage">
+        <state name="init" viewname="teamActivitiesManage">
+            <ref beanid="jspPageProcessor"/>
+            <sqlquery key="activities" datatype="list">
+                <sql><![CDATA[
+                    SELECT activityId,activityTitle FROM activities WHERE activityParticipation!="个人"
+                    and activityIsDelete='0'
+                    and activityClass!='6'
+                    and activitySdate<>activityEdate
+                    ORDER BY activityCreatedate DESC
+                     ]]></sql>
+            </sqlquery>
+        </state>
+    </statemachine>
+    <!--获取所有团体活动-->
+    <statemachine id="teamapplyManage">
+        <state name="init" viewname="teamapplyManage">
+            <ref beanid="jspPageProcessor"/>
+            <sqlquery key="activities" datatype="list">
+                <sql><![CDATA[
+                    SELECT activityId,activityTitle FROM activities WHERE activityParticipation!="个人"
+                    and activityIsDelete='0'
+                    and activityClass!='6'
+                    and activitySdate<>activityEdate
+                    ORDER BY activityCreatedate DESC
+                     ]]></sql>
+            </sqlquery>
+        </state>
+    </statemachine>
+    <statemachine id="NotactivityManage">
+        <state name="init" viewname="NotactivityManage">
+            <ref beanid="jspPageProcessor"/>
+            <!--获取所有工作级别-->
+            <sqlquery key="workLevles" datatype="list">
+                <sql><![CDATA[
+                   SELECT dict_key AS workLevle FROM nadict WHERE dict_key  LIKE "%级"  ORDER BY createDate DESC
+                     ]]></sql>
+            </sqlquery>
+            <!--获取所有学术科技类-->
+            <sqlquery key="sciencetechnologys" datatype="list">
+                <sql><![CDATA[
+                    SELECT  dict_value as scienceClass FROM nadict where dict_key="学术科技类"
+                     ]]></sql>
+            </sqlquery>
+            <!--&lt;!&ndash;获取所有奖学金名字&ndash;&gt;-->
+            <!--<sqlquery key="typeNames" datatype="list">-->
+                <!--<sql><![CDATA[-->
+                    <!--SELECT dict_value as typeName FROM nadict where dict_key="奖学金"-->
+                     <!--]]></sql>-->
+            <!--</sqlquery>-->
+            <!--获取班级职务名字-->
+            <sqlquery key="classworkNames" datatype="list">
+                <sql><![CDATA[
+                    SELECT dict_value as classworkName FROM nadict where dict_key='班级职务'
+                     ]]></sql>
+            </sqlquery>
+        </state>
+    </statemachine>
+    <statemachine id="notactivityManage_school">
+        <state name="init" viewname="notactivityManage_school">
+            <ref beanid="jspPageProcessor"/>
+            <!--获取所有工作级别-->
+            <sqlquery key="workLevles" datatype="list">
+                <sql><![CDATA[
+                   SELECT dict_key AS workLevle FROM nadict WHERE dict_key  LIKE "%级"  ORDER BY createDate DESC
+                     ]]></sql>
+            </sqlquery>
+            <!--获取所有学术科技类-->
+            <sqlquery key="sciencetechnologys" datatype="list">
+                <sql><![CDATA[
+                    SELECT  dict_value as scienceClass FROM nadict where dict_key="学术科技类"
+                     ]]></sql>
+            </sqlquery>
+            <sqlquery key="orgclasses" datatype="list">
+                <sql><![CDATA[
+                   select orgclass from organization   where orgclass is not null GROUP BY orgclass
+                     ]]></sql>
+            </sqlquery>
+            <sqlquery key="orglevels" datatype="list">
+                <sql><![CDATA[
+                  select orglevel from organization   where orglevel is not null GROUP BY orglevel
+                     ]]></sql>
+            </sqlquery>
+            <sqlquery key="workleveles" datatype="list">
+                <sql><![CDATA[
+                   select worklevel from organization   where worklevel is not null GROUP BY worklevel
+                     ]]></sql>
+            </sqlquery>
+            <sqlquery key="stuCollageNames" datatype="list">
+                <sql><![CDATA[
+                  SELECT stuCollageName  FROM student group by stuCollageName order by stuCollageName
+                     ]]></sql>
+            </sqlquery>
+            <!--获取所有奖学金名字-->
+            <sqlquery key="typeNames" datatype="list">
+            <sql><![CDATA[
+            SELECT dict_value as typeName FROM nadict where dict_key="奖学金"
+            ]]></sql>
+            </sqlquery>
+            <!--获取班级职务名字-->
+            <sqlquery key="classworkNames" datatype="list">
+                <sql><![CDATA[
+                    SELECT dict_value as classworkName FROM nadict where dict_key='班级职务'
+                     ]]></sql>
+            </sqlquery>
+        </state>
+    </statemachine>
+    <statemachine id="NotactivityApply">
+        <state name="init" viewname="NotactivityApply">
+            <ref beanid="jspPageProcessor"/>
+            <!--获取所有工作级别-->
+            <sqlquery key="workLevles" datatype="list">
+                <sql><![CDATA[
+                     SELECT dict_key AS workLevle FROM nadict WHERE dict_key  LIKE "%级"  ORDER BY createDate DESC
+                     ]]></sql>
+            </sqlquery>
+            <!--获取所有学术科技类-->
+            <sqlquery key="sciencetechnologys" datatype="list">
+                <sql><![CDATA[
+                    SELECT  dict_value as scienceClass FROM nadict where dict_key="学术科技类"
+                     ]]></sql>
+            </sqlquery>
+            <!--&lt;!&ndash;获取所有奖学金名字&ndash;&gt;-->
+            <!--<sqlquery key="typeNames" datatype="list">-->
+                <!--<sql><![CDATA[-->
+                    <!--SELECT dict_value as typeName FROM nadict where dict_key="奖学金"-->
+                     <!--]]></sql>-->
+            <!--</sqlquery>-->
+            <!--获取班级职务名字-->
+            <sqlquery key="classworkNames" datatype="list">
+                <sql><![CDATA[
+                    SELECT dict_value as classworkName FROM nadict where dict_key='班级职务'
+                     ]]></sql>
+            </sqlquery>
+        </state>
+    </statemachine>
+    <statemachine id="workManage">
+        <state name="init" viewname="workManage">
+            <ref beanid="jspPageProcessor"/>
+            <!--获取组织名字-->
+            <sqlquery key="organizationNames" datatype="list">
+                <sql><![CDATA[
+                   SELECT  organizationName FROM organization  ORDER BY createDate DESC
+                     ]]></sql>
+            </sqlquery>
+        </state>
+    </statemachine>
+    <statemachine id="workManagenew">
+        <state name="init" viewname="workManagenew">
+            <ref beanid="jspPageProcessor"/>
+            <!--获取组织名字-->
+            <sqlquery key="organizationNames" datatype="list">
+                <sql><![CDATA[
+                   SELECT  organizationName FROM organization  ORDER BY createDate DESC
+                     ]]></sql>
+            </sqlquery>
+        </state>
+    </statemachine>
+    <statemachine id="organization">
+        <state name="init" viewname="organization">
+            <ref beanid="jspPageProcessor"/>
+            <!--获取所有工作级别-->
+            <sqlquery key="workLevles" datatype="list">
+                <sql><![CDATA[
+                     SELECT dict_key AS workLevle FROM nadict WHERE dict_key  LIKE "%级"  ORDER BY createDate DESC
+                     ]]></sql>
+            </sqlquery>
+        </state>
+    </statemachine>
+    <!--============================前端 （手机端）管理============================-->
+
+    <!--**************************活动审核管理**************************-->
+
+        <!--获取学校活动审核信息-->
+    <statemachine id="activity_check">
+        <state name="init" viewname="activity_check">
+            <ref beanid="jspPageProcessor"/>
+            <!--获取新闻信息-->
+            <sqlquery key="check_info" datatype="list">
+                <sql><![CDATA[
+                         SELECT * ,FROM_UNIXTIME(UNIX_TIMESTAMP(outAuditDate),'%Y-%m-%d') AS outAuditDates,
+                             FROM_UNIXTIME(UNIX_TIMESTAMP(outDate),'%Y-%m-%d') AS outDates
+                             FROM gq_check_activity ORDER BY outAuditDates DESC
+                ]]></sql>
+            </sqlquery>
+        </state>
+    </statemachine>
+
+    <!--重置密码-->
+    <statemachine id="resetStudentPwd">
+        <state name="init" viewname="resetStudentPwd">
+            <ref beanid="jspPageProcessor"/>
+        </state>
+    </statemachine>
+
+    <!--导入团日活动-->
+    <statemachine id="importThemeActity">
+        <state name="init" viewname="importThemeActity">
+            <ref beanid="jspPageProcessor"/>
+        </state>
+    </statemachine>
+</beans>

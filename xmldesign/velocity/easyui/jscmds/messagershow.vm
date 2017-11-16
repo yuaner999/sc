@@ -1,0 +1,10 @@
+#*
+<messagershow title="" msg="" />
+* *#
+#set($title=$xml.xpathobj($elem,"./@title"))
+#set($msg=$xml.xpathobj($elem,"./@msg"))
+$.messager.show({
+    title:'$title',
+    msg:'$msg',
+    showType:'show'
+});

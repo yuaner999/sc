@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2013 (http://www.altova.com) by  () -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:element name="app">
+		<xs:annotation>
+			<xs:documentation>Comment describing your root element</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="crud">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="formsql"/>
+							<xs:element name="tableheadersql"/>
+						</xs:sequence>
+						<xs:attribute name="title" use="required"/>
+						<xs:attribute name="tabletitle" use="required"/>
+						<xs:attribute name="tabledataurl" use="required"/>
+						<xs:attribute name="formcreatesubmiturl" use="required"/>
+						<xs:attribute name="formeditsubmiturl" use="required"/>
+						<xs:attribute name="saveto" use="required"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

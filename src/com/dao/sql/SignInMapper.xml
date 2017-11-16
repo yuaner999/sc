@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.dao.interfaces.SignInDao">
+
+    <!--* 传入活动申请ID的集合，批量签到-->
+    <update id="signInByList" >
+        UPDATE activityapply SET signUpStatus='已签到',signUpTime=now() WHERE applyId IN
+        <foreach collection="applist" open="(" close=")" separator="," item="item">
+            #{item}
+        </foreach>
+    </update>
+
+    <!--* 根据活动申请ID签到-->
+    <update id="signInById" parameterType="string">
+        UPDATE activityapply SET signUpStatus='已签到',signUpTime=now() WHERE applyId=#{0}
+    </update>
+
+</mapper>

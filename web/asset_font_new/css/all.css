@@ -1,0 +1,16 @@
+body{
+    min-width: 1040px;
+}
+.section{
+    max-width:1440px;
+    margin: 0 auto;
+}
+@media screen and (max-width: 1600px) {
+    /*.section{*/
+        /*width: 1040px !important;*/
+    /*}*/
+    div#posi.model{
+        top:169px !important;
+        left:5px !important;
+    }
+}

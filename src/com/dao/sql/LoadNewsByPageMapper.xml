@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.dao.interfaces.NewsDao">
+    <!--用分页查询查新闻-->
+<!--不能用limit 用不了total-->
+    <select id="loadNewsCollegePage" resultType="map" parameterType="string" >
+                SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(newsDate),'%m-%d') AS nDate
+                FROM news
+                WHERE isDelete = '0' AND newsClass = '先锋青年'
+                ORDER  BY  newsDate DESC
+    </select>
+    <!--分页查询学校的新闻-->
+    <select id="loadNewsSchoolPage" resultType="map" parameterType="string">
+        SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(newsDate),'%m-%d') AS nDate
+        FROM news
+        WHERE isDelete = '0' AND newsClass = '先锋新闻'
+        ORDER  BY  newsDate DESC
+    </select>
+    <!--按新闻的id加载新闻的信息-->
+    <select id="loadNewsById" resultType="map" parameterType="string" >
+      SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(newsDate),'%Y-%m-%d') AS nDate
+       FROM news
+      where isDelete = '0' and newsId=#{0}
+    </select>
+    <!--分页查询学生参加活动信息-->
+    <select id="loadActivityStateBypage" resultType="map" parameterType="string">
+        SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(activitySdate),'%Y-%m-%d ') AS activitySdates,
+                 FROM_UNIXTIME(UNIX_TIMESTAMP(activityEdate),'%Y-%m-%d ') AS activityEdates,
+                 getActivityState(activitySdate,activityEdate) AS state
+        FROM activityapply,activities WHERE activityapply.applyActivityId=activities.activityId AND activityapply.applyStudentId=#{1}
+        and activities.activityIsDelete='0'
+        and case when #{0} ='1'  then 1=1 else 1=1 end
+        and case when #{0} ='2'  then NOW()   &lt;  activities.activitySdate else 1=1 end
+        and case when #{0} ='3'  then NOW() BETWEEN   activities.activitySdate AND activities.activityEdate else 1=1 end
+        and case when #{0} ='4'  then  NOW()   &gt;   activities.activityEdate else 1=1 end
+        ORDER BY activities.activityCreatedate desc
+    </select>
+
+</mapper>

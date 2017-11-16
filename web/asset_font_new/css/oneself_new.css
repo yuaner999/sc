@@ -1,0 +1,255 @@
+#content{
+    width: 100%;
+    /*height: 90%;*/
+    padding-top: 20px;
+    overflow-y: auto;
+    height: 100%;
+    /* margin-left: 50px; */
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    min-height: 0 !important;
+}
+#content input{
+    padding: 0 5px;
+}
+.center_cen_content_put{
+    margin-left: -328px;
+    margin-top: 10px;
+    height: 44px;
+}
+.center_cen_content_textArea {
+    margin-top: 14px;
+    width: 100%;
+    height: 240px;
+    margin-left: -13px;
+
+}
+.center_cen_content_text{
+    width: 500px;
+    height: 205px;
+    color: #333333;
+    resize: none;
+}
+
+.center_cen_content_span_t{
+    margin-bottom: 100px;
+    color: #2a458c;
+    vertical-align: top;
+
+}
+.center_cen_content_span{
+    color: #2a458c;
+}
+.center_cen_content_button{
+    position: relative;
+    width: 140px;
+    height: 36px;
+    background-color: #5c85ee;
+    color: white;
+    line-height: 36px;
+    text-align: center;
+    margin:24px 0 0 134px;
+    outline: none;
+    font-size: 16px;
+    margin-left: 50px
+}
+.center_cen_content_file{
+    width: 140px;
+    height: 36px;
+    opacity: 0;
+    position: absolute;
+    left: 0px;
+    cursor:pointer;
+}
+.center_cen_content_text{
+    border:1px solid #2a458c;
+}
+.center_cen_content_input{
+    border:1px solid #5c85ee;
+    height: 24px;
+    width: 200px;
+    outline:none;
+}
+#title{
+    height: 34px;
+    margin-top: 30px;
+}
+.title_top{
+    cursor: pointer;
+    font-size: 15px;
+    color: #FFF;
+    background-color: #2a458c;
+    outline: none;
+    display: inline-block;
+    height: 31px;
+    line-height: 26px;
+    width: 178px;
+    margin-left: 45px;
+}
+div.window_selectMsg{
+    height:65vh !important;
+    z-index: 9999;
+    position: fixed;
+    top: 20vh;
+    left: 50%;
+    margin-left: -250px;
+    width: 515px;
+    background: #fff;
+    border-top: 47px solid #5c85ee;
+    border-color: #5c85ee !important;
+}
+.btbox{
+    /*text-align: center;*/
+    margin-left:10%;
+}
+.btbox button{
+    position: relative !important;
+    bottom: auto !important;
+    left: auto !important;
+    margin: 25px 10% !important;/*之前是，25px 10px !important*/
+    background: #5c85ee !important;
+ }
+.center_cen_content_button, #show{
+    display: inline-block !important;
+}
+.center_cen_content_button{
+    margin: 0px 0 20px !important;
+    position: relative;
+    vertical-align: top;
+    left:170px !important;
+}
+#showbox{
+    text-align: left;
+}
+#show{
+    margin: 0px!important;
+    margin-left: 115px !important;
+}
+.img_box{
+    max-width: 300px;
+    max-height: 300px;
+    min-width: 150px;
+    min-height: 150px;
+    overflow: hidden;
+    width:auto !important;
+    height:auto !important;;
+}.img_box img{
+     max-width: 300px;
+     max-height: 300px;
+     min-width: 150px;
+     min-height: 150px;
+
+ }
+.title{
+    background: #2a458c;
+    color: #fff;
+    font-size: 18px;
+    line-height: 33px;
+    text-align: left;
+    text-indent: 30px;
+}
+td span{
+    position: relative;
+    display: inline-block;
+}
+td span.error:after{
+    content: '';
+    position: absolute;
+    bottom: 0;
+    background: url(../../asset_font_new/img/langxian_03.png) repeat;
+    height: 3px;
+    width: 100%;
+    left:0;
+}
+.spacel td span{
+    padding-right: 20px;
+}
+.spacel td span button{
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    height: 100%;
+    width: 20px;
+    content: "";
+    background: url(../../asset_font_new/img/studentInfo_03.png) no-repeat center;
+    cursor: pointer;
+    display: inline-block;
+    border:none;
+    outline:none;
+}
+
+.stuWindow{
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 42px 56px;
+    width: 750px;
+    background: #FFF;
+    position: fixed;
+    top:20%;
+    left:50%;
+    margin-left:-375px;
+    z-index:9999999;
+    font-size: 14px;
+    display: none;
+}
+.stuWindow>b{
+    width:15px;
+    cursor: pointer;
+    height: 15px;
+    background: url(../../asset_font_new/img/xxx_03.png);
+    position: absolute;
+    right: 15px;
+    top:15px;
+}
+.stuWindow>ol{
+    overflow: auto;
+    max-height: 420px;
+    margin-bottom: 30px;
+}
+@media screen and(max-width: 1600px){
+    .stuWindow>ol{
+        max-height: 350px;
+    }
+}
+.stuWindow ol ol{
+    overflow: hidden;
+}
+.stuWindow ol li {
+    float: left;
+}
+.stuWindow ol li.first{
+    width:35%;
+}
+.stuWindow ol li.secound{
+    width:35%;
+}
+.stuWindow ol li.third{
+    width:25%;
+}
+.stuWindow ol li p{
+    color: #5c85ee;
+    font-size: 16px;
+    line-height: 18px;
+    margin-bottom: 15px;
+    border-left: 4px solid #5c85ee;
+    padding-left: 8px;
+}
+.stuWindow ol li span{
+    display: block;
+    padding-left: 12px;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+.stuWindow>button{
+    width: 110px;
+    height: 28px;
+    background: #5c85ee;
+    color: #fff;
+    font-size: 14px;
+    display: block;
+    margin:0 auto;
+    border:none;
+    cursor: pointer;
+}

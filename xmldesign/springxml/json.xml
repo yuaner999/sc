@@ -1,0 +1,3244 @@
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../schemas/websm.xsd">
+
+    <!--*****************************系统后台管理*****************************-->
+    <!--=============================系统用户管理=============================-->
+    <!--*****************************以下内容禁止修改、删除，直到结尾END*****************************START-->
+    <!--加载系统用户-->
+    <json id="delete_review">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql>delete from supplement where id=${id}</sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+
+    <json id="loadSysUser">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+           SELECT sysuser.*,sysrole.`sysrole_name`, FROM_UNIXTIME(UNIX_TIMESTAMP(sysuser.create_date),'%Y-%m-%d %H:%i:%s') AS create_date,
+            FROM_UNIXTIME(UNIX_TIMESTAMP(sysuser.update_date),'%Y-%m-%d %H:%i:%s') AS update_date
+            FROM sysuser LEFT JOIN sysrole ON(sysuser.`sysrole_id`=sysrole.`sysrole_id`)
+             WHERE is_sysadmin='否' AND ((${sqlStr} IS NULL) OR (username LIKE CONCAT('%',${sqlStr},'%'))) ORDER BY create_date DESC
+            ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--修改用户-->
+    <json id="editSysUser">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+                update sysuser
+                set sysrole_id=${sysroleid},update_date=now(),update_man=${loginName},remark=${remark}
+                where sysuser_id=${sysuserid}
+                ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--删除用户-->
+    <json id="deleteSysUser">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql>delete from sysuser where sysuser_id=${sysuserid}</sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--删除用户  其他部门-->
+    <json id="deleteUser">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+               call lrf_delete_user(${sysuserid},${role})
+                ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--添加用户  其他部门-->
+    <json id="addUser">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+                call lrf_add_user(${username},${sysroleid},${college},${dept},${grade},${class},${type},${loginName},${remark})
+                ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--修改   其他用户-->
+    <json id="editUser">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+               call lrf_update_user(${sysuserid},${username},${sysroleid},${college},${dept},${grade},${class},${type},${loginName},${remark})
+                ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--查询用户角色-->
+    <json id="selectsysrole_id">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                 SELECT sysrole_id from sysuser where username=${username}
+            ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--验证是否是导员-->
+    <json id="selectinstructor">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                 SELECT * from instructor where instructorLogin=${username}
+            ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--=============================系统菜单管理=============================-->
+    <!--新建菜单-->
+    <json id="addMenu">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+                INSERT INTO sysmenu (sysmenu_id,sysmenu_name,sysmenu_url,parent_menuid,is_sysmanage_menu,sort,create_date,create_man,remark)
+                VALUES(uuid(),${sysmenuname},${sysmenuurl},${parentmenuid},'否',${sort},now(),${loginName},${remark})
+                ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--修改菜单-->
+    <json id="editMenu">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+                UPDATE sysmenu
+                SET sysmenu_name=${sysmenuname},sysmenu_url=${sysmenuurl},
+                    parent_menuid=${parentmenuid},sort=${sort},
+                    update_date=now(),update_man=${loginName},
+                    remark=${remark}
+                WHERE sysmenu_id=${sysmenuid} and sysmenu_id!='2c659331-0d1a-11e6-b867-0025b6dd0800'
+                ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--删除菜单-->
+    <json id="deleteMenu">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql>DELETE FROM sysmenu WHERE sysmenu_id=${sysmenuid} and is_sysmanage_menu='否'</sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--=============================系统角色管理=============================-->
+    <!--加载系统角色-->
+    <json id="loadSysRole">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                select *,FROM_UNIXTIME(UNIX_TIMESTAMP(create_date),'%Y-%m-%d %H:%i:%s') AS create_date,FROM_UNIXTIME(UNIX_TIMESTAMP(update_date),'%Y-%m-%d %H:%i:%s') AS update_date
+                from sysrole where
+                is_sysrole in ('是','否') and ((${sqlStr} is null) or (sysrole_name like concat('%',${sqlStr},'%')))
+                order by create_date desc
+                ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--新建角色-->
+    <json id="addRole">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+                INSERT INTO sysrole (sysrole_id,sysrole_name,is_sysrole,create_date,create_man,remark)
+                VALUES(uuid(),${sysrolename},'否',now(),${loginName},${remark})
+                ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--修改角色-->
+    <json id="editRole">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+                UPDATE sysrole SET
+                  sysrole_name=${sysrolename},update_date=now(),update_man=${loginName},remark=${remark}
+                  WHERE sysrole_id=${sysroleid} ;
+                ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--删除角色-->
+    <json id="deleteRole">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql>DELETE FROM sysrole WHERE sysrole_id=${sysroleid} and sysrole_id!='fe785f38-0baf-11e6-883e-0025b6dd0800'</sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--角色权限，加载角色名称-->
+    <json id="getRoleName">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" >
+            <sql>SELECT * FROM sysrole where is_sysrole!='2654264'</sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="./data"/>
+            <field key="total" jxpath="./total"/>
+        </output>
+    </json>
+    <!--角色权限，获取选中角色的权限菜单-->
+    <json id="getRoleMenu">
+        <sqlquery key="data" datatype="list" resultvar="r" resultmsgvar="rmsg">
+            <sql>SELECT * FROM sysrolemenu where sysrole_id=${sysroleId}</sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+
+    <!--*****************************以上内容禁止修改、删除*****************************END-->
+
+    <!--*****************************后台模块管理*****************************-->
+    <!--*****************************学院管理*****************************-->
+    <!--活动类 必须完成学分加载-->
+    <json id="loadActivityClassScore">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+               SELECT * FROM sysdict WHERE dict_key='activityClass' and dict_value not in ('5','6')
+                 ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--活动类 必须完成学分修改-->
+    <json id="editActivityClassScore">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+                UPDATE
+                    `secondcourse`.`sysdict`
+                SET
+                `dict_score` = ${dictscore}
+                 WHERE `dict_id` = ${dictid} ;
+
+                ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--加载学院-->
+    <json id="loadCollege">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(createDate),'%Y-%m-%d %H:%i:%s') AS createDate,
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(updateDate),'%Y-%m-%d %H:%i:%s') AS updateDate
+                FROM college where isDelete='0' and ((${sqlStr} is null) or (collegeName like concat('%',${sqlStr},'%')))
+                 and case when ${collegeId} is not null and ${collegeId}<>""  then collegeId= ${collegeId} else 1=1 end
+                 order by collegeName
+                 ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--加载学院名称信息-->
+    <json id="loadCollegeName">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+            SELECT stuCollageName FROM student WHERE stuCollageName IS NOT NULL GROUP BY stuCollageName order by stuCollageName
+                 ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--新建学院-->
+    <json id="addCollege">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+                INSERT INTO college (collegeId,collegeName,isDelete,collegeRemark,createMan,createDate)
+                    VALUES(uuid(),${collegeName},'0',${collegeRemark},${loginName},now())
+                    ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--修改学院-->
+    <json id="editCollege">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+                UPDATE college SET
+                    collegeName = ${collegeName},
+                    collegeRemark = ${collegeRemark},
+                    updateMan = ${loginName},
+                    updateDate = now()
+                WHERE collegeId = ${collegeId}
+                ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--删除学院-->
+    <json id="deleteCollege">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+                UPDATE college SET
+                    isDelete = '1'
+                WHERE collegeId = ${collegeId}
+                ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--*****************************专业管理*****************************-->
+    <!--加载专业-->
+    <json id="loadMajor">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(createDate),'%Y-%m-%d %H:%i:%s') AS createDate,
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(updateDate),'%Y-%m-%d %H:%i:%s') AS updateDate,
+                    getCollegeName(majorCollegeId) as majorCollegeName,
+                    getParentMajorName(parentMajorId) as parentMajorName
+                FROM major where isDelete='0' and
+                    ((${sqlStr} is null) or (majorName like concat('%',${sqlStr},'%'))) and
+                    ((${collegeId} is null) or (${collegeId} = 'all') or (majorCollegeId=${collegeId})) order by majorName
+                 ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--根据学院加载专业信息-->
+    <json id="loadMajorNameIn">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                SELECT stuMajorName FROM student WHERE stuMajorName is not null
+              and case when ${stuCollageName} is not null and ${stuCollageName}<>'' then stuCollageName = ${stuCollageName} else 1=1 end
+              GROUP BY stuMajorName
+              order by stuMajorName
+                 ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--加载指定学院的专业类-->
+    <json id="loadMajorType">
+        <sqlquery key="data" datatype="list" resultvar="r" resultmsgvar="rmsg">
+            <sql>SELECT * FROM major where isDelete='0' and parentMajorId='none' and majorCollegeId=${majorCollegeId} order by majorName</sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--新建专业-->
+    <json id="addMajor">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+                INSERT INTO major (majorId,majorName,majorCollegeId,parentMajorId,isDelete,majorRemark,createMan,createDate)
+                    VALUES(uuid(),${majorName},${majorCollegeId},${parentMajorId},'0',${majorRemark},${loginName},now())
+                    ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--修改专业-->
+    <json id="editMajor">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+                UPDATE major SET
+                    majorName = ${majorName},
+                    majorCollegeId = ${majorCollegeId},
+                    parentMajorId = ${parentMajorId},
+                    majorRemark = ${majorRemark},
+                    updateMan = ${loginName},
+                    updateDate = now()
+                WHERE majorId = ${majorId}
+                ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--删除专业-->
+    <json id="deleteMajor">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+                UPDATE major SET
+                    isDelete = '1'
+                WHERE majorId = ${majorId}
+                ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--*****************************年级管理*****************************-->
+    <!--加载年级-->
+    <json id="loadGrade">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(createDate),'%Y-%m-%d %H:%i:%s') AS createDate,
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(updateDate),'%Y-%m-%d %H:%i:%s') AS updateDate
+                FROM grade where isDelete='0' and ((${sqlStr} is null) or (gradeName like concat('%',${sqlStr},'%'))) order by gradeName
+                 ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--加载年级信息-->
+    <json id="loadGradeNameIn">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                SELECT stuGradeName FROM student WHERE stuGradeName is not null
+                    GROUP BY stuGradeName  order by stuGradeName
+                 ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--新建年级-->
+    <json id="addGrade">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+                INSERT INTO grade (gradeId,gradeName,isDelete,gradeRemark,createMan,createDate)
+                    VALUES(uuid(),${gradeName},'0',${gradeRemark},${loginName},now())
+                    ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--修改年级-->
+    <json id="editGrade">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+                UPDATE grade SET
+                    gradeName = ${gradeName},
+                    gradeRemark = ${gradeRemark},
+                    updateMan = ${loginName},
+                    updateDate = now()
+                WHERE gradeId = ${gradeId}
+                ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--删除年级-->
+    <json id="deleteGrade">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+                UPDATE grade SET
+                    isDelete = '1'
+                WHERE gradeId = ${gradeId}
+                ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--*****************************班级管理*****************************-->
+    <!--加载班级-->
+    <json id="loadClass">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+               SELECT stuClassName,stuMajorName,stuMajorClass,stuCollageName,stuGradeName FROM student
+                 where 1=1 and ((${sqlStr} is null) or (stuClassName like concat('%',${sqlStr},'%')))
+                and case when ${collageName} is not null and ${collageName}<>""  then stuCollageName= ${collegeId} else 1=1 end
+                GROUP BY stuClassName order by stuClassName
+                       ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--新建班级-->
+    <json id="addClass">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+                INSERT INTO class (classId,className,classCollegeId,classMajorKindId,classMajorId,classGradeId,isDelete,classRemark,createMan,createDate)
+                    VALUES(uuid(),${className},${classCollegeId},${classMajorKindId},${classMajorId},${classGradeId},'0',${classRemark},${loginName},now())
+                    ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--修改班级-->
+    <json id="editClass">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+                UPDATE class SET
+                    className = ${className},
+                    classCollegeId = ${classCollegeId},
+                    classMajorKindId = ${classMajorKindId},
+                    classMajorId = ${classMajorId},
+                    classGradeId = ${classGradeId},
+                    classRemark = ${classRemark},
+                    updateMan = ${loginName},
+                    updateDate = now()
+                WHERE classId = ${classId}
+                ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--删除班级-->
+    <json id="deleteClass">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+                UPDATE class SET
+                    isDelete = '1'
+                WHERE classId = ${classId}
+                ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--加载所选学院、专业类后的专业-->
+    <json id="loadSeletMajor">
+        <sqlquery key="data" datatype="list" resultvar="r" resultmsgvar="rmsg">
+            <sql>SELECT * FROM major where isDelete='0' and parentMajorId=${parentMajorId} order by majorName</sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+
+    <!--*************************************学生信息管理***************************-->
+    <!--删除学生信息-->
+    <json id="deleteStudent">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql>DELETE FROM student WHERE studentID=${studentID}</sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--加载 _班级信息 -->
+    <json id="loadclassnames">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                select classId,className from class where isDelete='0'
+                ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+        </output>
+    </json>
+    <!--根据筛选条件加载班级信息-->
+    <json id="loadClassInfors">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                SELECT * FROM student WHERE stuClassName is not null
+                and ((${sqlStr} is null) or (stuClassName like concat('%',${sqlStr},'%')))
+              and case when ${stuCollageName} is not null and ${stuCollageName}<>'' then stuCollageName = ${stuCollageName} else 1=1 end
+               and case when ${stuMajorName} is not null and ${stuMajorName}<>'' then stuMajorName = ${stuMajorName} else 1=1 end
+               and case when ${stuGradeName} is not null and ${stuGradeName}<>'' then stuGradeName = ${stuGradeName} else 1=1 end
+               GROUP BY stuClassName
+               order by stuClassName
+                 ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--查找学号
+     select * from student  where studentID=${student_id}-->
+    <json id="loadstudentId">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                select * from student  where studentID=${student_id}
+            ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+        </output>
+    </json>
+
+    <json id="loadT">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                select * from activityapply  where applyStudentId=${student_id} and applyActivityId=${applyActivityId}
+            ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+        </output>
+    </json>
+
+
+    <!--加载找回密码验证码-->
+    <json id="loadFindPwdCode">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+            SELECT * from findpwdcode where validateID=${id} and isdisable=0  and datediff(createtime,now())=0
+                         ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+
+    <!--找回密码__重设密码-->
+    <json id="update_findPwd_Reset">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+                UPDATE student
+                   SET studentPwd = upper(md5(${newpassword}))
+                      WHERE studentID = (select studentID from findpwdcode where validateID=${id})
+            ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--找回密码__修改验证ID状态-->
+    <json id="edit_findpwdcodestatus">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+                UPDATE findpwdcode
+                   SET isdisable = 1
+                      WHERE validateID = ${id}
+            ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+
+
+    <!--页面学生姓名验证-->
+    <json id="ValidateName">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                SELECT * FROM student where ${uname} = studentName
+                         ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--页面学生学号验证-->
+    <json id="ValidateNum">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                SELECT * FROM student where ${unum} = studentID
+                         ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--搜索中加载班级的信息-->
+    <json id="loadclassnames1">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                SELECT  DISTINCT(stuClassName)  FROM student where 1=1
+                and case when ${stuGradeName} is not null and ${stuGradeName}<>'' then stuGradeName = ${stuGradeName} else 1=1 end
+                and case when ${collegename} is not null and ${collegename}<>'' then stuCollageName = ${collegename} else 1=1 end
+                and case when ${stuMajorName} is not null and ${stuMajorName}<>'' then stuMajorName = ${stuMajorName} else 1=1 end
+                 and case when ${collegeId} is not null and ${collegeId}<>'' then stuCollageName = ${collegeId} else 1=1 end
+                order by stuClassName
+                         ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+
+    <!--搜索中加载年级的信息-->
+    <json id="loadstuGradeName">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                SELECT  DISTINCT(stuGradeName)  FROM  student where 1=1
+                and case when ${stuMajorName} is not null and ${stuMajorName}<>'' then stuMajorName = ${stuMajorName} else 1=1 end
+                 and case when ${stuCollageName} is not null and ${stuCollageName}<>'' then stuCollageName = ${stuCollageName} else 1=1 end
+                and case when ${collegeId} is not null and ${collegeId}<>'' then stuCollageName = ${collegeId} else 1=1 end
+                order by stuGradeName
+                         ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--搜索中加载专业的信息-->
+    <json id="loadstuMajorName">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                SELECT  DISTINCT(stuMajorName)  FROM  student where 1=1
+                and case when ${stuCollageName} is not null and ${stuCollageName}<>'' then stuCollageName = ${stuCollageName} else 1=1 end
+                 and case when ${collegeId} is not null and ${collegeId}<>'' then stuCollageName = ${collegeId} else 1=1 end
+                  order by stuGradeName
+                         ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--搜索中加载学院的信息-->
+    <json id="loadstuCollageName">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                SELECT  DISTINCT(stuCollageName)  FROM student  order by stuCollageName
+                         ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--搜索中创建者的信息-->
+    <json id="loadactivityCreator1">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+               SELECT  activityCreator FROM activities where activityCreator is not null  group by activityCreator
+                         ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--收索中负责人-->
+    <!--搜索中创建者的信息-->
+    <json id="loadactivityPrincipal">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                   SELECT  principal FROM activities WHERE principal IS NOT NULL AND principal !="" GROUP BY principal
+              ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--搜索中所在校区的信息-->
+    <json id="loadactivityLocation">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+               SELECT  activityLocation FROM activities
+                         ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--*****************************部门管理*****************************-->
+    <!--加载部门-->
+    <json id="loadDepts">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                    SELECT * FROM department where isDelete = '0'
+                    and case when ${sqlStr} is not null and ${sqlStr}<>'' then deptName like concat('%', ${sqlStr},'%') else 1=1 end
+                    order by deptName
+                     ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--修改部门-->
+    <json id="editDept">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+                 UPDATE department SET
+                deptName=${deptName},
+                deptMemo=${deptMemo}
+                WHERE deptId = ${deptId}
+                ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--增加活动-->
+    <json id="addDept">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+                INSERT INTO department (deptId, deptName,deptMemo,isDelete)
+                 VALUES(uuid(),${deptName},${deptMemo},'0')
+                    ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--删除活动-->
+    <json id="deleteDept">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+                UPDATE department SET
+                    isDelete = '1'
+                 WHERE deptId = ${deptId}
+                ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--*****************************签到*****************************-->
+    <!--加载活动列表-->
+    <json id="loadSignInActivities">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                    SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(activitySdate),'%Y-%m-%d') AS activitySdate,
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(activityEdate),'%Y-%m-%d') AS activityEdate
+                    FROM activities where datediff(activitySdate,now())<=0
+                    ORDER BY activitySdate desc
+                     ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+
+    <!--sw-->
+    <!--*****************************活动管理*****************************-->
+    <!--加载活动视图-->
+    <json id="loadApply_activites">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+               SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(activityCreatedate),'%Y-%m-%d ') AS activityCreatedate,
+                         FROM_UNIXTIME(UNIX_TIMESTAMP(activitySdate),'%Y-%m-%d ') AS activitySdate,
+                         FROM_UNIXTIME(UNIX_TIMESTAMP(activityEdate),'%Y-%m-%d ') AS activityEdate,
+                         FROM_UNIXTIME(UNIX_TIMESTAMP(signUpTime),'%Y-%m-%d ') AS signUpTime,
+                         FROM_UNIXTIME(UNIX_TIMESTAMP(applyDate),'%Y-%m-%d ') AS applyDate,
+                dict('activityClass',activityClass) AS activityClassMean,
+                dict('activityLevle',activityLevle) AS activityLevleMean,
+                dict('activityNature',activityNature) AS activityNatureMean,
+               activityAward AS activityAwardMean
+                FROM wh_apply_activites WHERE activityIsDelete='0'
+                AND CASE WHEN ${sqlStr} IS NOT NULL AND ${sqlStr}<>'' THEN activityTitle LIKE CONCAT('%', ${sqlStr},'%') ELSE 1=1 END
+                AND case when ${collegeId} is not null and ${collegeId}<>""  then collegeID=${collegeId} else 1=1 end
+                AND case when ${deptId} is not null and ${deptId}<>""  then deptID=${deptId} else 1=1 end
+                ORDER BY activityCreatedate desc
+                 ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--加载活动信息-->
+    <json id="loadActivities1">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+               SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(activityCreatedate),'%Y-%m-%d ') AS activityCreatedate,
+                         FROM_UNIXTIME(UNIX_TIMESTAMP(activitySdate),'%Y-%m-%d ') AS activitySdate,
+                         FROM_UNIXTIME(UNIX_TIMESTAMP(activityEdate),'%Y-%m-%d %H:%i:%s') AS activityEdate,
+                         FROM_UNIXTIME(UNIX_TIMESTAMP(activityApplyedate),'%Y-%m-%d ') AS activityApplyedate,
+                dict('activityClass',activityClass) AS activityClassMean,
+                dict('activityLevle',activityLevle) AS activityLevleMean,
+                dict('activityNature',activityNature) AS activityNatureMean
+                FROM activities WHERE activityIsDelete='0'
+                AND CASE WHEN ${sqlStr} IS NOT NULL AND ${sqlStr}<>'' THEN activityTitle LIKE CONCAT('%', ${sqlStr},'%') ELSE 1=1 END
+                AND case when ${collegeId} is not null and ${collegeId}<>""  then collegeID=${collegeId} else 1=1 end
+                AND case when ${deptId} is not null and ${deptId}<>""  then deptID=${deptId} else 1=1 end
+                AND CASE WHEN ${activityTitle} IS NOT NULL AND ${activityTitle}<>'' THEN activityTitle LIKE CONCAT('%', ${activityTitle},'%') ELSE 1=1 END
+                AND case when ${activityNature} is not null and ${activityNature}<>""  then activityNature=${activityNature} else 1=1 end
+                AND case when ${activityClass} is not null and ${activityClass}<>""  then activityClass=${activityClass} else 1=1 end
+                AND case when ${activityLevle} is not null and ${activityLevle}<>""  then activityLevle=${activityLevle} else 1=1 end
+                AND case when ${activityParticipation} is not null and ${activityParticipation}<>""  then activityParticipation=${activityParticipation} else 1=1 end
+                AND case when ${activityCreator} is not null and ${activityCreator}<>""  then activityCreator=${activityCreator} else 1=1 end
+                AND case when ${principal} is not null and ${principal}<>""  then principal=${principal} else 1=1 end
+                AND case when ${stuCollageName} is not null and ${stuCollageName}<>""  then activityFilter LIKE CONCAT('%', ${stuCollageName},'%') else 1=1 end
+                AND case when ${stuGradeName} is not null and ${stuGradeName}<>""  then activityFilter  LIKE CONCAT('%', ${stuGradeName},'%') else 1=1 end
+                AND case when ${activityCredit} is not null and ${activityCredit}<>""  then activityCredit = ${activityCredit} else 1=1 end
+                AND case when ${activityPowers} is not null and ${activityPowers}<>""  then activityPowers  LIKE CONCAT('%', ${activityPowers},'%') else 1=1 end
+                AND case when ${activitySdate} is not null and ${activitySdate}<>""  then activitySdate >= ${activitySdate} else 1=1 end
+                AND case when ${activityEdate} is not null and ${activityEdate}<>""  then activityEdate <= ${activityEdate} else 1=1 end
+                AND case when ${activityApplyedate} is not null and ${activityApplyedate}<>""  then activityApplyedate >= ${activityApplyedate} else 1=1 end
+                AND case when ${activityCreatedate} is not null and ${activityCreatedate}<>""  then activityCreatedate LIKE CONCAT('%', ${activityCreatedate},'%') else 1=1 end
+                AND case when ${online} is not null and ${online}<>""  then online=${online} else 1=1 end
+                AND activityClass != '6'
+                ORDER BY activityCreatedate desc
+                 ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--学院活动信息-->
+    <json id="Activitiescollege">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+               SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(activityCreatedate),'%Y-%m-%d ') AS activityCreatedate,
+                         FROM_UNIXTIME(UNIX_TIMESTAMP(activitySdate),'%Y-%m-%d ') AS activitySdate,
+                         FROM_UNIXTIME(UNIX_TIMESTAMP(activityEdate),'%Y-%m-%d ') AS activityEdate,
+                         FROM_UNIXTIME(UNIX_TIMESTAMP(activityApplyedate),'%Y-%m-%d ') AS activityApplyedate,
+                dict('activityClass',activityClass) AS activityClassMean,
+                dict('activityLevle',activityLevle) AS activityLevleMean,
+                dict('activityNature',activityNature) AS activityNatureMean
+                FROM activities WHERE activityIsDelete='0'
+                AND activityArea='学院'
+                AND CASE WHEN ${activityTitle} IS NOT NULL AND ${activityTitle}<>'' THEN activityTitle LIKE CONCAT('%', ${activityTitle},'%') ELSE 1=1 END
+                AND case when ${collegeId} is not null and ${collegeId}<>""  then collegeID=${collegeId} else 1=1 end
+                AND case when ${activityNature} is not null and ${activityNature}<>""  then activityNature=${activityNature} else 1=1 end
+                AND case when ${activityClass} is not null and ${activityClass}<>""  then activityClass=${activityClass} else 1=1 end
+                AND case when ${activityLevle} is not null and ${activityLevle}<>""  then activityLevle=${activityLevle} else 1=1 end
+                AND case when ${activityParticipation} is not null and ${activityParticipation}<>""  then activityParticipation=${activityParticipation} else 1=1 end
+                AND case when ${activityCreator} is not null and ${activityCreator}<>""  then activityCreator=${activityCreator} else 1=1 end
+                AND case when ${principal} is not null and ${principal}<>""  then principal=${principal} else 1=1 end
+                AND case when ${stuCollageName} is not null and ${stuCollageName}<>""  then activityFilter LIKE CONCAT('%', ${stuCollageName},'%') else 1=1 end
+                AND case when ${stuGradeName} is not null and ${stuGradeName}<>""  then activityFilter  LIKE CONCAT('%', ${stuGradeName},'%') else 1=1 end
+                AND case when ${activityCredit} is not null and ${activityCredit}<>""  then activityCredit = ${activityCredit} else 1=1 end
+                AND case when ${activityPowers} is not null and ${activityPowers}<>""  then activityPowers  LIKE CONCAT('%', ${activityPowers},'%') else 1=1 end
+                AND case when ${activitySdate} is not null and ${activitySdate}<>""  then activitySdate >= ${activitySdate} else 1=1 end
+                AND case when ${activityEdate} is not null and ${activityEdate}<>""  then activityEdate <= ${activityEdate} else 1=1 end
+                AND case when ${activityCreatedate} is not null and ${activityCreatedate}<>""  then activityCreatedate LIKE CONCAT('%', ${activityCreatedate},'%') else 1=1 end                AND case when ${online} is not null and ${online}<>""  then online=${online} else 1=1 end
+                AND activityClass != '6'
+                ORDER BY activityCreatedate desc
+                 ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--学校活动信息-->
+    <json id="Activitiesschool">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+               SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(activityCreatedate),'%Y-%m-%d ') AS activityCreatedate,
+                         FROM_UNIXTIME(UNIX_TIMESTAMP(activitySdate),'%Y-%m-%d ') AS activitySdate,
+                         FROM_UNIXTIME(UNIX_TIMESTAMP(activityEdate),'%Y-%m-%d ') AS activityEdate,
+                dict('activityClass',activityClass) AS activityClassMean,
+                dict('activityLevle',activityLevle) AS activityLevleMean,
+                dict('activityNature',activityNature) AS activityNatureMean
+                FROM activities WHERE activityIsDelete='0'
+                AND CASE WHEN ${sqlStr} IS NOT NULL AND ${sqlStr}<>'' THEN activityTitle LIKE CONCAT('%', ${sqlStr},'%') ELSE 1=1 END
+                AND case when ${collegeId} is not null and ${collegeId}<>""  then collegeID=${collegeId} else 1=1 end
+                AND case when ${deptId} is not null and ${deptId}<>""  then deptID=${deptId} else 1=1 end
+                AND CASE WHEN ${activityTitle} IS NOT NULL AND ${activityTitle}<>'' THEN activityTitle LIKE CONCAT('%', ${activityTitle},'%') ELSE 1=1 END
+                AND case when ${activityNature} is not null and ${activityNature}<>""  then activityNature=${activityNature} else 1=1 end
+                AND case when ${activityClass} is not null and ${activityClass}<>""  then activityClass=${activityClass} else 1=1 end
+                AND case when ${activityLevle} is not null and ${activityLevle}<>""  then activityLevle=${activityLevle} else 1=1 end
+                AND case when ${activityParticipation} is not null and ${activityParticipation}<>""  then activityParticipation=${activityParticipation} else 1=1 end
+                AND case when ${activityCreator} is not null and ${activityCreator}<>""  then activityCreator=${activityCreator} else 1=1 end
+                AND case when ${principal} is not null and ${principal}<>""  then principal=${principal} else 1=1 end
+                AND case when ${stuCollageName} is not null and ${stuCollageName}<>""  then activityFilter LIKE CONCAT('%', ${stuCollageName},'%') else 1=1 end
+                AND case when ${stuGradeName} is not null and ${stuGradeName}<>""  then activityFilter  LIKE CONCAT('%', ${stuGradeName},'%') else 1=1 end
+                AND case when ${activityCredit} is not null and ${activityCredit}<>""  then activityCredit = ${activityCredit} else 1=1 end
+                AND case when ${activityPowers} is not null and ${activityPowers}<>""  then activityPowers  LIKE CONCAT('%', ${activityPowers},'%') else 1=1 end
+                AND case when ${activitySdate} is not null and ${activitySdate}<>""  then activitySdate >= ${activitySdate} else 1=1 end
+                AND case when ${activityEdate} is not null and ${activityEdate}<>""  then activityEdate <= ${activityEdate} else 1=1 end
+                AND case when ${activityCreatedate} is not null and ${activityCreatedate}<>""  then activityCreatedate LIKE CONCAT('%', ${activityCreatedate},'%') else 1=1 end                AND case when ${online} is not null and ${online}<>""  then online=${online} else 1=1 end
+                ORDER BY activityCreatedate desc
+                 ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--职能部门活动信息-->
+    <json id="Activitiesdept">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+               SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(activityCreatedate),'%Y-%m-%d ') AS activityCreatedate,
+                         FROM_UNIXTIME(UNIX_TIMESTAMP(activitySdate),'%Y-%m-%d ') AS activitySdate,
+                         FROM_UNIXTIME(UNIX_TIMESTAMP(activityEdate),'%Y-%m-%d ') AS activityEdate,
+                         FROM_UNIXTIME(UNIX_TIMESTAMP(activityApplyedate),'%Y-%m-%d ') AS activityApplyedate,
+                dict('activityClass',activityClass) AS activityClassMean,
+                dict('activityLevle',activityLevle) AS activityLevleMean,
+                dict('activityNature',activityNature) AS activityNatureMean
+                FROM activities WHERE activityIsDelete='0'
+                and activityArea='职能部门'
+                AND CASE WHEN ${sqlStr} IS NOT NULL AND ${sqlStr}<>'' THEN activityTitle LIKE CONCAT('%', ${sqlStr},'%') ELSE 1=1 END
+                AND case when ${collegeId} is not null and ${collegeId}<>""  then collegeID=${collegeId} else 1=1 end
+                AND case when ${deptId} is not null and ${deptId}<>""  then deptID=${deptId} else 1=1 end
+                AND CASE WHEN ${activityTitle} IS NOT NULL AND ${activityTitle}<>'' THEN activityTitle LIKE CONCAT('%', ${activityTitle},'%') ELSE 1=1 END
+                AND case when ${activityNature} is not null and ${activityNature}<>""  then activityNature=${activityNature} else 1=1 end
+                AND case when ${activityClass} is not null and ${activityClass}<>""  then activityClass=${activityClass} else 1=1 end
+                AND case when ${activityLevle} is not null and ${activityLevle}<>""  then activityLevle=${activityLevle} else 1=1 end
+                AND case when ${activityParticipation} is not null and ${activityParticipation}<>""  then activityParticipation=${activityParticipation} else 1=1 end
+                AND case when ${activityCreator} is not null and ${activityCreator}<>""  then activityCreator=${activityCreator} else 1=1 end
+                AND case when ${principal} is not null and ${principal}<>""  then principal=${principal} else 1=1 end
+                AND case when ${stuCollageName} is not null and ${stuCollageName}<>""  then activityFilter LIKE CONCAT('%', ${stuCollageName},'%') else 1=1 end
+                AND case when ${stuGradeName} is not null and ${stuGradeName}<>""  then activityFilter  LIKE CONCAT('%', ${stuGradeName},'%') else 1=1 end
+                AND case when ${activityCredit} is not null and ${activityCredit}<>""  then activityCredit = ${activityCredit} else 1=1 end
+                AND case when ${activityPowers} is not null and ${activityPowers}<>""  then activityPowers  LIKE CONCAT('%', ${activityPowers},'%') else 1=1 end
+                AND case when ${activitySdate} is not null and ${activitySdate}<>""  then activitySdate >= ${activitySdate} else 1=1 end
+                AND case when ${activityEdate} is not null and ${activityEdate}<>""  then activityEdate <= ${activityEdate} else 1=1 end
+                AND case when ${activityCreatedate} is not null and ${activityCreatedate}<>""  then activityCreatedate LIKE CONCAT('%', ${activityCreatedate},'%') else 1=1 end                AND case when ${online} is not null and ${online}<>""  then online=${online} else 1=1 end
+                ORDER BY activityCreatedate desc
+            ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--修改活动-->
+    <json id="editActivities">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+                 UPDATE activities SET
+                    activityImg=${activityImg},
+                    activityTitle = ${activityTitle},
+                    activityContent = ${activityContent},
+                    activityArea = ${activityArea},
+                    activityClass = ${activityClass},
+                    activityLevle = ${activityLevle},
+                    activityNature = ${activityNature},
+                    activityPowers = ${activityPowers},
+                    activityIsInschool=${activityIsInschool},
+                    activityLocation=${activityLocation},
+                    activityParticipation=${activityParticipation},
+                    activityFilterType=${activityFilterType},
+                    activityFilter=${activityFilter},
+                    activitySdate=${activitySdate},
+                    activityEdate=${activityEdate},
+                    activityApplyEdate=${activityApplyEdate},
+                    principal= ${principal},
+                    principalphone =${principalphone},
+                    online = ${online},
+                    worktime=${worktime},
+                    activityCredit=${activityCredit}
+              WHERE activityId = ${activityId}
+                ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--增加活动-->
+    <json id="addActivities">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+                INSERT INTO activities (activityId,activityImg,activityTitle,activityContent,activityArea,activityClass,activityLevle,
+                     activityNature,activityPowers,activityIsInschool,activityLocation,activityParticipation,activityFilterType,
+                     activityFilter,activitySdate,activityEdate,activityApplyEdate,activityCreatedate,activityCreator,activityIsDelete,collegeID,deptID,principal,principalphone,online,worktime,activityCredit)
+                 VALUES(uuid(),${activityImg},${activityTitle},${activityContent},${activityArea},${activityClass},
+                    ${activityLevle},${activityNature},${activityPowers},${activityIsInschool},${activityLocation},${activityParticipation},
+                    ${activityFilterType},${activityFilter},${activitySdate},${activityEdate},${activityApplyEdate},now(),${creatorName},'0',${collegeId},${deptId},${principal},${principalphone},${online},${worktime},${activityCredit})
+                    ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--删除活动-->
+    <json id="deleteActivities">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+                UPDATE activities SET
+                    activityIsDelete = '1'
+                WHERE activityId = ${activityId}
+                ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--按活动ID查活动-->
+    <json id="loadActivityByID">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+            SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(activityCreatedate),'%Y-%m-%d ') AS activityCreatedate,
+                FROM_UNIXTIME(UNIX_TIMESTAMP(activitySdate),'%Y-%m-%d ') AS activitySdate,
+                FROM_UNIXTIME(UNIX_TIMESTAMP(activityEdate),'%Y-%m-%d ') AS activityEdate,
+                dict('activityClass',activityClass) AS activityClassMean,
+                dict('activityLevle',activityLevle) AS activityLevleMean,
+                dict('activityNature',activityNature) AS activityNatureMean
+                FROM activities WHERE activityIsDelete='0'
+                AND CASE WHEN ${actid} IS NOT NULL AND ${actid}<>'' THEN activityId =${actid} ELSE 1=1 END
+                 ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--*****************************举报信息管理*****************************-->
+    <!--加载举报信息
+   -->
+    <json id="loadInform">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                SELECT *,
+                         FROM_UNIXTIME(UNIX_TIMESTAMP(informDate),'%Y-%m-%d ') AS informDate,
+                         FROM_UNIXTIME(UNIX_TIMESTAMP(informAuditDate),'%Y-%m-%d ') AS informAuditDate
+                FROM zy_infor_stu_act_sup
+                 WHERE case when ${studentName} is not null and ${studentName}<>'' then informByStudent LIKE CONCAT('%',${studentName},'%') or informStudent LIKE CONCAT('%',${studentName},'%') else 1=1 end
+                 AND case when ${activityTitle} is not null and ${activityTitle}<>'' then (activityTitle LIKE CONCAT('%',${activityTitle},'%')
+                 OR supActivityTitle LIKE CONCAT('%',${activityTitle},'%')
+                 OR workName LIKE CONCAT('%',${activityTitle},'%')
+                 OR shipName LIKE CONCAT('%',${activityTitle},'%')
+                 OR scienceName LIKE CONCAT('%',${activityTitle},'%')) else 1=1 end
+                 and case when ${informAuditStatus} is not null and ${informAuditStatus}<>'' then informAuditStatus = ${informAuditStatus} else 1=1 end
+                 AND case when ${applyStudentId} is not null and ${applyStudentId}<>"" then (informStudentId=${applyStudentId} or informApplyId=${applyStudentId}) else 1=1 end
+                 AND case when ${collegeId} is not null and ${collegeId}<>"" then activityCreator=${collegeId} else 1=1 end
+                 AND case when ${deptId} is not null and ${deptId}<>"" then activityCreator=${deptId} else 1=1 end
+                 AND case when ${studentid} is not null and ${studentid}<>"" then informStudentId=${studentid} or informByStudentId=${studentid} else 1=1 end
+                 AND case when ${stuClassName} is not null and ${stuClassName}<>"" then stuClassName=${stuClassName} else 1=1 end
+                 AND case when ${stuGradeName} is not null and ${stuGradeName}<>"" then stuGradeName=${stuGradeName} else 1=1 end
+                 AND case when ${stuMajorName} is not null and ${stuMajorName}<>"" then stuMajorName=${stuMajorName} else 1=1 end
+                 AND case when ${stuCollageName} is not null and ${stuCollageName}<>"" then stuCollageName=${stuCollageName} else 1=1 end
+                ORDER BY informDate desc
+               ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--修改举报信息审核状态-->
+    <json id="editInformStatus">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+                UPDATE inform
+                SET informAuditStatus= ${informAuditStatus},
+                informAuditDate=now()
+                WHERE informId= ${informId}
+                ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--*****************************校外活动审查管理*****************************-->
+    <!--加载校外审查活动-->
+    <json id="loadActivityapply">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                    SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(outDate),'%Y-%m-%d ') AS outDate,
+                            FROM_UNIXTIME(UNIX_TIMESTAMP(outAuditDate),'%Y-%m-%d ') AS outAuditDate
+                            FROM sw_outschool_student_view
+                            where case when ${sqlStr} is not null and ${sqlStr}<>'' then outTitle LIKE CONCAT('%',${sqlStr},'%') else '1'='1' end
+                            and case when ${filter} is not null and ${filter}<>'' then outAuditStatus = ${filter} else '1'='1' end
+                            and case when ${collegeId} is not null and ${collegeId}<>'' then stuCollageName = ${collegeId} else '1'='1' end
+                      ORDER BY outDate desc
+               ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--校外活动审查-->
+    <json id="editActivityapply">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+                UPDATE outschool
+                SET outAuditStatus=${outAuditStatus},
+                outAuditDate=now()
+                WHERE outID= ${outID}
+                ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--pjj-->
+    <!--*****************************新闻管理*****************************-->
+    <!--加载新闻-->
+    <json id="loadNews">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                    SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(newsDate),'%Y-%m-%d') AS newsDate
+                    FROM news
+                    where isDelete = '0'
+                    and case when ${sqlStr} is not null and ${sqlStr}<>'' then newsTitle like concat('%', ${sqlStr},'%') else 1=1 end
+                    and case when ${collegeId} is not null and ${collegeId}<>'' then collegeId = ${collegeId} else 1=1 end
+                    and case when ${newsType} is not null and ${newsType}<>'' then newsType = ${newsType} else 1=1 end
+                    and case when ${newsClass} is not null and ${newsClass}<>'' then newsClass = ${newsClass} else 1=1 end
+                    order by newsDate desc
+                     ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--按新闻id加载新闻-->
+    <json id="loadNewsById">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                    SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(newsDate),'%Y-%m-%d') AS newsDate
+                    FROM news
+                    where isDelete = '0' and newsId=${newsId}
+                     ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--加载学校新闻-->
+    <json id="loadNews_school">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                    SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(newsDate),'%Y-%m-%d') AS newsDate
+                    FROM news
+                    where isDelete = '0'
+                    and newsType = '学校新闻'
+                    and case when ${sqlStr} is not null and ${sqlStr}<>'' then newsTitle like concat('%', ${sqlStr},'%') else 1=1 end
+                    and case when ${collegeId} is not null and ${collegeId}<>'' then collegeId = ${collegeId} else 1=1 end
+                     and case when ${newsType} is not null and ${newsType}<>'' then newsType = ${newsType} else 1=1 end
+                    and case when ${newsClass} is not null and ${newsClass}<>'' then newsClass = ${newsClass} else 1=1 end
+                    order by newsDate desc
+                     ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+
+    <!--加载学院新闻-->
+    <json id="loadNews_college">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                    SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(newsDate),'%Y-%m-%d') AS newsDate
+                    FROM news
+                    where isDelete = '0'
+                    and newsType = '学院新闻'
+                    and case when ${sqlStr} is not null and ${sqlStr}<>'' then newsTitle like concat('%', ${sqlStr},'%') else 1=1 end
+                    and case when ${collegeId} is not null and ${collegeId}<>'' then collegeId = ${collegeId} else 1=1 end
+                     and case when ${newsType} is not null and ${newsType}<>'' then newsType = ${newsType} else 1=1 end
+                    and case when ${newsClass} is not null and ${newsClass}<>'' then newsClass = ${newsClass} else 1=1 end
+                    order by newsDate desc
+                     ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--新增新闻-->
+    <json id="addNews">
+        <sqlquery  key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+                   INSERT INTO news (newsId,newsImg,newsTitle,newsContent,
+                        newsType,newsDate,newsCreator,isDelete,collegeId,newsClass)
+                    VALUES(uuid(),${newsImg},${newsTitle},${newsContent},${newsType},
+                        now(),${creatorName},'0',${collegeId},${newsClass})
+                     ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--修改新闻-->
+    <json id="editNews">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+                    UPDATE news SET
+                        newsImg = ${newsImg},
+                        newsTitle = ${newsTitle},
+                        newsContent = ${newsContent},
+                        newsType = ${newsType},
+                        newsCreator = ${creatorName},
+                        isDelete = '0',
+                        newsDate = now(),
+                        newsClass=${newsClass}
+                    WHERE newsId = ${newsId}
+                    ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--删除新闻-->
+    <json id="deleteNews">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql>UPDATE news SET isDelete= '1' WHERE newsId=${newsId}</sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--*****************************打印管理*****************************-->
+    <!--加载打印列表-->
+    <json id="loadPrint">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                    SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(printAuditdate),'%Y-%m-%d') AS printAuditdate
+                    FROM print
+                    where case when ${sqlStr} is not null and ${sqlStr}<>'' then printId like concat('%', ${sqlStr},'%') else 1=1 end
+                    order by printAuditdate desc
+                     ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--*****************************活动申请管理*****************************-->
+    <!--加载活动申请列表-->
+    <json id="loadSchoolActivityapply">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                    SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(applyDate),'%Y-%m-%d') AS applyDate,
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(signUpTime),'%Y-%m-%d') AS signUpTime,
+                    activityAward AS activityAwardMean
+                    FROM pjj_student_activityapply_activities_view
+                    where case when ${sqlActivityId} is not null and ${sqlActivityId}<>'' then applyActivityId = ${sqlActivityId} else 1=1 end
+                    and case when ${sqlStr} is not null and ${sqlStr}<>'' then activityTitle like concat('%', ${sqlStr},'%') else 1=1 end
+                    and case when ${classId} is not null and ${classId}<>'' then stuClassName=${classId} else 1=1 end
+                    and case when ${deptId} is not null and ${deptId}<>'' then activityCreator=${deptId} else 1=1 end
+                    and case when ${gradeId} is not null and ${gradeId}<>'' then stuGradeName=${gradeId} else 1=1 end
+                    ORDER BY activityAward,applyDate desc
+                     ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+
+    <!--加载t团队活动申请列表-->
+    <json id="loadSchoolTeamActivityapply">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                    SELECT a.*,teamName as studentName, FROM_UNIXTIME(UNIX_TIMESTAMP(applyDate),'%Y-%m-%d') AS applyDate,
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(signUpTime),'%Y-%m-%d') AS signUpTime,
+                    activityAward AS activityAwardMean
+                    FROM pjj_student_activityapply_activities_view a
+                    where case when ${sqlActivityId} is not null and ${sqlActivityId}<>'' then applyActivityId = ${sqlActivityId} else 1=1 end
+                    and case when ${sqlStr} is not null and ${sqlStr}<>'' then activityTitle like concat('%', ${sqlStr},'%') else 1=1 end
+                    and case when ${classId} is not null and ${classId}<>'' then stuClassName=${classId} else 1=1 end
+                    and case when ${deptId} is not null and ${deptId}<>'' then activityCreator=${deptId} else 1=1 end
+                    and case when ${gradeId} is not null and ${gradeId}<>'' then stuGradeName=${gradeId} else 1=1 end
+                    group by applyTeamId
+                    ORDER BY activityAward,applyDate desc
+                     ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--加载活动申请选择活动列表-->
+    <json id="loadSchoolActivity">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                    SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(activitySdate),'%Y-%m-%d') AS activitySdate,
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(activityEdate),'%Y-%m-%d') AS activityEdate,
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(activityCreatedate),'%Y-%m-%d') AS activityCreatedate
+                    FROM activities
+                    WHERE activityIsDelete='0'
+                    AND  activitySdate<>activityEdate
+                    AND case when ${collegeId} is not null and ${collegeId}<>'' then collegeID = ${collegeId} else 1=1 end
+                    AND ((${deptId} IS NULL) OR (deptID = ${deptId}))
+                    AND CASE WHEN ${activityTitle} IS NOT NULL AND ${activityTitle}<>'' THEN activityTitle LIKE CONCAT('%', ${activityTitle},'%') ELSE 1=1 END
+                    AND case when ${activityNature} is not null and ${activityNature}<>""  then activityNature=${activityNature} else 1=1 end
+                    AND case when ${activityClass} is not null and ${activityClass}<>""  then activityClass=${activityClass} else 1=1 end
+                    AND case when ${activityLevle} is not null and ${activityLevle}<>""  then activityLevle=${activityLevle} else 1=1 end
+                    AND case when ${online} is not null and ${online}<>""  then online=${online} else 1=1 end
+                    AND case when ${activityParticipation} is not null and ${activityParticipation}<>""  then activityParticipation=${activityParticipation} else 1=1 end
+                    AND case when ${activityCreator} is not null and ${activityCreator}<>""  then activityCreator=${activityCreator} else 1=1 end
+                    AND case when ${principal} is not null and ${principal}<>""  then principal=${principal} else 1=1 end
+                    AND case when ${stuCollageName} is not null and ${stuCollageName}<>""  then activityFilter LIKE CONCAT('%', ${stuCollageName},'%') else 1=1 end
+                    AND case when ${stuGradeName} is not null and ${stuGradeName}<>""  then activityFilter  LIKE CONCAT('%', ${stuGradeName},'%') else 1=1 end
+                    AND case when ${activityCredit} is not null and ${activityCredit}<>""  then activityCredit = ${activityCredit} else 1=1 end
+                    AND case when ${activityPowers} is not null and ${activityPowers}<>""  then activityPowers  LIKE CONCAT('%', ${activityPowers},'%') else 1=1 end
+                    AND case when ${activitySdate} is not null and ${activitySdate}<>""  then activitySdate >= ${activitySdate} else 1=1 end
+                    AND case when ${activityEdate} is not null and ${activityEdate}<>""  then activityEdate <= ${activityEdate} else 1=1 end
+                    AND case when ${activityCreatedate} is not null and ${activityCreatedate}<>""  then activityCreatedate=${activityCreatedate} else 1=1 end
+                    and activityClass!="6"
+                    ORDER BY activityCreatedate DESC
+                     ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--加载活动审核选择活动列表-->
+    <json id="loadSchoolAuditActivity">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                    SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(activitySdate),'%Y-%m-%d') AS activitySdate,
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(activityEdate),'%Y-%m-%d') AS activityEdate
+                    FROM pjj_student_activityapply_activities_view
+                    WHERE activityIsDelete='0'
+                    AND ((${collegeId} IS NULL) OR (collegeID = ${collegeId}))
+                    AND ((${deptId} IS NULL) OR (deptID = ${deptId}))
+                    AND  TO_DAYS(activitySdate)<=TO_DAYS(NOW())
+                    ORDER BY activitySdate
+                     ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--加载签到列表-->
+    <json id="loadSignUp">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                    SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(signUpTime),'%Y-%m-%d') AS signUpTime
+                    FROM pjj_student_activityapply_activities_view
+                    where case when ${sqlStr} is not null and ${sqlStr}<>'' then applyActivityId like concat('%', ${sqlStr},'%') else 1=1 end
+                    ORDER BY signUpTime DESC
+                     ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--新建申请活动-->
+    <json id="addSchoolActivityapplyStatus">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+                    INSERT INTO activityapply
+                    (applyId,applyActivityId,applyStudentId,applyAuditStatus,activityAward,applyDate,signUpStatus)
+                    VALUES(uuid(),${applyActivityId},${applyStudentId},
+                        '已通过',${activityAward},now(),'未签到')
+                        ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--修改申请活动-->
+    <json id="editSchoolActivityapplyStatus">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+                    UPDATE activityapply SET
+                        applyStudentId = ${applyStudentId},
+                        applyAuditStatus = "已通过",
+                        activityAward = ${activityAward},
+                        applyAuditStatusDate=now(),
+                        signUpStatus='已签到'
+                    WHERE applyId = ${applyId}
+                    ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--修改团队申请活动-->
+    <json id="editSchoolActivityapplyTeamStatus">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+                    UPDATE activityapply SET
+                        applyStudentId = ${applyStudentId},
+                        applyAuditStatus = "已通过",
+                        activityAward = ${activityAward},
+                        applyAuditStatusDate=now(),
+                        signUpStatus='已签到'
+                    WHERE applyActivityId = ${applyActivityId} and applyTeamId = ${applyTeamId}
+                    ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--删除活动-->
+    <json id="deleteSchoolActivityapplyStatus">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql>DELETE FROM activityapply WHERE applyId=${applyId}</sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--友情链接信息的加载-->
+    <json id="loadblogrollInfo">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+            SELECT * FROM blogroll ORDER BY blogrollId
+            ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--友情链接的增加-->
+    <json id="addblogrollInfo">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+                INSERT INTO blogroll
+               (blogrollId,linkAddress,linkName,update_time)
+             VALUES
+                 (uuid(),${linkAddress},${linkName},now())
+                ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--友情链接的删除-->
+    <json id="delblogrollInfo">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+                DELETE FROM blogroll WHERE blogrollId = ${blogrollId}
+                ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--友情链接的修改-->
+    <json id="updateblogrollInfo">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+               UPDATE blogroll SET linkAddress = ${linkAddress}, linkName =  ${linkName}, update_time =now()
+                WHERE blogrollId = ${blogrollId}
+                ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--加载活动详情-->
+    <json id="loadActDetail">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+            SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(activitySdate),'%Y-%m-%d') AS activitySdate
+            ,FROM_UNIXTIME(UNIX_TIMESTAMP(activityApplyEdate),'%Y-%m-%d') AS activityApplyEdate
+             FROM activities WHERE activityId = ${actid}
+             and activitySdate<>activityEdate
+            ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--判断学生是否申请过-->
+    <json id="validateApply">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+           SELECT * FROM activityapply WHERE applyStudentId = ${studentid} and applyActivityId = ${actid}
+            ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--学生申请-->
+    <json id="applyAct">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+                    INSERT INTO activityapply (
+                      applyId,
+                      applyActivityId,
+                      applyStudentId,
+                      applyAuditStatus,
+                      applyAuditStatusDate,
+                      applyDate
+                    )
+                    VALUES
+                      (
+                        UUID(),
+                        ${actid},
+                        ${studentid},
+                        '待处理',
+                        NOW(),
+                        now()
+                      )
+                ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+
+    <!--加载六项活动能力数据-->
+    <json id="loadSixElementPoint">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                   SELECT id,studentId,pointYear,ROUND(sibian,2) AS sibian,
+                   ROUND(zhixing,2) AS zhixing,ROUND(biaoda,2) AS biaoda,ROUND(lingdao,2) AS lingdao,
+                   ROUND(chuangxin,2) AS chuangxin,ROUND(chuangye,2) AS chuangye
+             FROM sixelementpoint
+             WHERE  case when ${studentid} is not null and ${studentid}<>'' then studentId = ${studentid} else 1=1 end
+            ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--验证校外活动重复举报-->
+    <json id="checkReportAgain">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+            SELECT * FROM inform
+             WHERE  informStudentId=${informStudentId} and informApplyId=${informApplyId} and informByStudentId=${studentid} and
+                    informType=${informType}
+            ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--加载六项活动能力得分所对应的活动数据-->
+    <json id="loadActivityPointCount">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+            SELECT *,dict('activityClass',activityClass) AS activityClassMean,
+                dict('activityLevle',activityLevle) AS activityLevleMean,
+                dict('activityNature',activityNature) AS activityNatureMean,
+                activityAward AS activityAwardMean,
+                dict('activityClass',supClass) AS supClassMean,
+                dict('activityLevle',supLevle) AS supLevleMean,
+                dict('activityNature',supNature) AS supNatureMean
+            FROM wh_sixdetail_act_sup_student_view
+            WHERE  CASE WHEN ${stuid} IS NOT NULL AND ${stuid}<>'' THEN studentId = ${stuid} ELSE 1=1 END
+            ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--*****************************手机端管理*****************************-->
+    <!--签到页面——加截学生参与的活动____正在进行中的-->
+    <json id="loadRunningActivities">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+            SELECT * ,
+            FROM_UNIXTIME(UNIX_TIMESTAMP(activitySdate),'%Y-%m-%d') as activitySdate,
+            FROM_UNIXTIME(UNIX_TIMESTAMP(activityEdate),'%Y-%m-%d') as activityEdate
+             FROM wh_apply_activites
+             WHERE  datediff(activitySdate,now())<=0 and datediff(activityEdate,now())>=0
+             and applyStudentId = ${studentid}
+             order by activityEdate
+            ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--增加举报信息-->
+    <json id="insertReportInfo">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+                    INSERT INTO inform (informId,informStudentId,informApplyId,informByStudentId,informContent,informDate,
+                    informAuditStatus,informAuditDate,informType,informTel)
+                    VALUES(UUID(),${informStudentId},${informApplyId},${informByStudentId},${informContent},now(),
+                   '未通过',UUID(),${informType},${informTel})
+                ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--校外活动申请-->
+    <json id="addActivityapply">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+                    INSERT INTO outschool (
+                      outID,
+                      outTitle,
+                      outContent,
+                      outPhoto,
+                      outDate
+                    )
+                    VALUES
+                      (
+                        UUID(),
+                        ${outTitle},
+                        ${outContent},
+                        ${outPhoto},
+                        NOW()
+                      )
+                ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--修改学生照片 前端用-->
+    <json id="EditStudentPhoto">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+               UPDATE student SET studentPhoto = ${studentPhoto}
+                WHERE studentID = ${studentID}
+                ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--加载已签到已开始活动未评分的数据-->
+    <json id="loadActivityApplyPoint">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+             SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(activitySdate),'%Y-%m-%d') AS activitySdate
+             FROM pjj_activitytitle_activityapply_view
+             WHERE  CASE WHEN ${studentid} IS NOT NULL AND ${studentid} <>'' THEN applyStudentId = ${studentid} ELSE 1=1 END
+             AND signUpStatus = '已签到'
+             AND datediff(activitySdate, NOW())<0
+             AND (activitypoint is NULL OR activitypoint = 0)
+            ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--保存活动评分-->
+    <json id="savePoint">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+                    UPDATE activityapply
+                    SET activitypoint = ${point}
+                    WHERE CASE WHEN ${studentId} IS NOT NULL AND ${studentId} <>'' THEN applyStudentId = ${studentId} ELSE 1=1 END
+                    AND applyActivityId = ${applyActivityId}
+                ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+
+    <!--重置管理员密码-->
+    <json id="resetInstructor">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+                UPDATE sysuser SET
+                    password = '14E1B600B1FD579F47433B88E8D85291'
+                WHERE sysuser_id = ${sysuserid}
+                ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+
+    <!--加载奖学金信息-->
+    <json id="loadScholarshipInfo">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                    SELECT supplement.*,
+                      FROM_UNIXTIME(UNIX_TIMESTAMP(takeDate),'%Y-%m-%d') as takeDates,
+                    student.`studentName`
+                    FROM supplement  LEFT JOIN student ON(student.`studentID`=supplement.`supStudentId`)
+                    WHERE shipName IS NOT NULL AND schoolAuditStaus='已通过' and orgcollege=${collagename}
+                     and ((${sqlStr} is null) or (studentName like concat('%',${sqlStr},'%')))
+            ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--新增奖学金信息-->
+    <json id="addScholarship">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+                 INSERT INTO `supplement`
+        ( id,shipName,supStudentId,takeDate,regimentAuditStatus,regimentAuditStatusDate,collegeAuditStatus,collegeAuditStatusDate,
+        schoolAuditStaus,schoolAuditStausDate,supClass) VALUES
+            (UUID(), ${shipName},${supStudentId},${takeDate},'已通过',NOW(),'已通过',NOW(), '已通过',NOW(),'6')
+                ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--删除奖学金信息-->
+    <json id="deleteScholarship">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+                DELETE FROM supplement WHERE id = ${id}
+                ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--加载批量添加活动预览-->
+    <json id="loadActivities_upload">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+           SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(activityCreatedate),'%Y-%m-%d ') AS activityCreatedate,
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(applyDate),'%Y-%m-%d ') AS applyDate,
+                dict('activityClass',activityClass) AS activityClassMean,
+                dict('activityLevle',activityLevle) AS activityLevleMean,
+                activityNature AS activityNatureMean,
+                        activityAward AS activityAwardMean,
+                        dict("activityNature",activityNature) as activityNatureName
+                FROM pjj_student_activityapply_activities_view WHERE activityIsDelete='0'
+                AND CASE WHEN ${sqlStr} IS NOT NULL AND ${sqlStr}<>'' THEN activityTitle LIKE CONCAT('%', ${sqlStr},'%') ELSE 1=1 END
+                AND case when ${collegeId} is not null and ${collegeId}<>""  then collegeID=${collegeId} else 1=1 end
+                AND case when ${deptId} is not null and ${deptId}<>""  then deptID=${deptId} else 1=1 end
+                AND  activitySdate=activityEdate
+                and activityClass!='6'
+                and applyStudentId is not null
+                ORDER BY activityCreatedate desc
+            ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--加载团体参加活动信息-->
+    <json id="loadTeaminfor">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+              SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(teamCreateDate),'%Y-%m-%d ') AS teamCreateDate ,
+                       dict("activityClass",activityClass) AS activityClass, dict("activityLevle",activityLevle) AS activityLevle ,dict("activityNature",activityNature) AS activityNature
+              FROM sw_team_activities_student_view WHERE activityIsDelete='0'
+              AND CASE WHEN ${supActivityTitle} IS NOT NULL AND ${supActivityTitle}<>'' THEN activityTitle LIKE CONCAT('%', ${supActivityTitle},'%') ELSE 1=1 END
+              AND CASE WHEN ${supStudentId} IS NOT NULL AND ${supStudentId}<>'' THEN studentID LIKE CONCAT('%', ${supStudentId},'%') ELSE 1=1 END
+              AND CASE WHEN ${studentName} IS NOT NULL AND ${studentName}<>'' THEN studentName LIKE CONCAT('%', ${studentName},'%') ELSE 1=1 END
+              AND CASE WHEN ${selectTeamName} IS NOT NULL AND ${selectTeamName}<>'' THEN teamName LIKE CONCAT('%', ${selectTeamName},'%') ELSE 1=1 END
+              AND CASE WHEN ${stuCollageName} IS NOT NULL AND ${stuCollageName}<>'' THEN stuCollageName = ${stuCollageName} ELSE 1=1 END
+              AND CASE WHEN ${stuMajorName} IS NOT NULL AND ${stuMajorName}<>'' THEN stuMajorName = ${stuMajorName} ELSE 1=1 END
+              AND CASE WHEN ${stuGradeName} IS NOT NULL AND ${stuGradeName}<>'' THEN stuGradeName = ${stuGradeName} ELSE 1=1 END
+              AND CASE WHEN ${stuClassName} IS NOT NULL AND ${stuClassName}<>'' THEN stuClassName = ${stuClassName} ELSE 1=1 END
+              AND CASE WHEN ${collegeId} IS NOT NULL AND ${collegeId}<>'' THEN activityCreator = ${collegeId}  ELSE 1=1 END
+              AND CASE WHEN ${deptId} IS NOT NULL AND ${deptId}<>'' THEN activityCreator = ${deptId}  ELSE 1=1 END
+               AND CASE WHEN ${classId} IS NOT NULL AND ${classId}<>'' THEN stuClassName = ${classId}  ELSE 1=1 END
+              GROUP BY teamCreateDate
+            ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--加载学生id-->
+    <json id="getStudentId">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+            select studentID from r_student_team where teamId=${teamId} ORDER by studentID
+            ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--加载社会工作认定信息-->
+    <json id="loadNotactivity">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+            select *,FROM_UNIXTIME(UNIX_TIMESTAMP(createDate),'%Y-%m-%d') AS createDate,
+                     FROM_UNIXTIME(UNIX_TIMESTAMP(auditStatusDate),'%Y-%m-%d') AS auditStatusDate
+                     from pjj_notactivity_stu where 1=1
+                     AND CASE WHEN ${sqlStr} IS NOT NULL AND ${sqlStr}<>'' THEN studentName LIKE CONCAT('%', ${sqlStr},'%') ELSE 1=1 END
+                       and case when ${filter} is not null and ${filter}<>'' then auditStatus = ${filter} else '1'='1' end
+                        and case when ${studentid} is not null and ${studentid}<>'' then notStudentId = ${studentid} else '1'='1' end
+                     ORDER by createDate
+            ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--加载工作组织名称-->
+    <json id="loadOrganizationName">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+            SELECT organizationName  FROM organization WHERE workLevle=${workLevle}  ORDER BY createDate
+            ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--修改非活动类别-->
+    <json id="editNotactivity">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+                update notactivity
+                set auditStatus=${auditStatus},auditStatusDate=now(),auditStatusName=${creatorName}
+                where notid=${notid}
+                ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--删除非活动类别-->
+    <json id="deleteNotactivity">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql>delete from notactivity where notid=${notid}</sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--保存组织名称-->
+    <json id="addOrganization">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+            insert into `secondcourse`.`organization` (`orgid`,`orgclass`,`orglevel`,`orgname`,`orgcollege`,
+                `workname`,`worklevel`)
+                values( UUID(),${orgclass}, ${orglevel}, ${orgname},${orgcollege},${workname},${worklevel})
+                ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--修改组织名称-->
+    <json id="editOrganization">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+            update `secondcourse`.`organization`
+                set
+                  `orgclass` = ${orgclass},
+                  `orglevel` = ${orglevel},
+                  `orgname` = ${orgname},
+                  `orgcollege` = ${orgcollege},
+                  `workname` = ${workname},
+                  `worklevel` = ${worklevel}
+                where `orgid` = ${orgid}
+                ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--删除组织名称-->
+    <json id="deleteOrganization">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql>delete from organization where orgid=${orgid}</sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--加载组织名称-->
+    <json id="loadOrganization">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+            select * from organization where 1=1
+              AND case when ${collegeId} is not null and ${collegeId}<>'' then orgcollege = ${collegeId}  else 1=1 end
+              AND case when ${sqlStr} is not null and ${sqlStr}<>'' then orgname LIKE CONCAT('%', ${sqlStr},'%')  else 1=1 end
+              AND case when ${orgclass} is not null and ${orgclass}<>'' then orgclass = ${orgclass} else 1=1 end
+              AND case when ${orglevel} is not null and ${orglevel}<>'' then orglevel = ${orglevel} else 1=1 end
+            ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--加载组织类别-->
+    <json id="loadOrganizationClass">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+             select orgclass from organization   where orgclass is not null GROUP BY orgclass
+            ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--加载组织级别-->
+    <json id="loadOrganizationLevel">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+            select orglevel from organization   where orglevel is not null GROUP BY orglevel
+            ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--保存职务名称-->
+    <json id="saveWork">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+                    INSERT INTO nadict (
+                      id,dict_key,dict_value,createDate,createMan,getpoint
+                      )
+                    VALUES
+                      (
+                        UUID(),${dictkey},${dictvalue},NOW(),${creatorName},${getpoint}
+                      )
+                ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--修改职务名称-->
+    <json id="editWork">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+                update nadict
+                set dict_key=${dictkey},dict_value=${dictvalue},getpoint=${getpoint}
+                where id=${id}
+                ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--删除职务名称-->
+    <json id="deleteWork">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql>delete from nadict where id=${id}</sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--加载职务名称-->
+    <json id="loadWork">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+             SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(createDate),'%Y-%m-%d') AS createDate FROM nadict WHERE dict_key  NOT IN("学术科技类","班级职务") AND dict_key NOT LIKE "%级"  ORDER BY createDate
+            ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+
+    <!--加载校内活动审核结果名称-->
+    <json id="loadshoolActivtityResult">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+             SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(applyAuditStatusDate),'%Y-%m-%d') AS applyAuditStatusDate FROM pjj_team_person_activity WHERE applyStudentId=${studentid} or studentID=${studentid}  ORDER BY applyDate
+            ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+
+    <!--加载校外活动审核结果名称-->
+    <json id="loadOutshoolActivtityResult">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+             SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(outAuditDate),'%Y-%m-%d') AS outAuditDate FROM outschool WHERE outStudentId=${studentid} ORDER BY outDate
+            ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--删除举报信息表-->
+    <json id="deleteInformStatus">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql>delete from inform where informId=${informId}</sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--删除校外活动-->
+    <json id="deleteActivityapply">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql>delete from outschool where outID=${outID}</sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--加载活动签到选择活动列表-->
+    <json id="loadSchoolSignActivity">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                    SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(activitySdate),'%Y-%m-%d') AS activitySdate,
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(activityEdate),'%Y-%m-%d') AS activityEdate,
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(activityCreatedate),'%Y-%m-%d') AS activityCreatedate
+                    FROM activities
+                    WHERE activityIsDelete='0'
+                    AND  activitySdate<>activityEdate
+                    AND case when ${collegeId} is not null and ${collegeId}<>'' then collegeID = ${collegeId} else 1=1 end
+                    AND ((${deptId} IS NULL) OR (deptID = ${deptId}))
+                    AND CASE WHEN ${sqlStr} IS NOT NULL AND ${sqlStr}<>'' THEN activityTitle LIKE CONCAT('%', ${sqlStr},'%') ELSE 1=1 END
+                    AND CASE WHEN ${activityTitle} IS NOT NULL AND ${activityTitle}<>'' THEN activityTitle LIKE CONCAT('%', ${activityTitle},'%') ELSE 1=1 END
+                    AND case when ${activityNature} is not null and ${activityNature}<>""  then activityNature=${activityNature} else 1=1 end
+                    AND case when ${activityClass} is not null and ${activityClass}<>""  then activityClass=${activityClass} else 1=1 end
+                    AND case when ${activityLevle} is not null and ${activityLevle}<>""  then activityLevle=${activityLevle} else 1=1 end
+                    AND case when ${activityParticipation} is not null and ${activityParticipation}<>""  then activityParticipation=${activityParticipation} else 1=1 end
+                    AND case when ${activityCreator} is not null and ${activityCreator}<>""  then activityCreator=${activityCreator} else 1=1 end
+                    AND case when ${principal} is not null and ${principal}<>""  then principal=${principal} else 1=1 end
+                    AND case when ${stuCollageName} is not null and ${stuCollageName}<>""  then activityFilter LIKE CONCAT('%', ${stuCollageName},'%') else 1=1 end
+                    AND case when ${stuGradeName} is not null and ${stuGradeName}<>""  then activityFilter  LIKE CONCAT('%', ${stuGradeName},'%') else 1=1 end
+                    AND case when ${activityCredit} is not null and ${activityCredit}<>""  then activityCredit = ${activityCredit} else 1=1 end
+                    AND case when ${activityPowers} is not null and ${activityPowers}<>""  then activityPowers  LIKE CONCAT('%', ${activityPowers},'%') else 1=1 end
+                    AND case when ${activitySdate} is not null and ${activitySdate}<>""  then activitySdate >= ${activitySdate} else 1=1 end
+                    AND case when ${activityEdate} is not null and ${activityEdate}<>""  then activityEdate <= ${activityEdate} else 1=1 end
+                    AND case when ${activityCreatedate} is not null and ${activityCreatedate}<>""  then activityCreatedate=${activityCreatedate} else 1=1 end
+                    AND activityClass != '6'
+                    ORDER BY activitySdate DESC
+                     ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--加载活动结果班级审核列表-->
+    <json id="loadApplyEndClass">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                    SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(regimentAuditStatusDate),'%Y-%m-%d') AS regimentAuditStatusDate,
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(collegeAuditStatusDate),'%Y-%m-%d') AS collegeAuditStatusDate,
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(schoolAuditStausDate),'%Y-%m-%d') AS schoolAuditStausDate
+                    FROM pjj_student_activityapply_activities_view
+                    WHERE activityIsDelete='0'
+                    AND  activitySdate<>activityEdate
+                    AND now()< activityEdate
+                    and activityAward is not null
+                    AND case when ${collegeId} is not null and ${collegeId}<>'' then collegeID = ${collegeId} else 1=1 end
+                    AND case when ${gradeId} is not null and ${gradeId}<>'' then stuGradeName  = ${gradeId} else 1=1 end
+                    AND ((${deptId} IS NULL) OR (deptID = ${deptId}))
+                    AND CASE WHEN ${sqlStr} IS NOT NULL AND ${sqlStr}<>'' THEN activityTitle LIKE CONCAT('%', ${sqlStr},'%') ELSE 1=1 END
+                    and activityClass!="6"
+                    ORDER BY regimentAuditStatus,regimentAuditStatusDate DESC
+                     ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--加载活动结果学院审核列表-->
+    <json id="loadApplyEndCollege">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                    SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(regimentAuditStatusDate),'%Y-%m-%d') AS regimentAuditStatusDate,
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(collegeAuditStatusDate),'%Y-%m-%d') AS collegeAuditStatusDate,
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(schoolAuditStausDate),'%Y-%m-%d') AS schoolAuditStausDate
+                    FROM pjj_student_activityapply_activities_view
+                    WHERE activityIsDelete='0'
+                    AND  activitySdate<>activityEdate
+                    AND now()< activityEdate
+                    and activityAward is not null
+                    AND case when ${collegeId} is not null and ${collegeId}<>'' then collegeID = ${collegeId} else 1=1 end
+                    AND case when ${collegeId} is not null and ${collegeId}<>'' then stuCollageName = ${collegeId} else 1=1 end
+                    AND ((${deptId} IS NULL) OR (deptID = ${deptId}))
+                    AND CASE WHEN ${sqlStr} IS NOT NULL AND ${sqlStr}<>'' THEN activityTitle LIKE CONCAT('%', ${sqlStr},'%') ELSE 1=1 END
+                    and activityClass!="6"
+                    AND regimentAuditStatus="已通过"
+                    ORDER BY collegeAuditStatus,collegeAuditStatusDate DESC
+                     ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--加载活动结果学校审核列表-->
+    <json id="loadApplyEndSchool">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                    SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(regimentAuditStatusDate),'%Y-%m-%d') AS regimentAuditStatusDate,
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(collegeAuditStatusDate),'%Y-%m-%d') AS collegeAuditStatusDate,
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(schoolAuditStausDate),'%Y-%m-%d') AS schoolAuditStausDate
+                    FROM pjj_student_activityapply_activities_view
+                    WHERE activityIsDelete='0'
+                    AND  activitySdate<>activityEdate
+                    AND now()< activityEdate
+                    and activityAward is not null
+                    AND case when ${collegeId} is not null and ${collegeId}<>'' then collegeID = ${collegeId} else 1=1 end
+                    AND ((${deptId} IS NULL) OR (deptID = ${deptId}))
+                    AND CASE WHEN ${sqlStr} IS NOT NULL AND ${sqlStr}<>'' THEN activityTitle LIKE CONCAT('%', ${sqlStr},'%') ELSE 1=1 END
+                     and activityClass!="6"
+                     AND collegeAuditStatus="已通过"
+                    ORDER BY schoolAuditStaus,schoolAuditStausDate DESC
+                     ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--加载班级职务-->
+    <json id="loadClassworkName">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                   SELECT dict_value  AS workName FROM nadict WHERE dict_key ="班级职务" AND  dict_value IS NOT NULL
+                     ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--加载学生处职务-->
+    <json id="loadSchoolworkName">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                  SELECT dict_value  AS workName FROM nadict WHERE dict_key !="班级职务" AND  dict_value IS NOT NULL
+                     ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--加载学校需要审核的活动类补充-->
+    <json id="loadSupplementSchool">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                  SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(takeDate),'%Y-%m-%d') AS takeDate,
+                  FROM_UNIXTIME(UNIX_TIMESTAMP(schoolAuditStausDate),'%Y-%m-%d') AS schoolAuditStausDate,
+                   FROM_UNIXTIME(UNIX_TIMESTAMP(collegeAuditStatusDate),'%Y-%m-%d') AS collegeAuditStatusDate,
+                   FROM_UNIXTIME(UNIX_TIMESTAMP(regimentAuditStatusDate),'%Y-%m-%d') AS regimentAuditStatusDate,
+                  FROM_UNIXTIME(UNIX_TIMESTAMP(supDate),'%Y-%m-%d') AS supDate ,a.dict_mean AS supClasses FROM sw_supp_student_view
+                  LEFT JOIN sysdict a on a.dict_key = 'supClass' and a.dict_value=supClass
+                  WHERE 1=1
+                   AND CASE WHEN ${supClass} IS NOT NULL AND ${supClass}<>'' THEN supClass =${supClass}  ELSE 1=1 END
+                 AND CASE WHEN ${sqlStr} IS NOT NULL AND ${sqlStr}<>'' THEN studentName LIKE CONCAT('%', ${sqlStr},'%') ELSE 1=1 END
+                 AND case when ${gradeId} is not null and ${gradeId}<>'' then stuGradeName  = ${gradeId} else 1=1 end
+                 AND case when ${supActivityTitle} is not null and ${supActivityTitle}<>'' then supActivityTitle LIKE CONCAT('%', ${supActivityTitle},'%') else 1=1 end
+                 AND case when ${supStudentId} is not null and ${supStudentId}<>'' then supStudentId = ${supStudentId} else 1=1 end
+                 AND case when ${studentName} is not null and ${studentName}<>'' then studentName LIKE CONCAT('%', ${studentName},'%') else 1=1 end
+                 AND case when ${regimentAuditStatus} is not null and ${regimentAuditStatus}<>'' then schoolAuditStaus = ${regimentAuditStatus} else 1=1 end
+                 AND case when ${stuCollageName} is not null and ${stuCollageName}<>'' then stuCollageName = ${stuCollageName} else 1=1 end
+                 AND case when ${collegeId} is not null and ${collegeId}<>'' then stuCollageName = ${collegeId} else 1=1 end
+                 AND case when ${stuMajorName} is not null and ${stuMajorName}<>'' then stuMajorName = ${stuMajorName} else 1=1 end
+                 AND case when ${stuGradeName} is not null and ${stuGradeName}<>'' then stuGradeName = ${stuGradeName} else 1=1 end
+                 AND case when ${stuClassName} is not null and ${stuClassName}<>'' then stuClassName = ${stuClassName} else 1=1 end
+                 AND CASE WHEN ${sqlStr} IS NOT NULL AND ${sqlStr}<>'' THEN studentName LIKE CONCAT('%', ${sqlStr},'%') ELSE 1=1 END
+                 AND case when ${supClass} is not null and ${supClass}<>'' then supClass = ${supClass} else 1=1 end
+                     ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--加载学院需要审核的活动类补充-->
+    <json id="loadSupplementCollege">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                  SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(takeDate),'%Y-%m-%d') AS takeDate,
+                      FROM_UNIXTIME(UNIX_TIMESTAMP(collegeAuditStatusDate),'%Y-%m-%d') AS collegeAuditStatusDate,
+                      FROM_UNIXTIME(UNIX_TIMESTAMP(regimentAuditStatusDate),'%Y-%m-%d') AS regimentAuditStatusDate,
+                      FROM_UNIXTIME(UNIX_TIMESTAMP(supDate),'%Y-%m-%d') AS supDate, a.dict_mean  AS supClasses FROM sw_supp_student_view
+                      LEFT JOIN sysdict a on a.dict_key = 'supClass' and a.dict_value=supClass
+                      WHERE 1=1
+                     AND CASE WHEN ${sqlStr} IS NOT NULL AND ${sqlStr}<>'' THEN studentName LIKE CONCAT('%', ${sqlStr},'%') ELSE 1=1 END
+                     AND case when ${gradeId} is not null and ${gradeId}<>'' then stuGradeName  = ${gradeId} else 1=1 end
+                     AND case when ${collegeId} is not null and ${collegeId}<>'' then stuCollageName  = ${collegeId} else 1=1 end
+                     AND case when ${supActivityTitle} is not null and ${supActivityTitle}<>'' then supActivityTitle LIKE CONCAT('%', ${supActivityTitle},'%') else 1=1 end
+                     AND case when ${supStudentId} is not null and ${supStudentId}<>'' then supStudentId = ${supStudentId} else 1=1 end
+                     AND case when ${studentName} is not null and ${studentName}<>'' then studentName LIKE CONCAT('%', ${studentName},'%') else 1=1 end
+                     AND case when ${regimentAuditStatus} is not null and ${regimentAuditStatus}<>'' then collegeAuditStatus = ${regimentAuditStatus} else 1=1 end
+                     AND case when ${stuCollageName} is not null and ${stuCollageName}<>'' then stuCollageName = ${stuCollageName} else 1=1 end
+                     AND case when ${supClass} is not null and ${supClass}<>'' then supClass = ${supClass} else 1=1 end
+                     AND case when ${stuMajorName} is not null and ${stuMajorName}<>'' then stuMajorName = ${stuMajorName} else 1=1 end
+                     AND case when ${stuGradeName} is not null and ${stuGradeName}<>'' then stuGradeName = ${stuGradeName} else 1=1 end
+                     AND case when ${stuClassName} is not null and ${stuClassName}<>'' then stuClassName = ${stuClassName} else 1=1 end
+                     ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--加载班级团支书需要审核的活动类补充-->
+    <json id="loadSupplementClass">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                  SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(takeDate),'%Y-%m-%d') AS takeDate,
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(regimentAuditStatusDate),'%Y-%m-%d') AS regimentAuditStatusDate,
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(supDate),'%Y-%m-%d') AS supDate,a.dict_mean  AS supClasses FROM sw_supp_student_view
+                    LEFT JOIN sysdict a on a.dict_key = 'supClass' and a.dict_value=supClass
+                     where 1=1
+                     AND CASE WHEN ${sqlStr} IS NOT NULL AND ${sqlStr}<>'' THEN studentName LIKE CONCAT('%', ${sqlStr},'%') ELSE 1=1 END
+                     AND case when ${gradeId} is not null and ${gradeId}<>'' then stuGradeName  = ${gradeId} else 1=1 end
+                     AND case when ${supActivityTitle} is not null and ${supActivityTitle}<>'' then supActivityTitle LIKE CONCAT('%', ${supActivityTitle},'%') else 1=1 end
+                     AND case when ${supStudentId} is not null and ${supStudentId}<>'' then supStudentId = ${supStudentId} else 1=1 end
+                     AND case when ${studentName} is not null and ${studentName}<>'' then studentName LIKE CONCAT('%', ${studentName},'%') else 1=1 end
+                     AND case when ${regimentAuditStatus} is not null and ${regimentAuditStatus}<>'' then regimentAuditStatus = ${regimentAuditStatus} else 1=1 end
+                     AND case when ${stuCollageName} is not null and ${stuCollageName}<>'' then stuCollageName = ${stuCollageName} else 1=1 end
+                     AND case when ${stuMajorName} is not null and ${stuMajorName}<>'' then stuMajorName = ${stuMajorName} else 1=1 end
+                     AND case when ${stuGradeName} is not null and ${stuGradeName}<>'' then stuGradeName = ${stuGradeName} else 1=1 end
+                     AND case when ${stuClassName} is not null and ${stuClassName}<>'' then stuClassName = ${stuClassName} else 1=1 end
+                     AND case when ${supClass} is not null and ${supClass}<>'' then supClass = ${supClass} else 1=1 end
+                     AND stuClassName  = ${classId}
+                     ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--班级审核一个补充活动-->
+    <json id="ClassAuditOneSupplement">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+                 update supplement
+                 set
+                    regimentAuditStatus=${Type},
+                    regimentAuditStatusDate=now(),
+                    regimentAuditReason=${reason}
+                 where id =${applyId}
+                ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--学院审核一个补充活动-->
+    <json id="CollegeAuditOneSupplement">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+                 update supplement
+                 set
+                    collegeAuditStatus=${Type},
+                    collegeAuditStatusDate=now(),
+                    collegeAuditReason=${reason}
+                 where id =${applyId}
+                ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--学院审核一个补充活动-->
+    <json id="SchoolAuditOneSupplement">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+                 update supplement
+                 set
+                    schoolAuditStaus=${Type},
+                    schoolAuditStausDate=now(),
+                    schoolAuditReason=${reason}
+                 where id =${applyId}
+                ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--重置管理员密码-->
+    <json id="UpdateSupplement">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+                UPDATE supplement SET
+                    supActivityTitle =${supActivityTitle},
+                    supPowers=${supPowers},
+                    supLevle=${supLevle},
+                      supCredit=${supCredit}
+                WHERE id = ${id}
+                ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--加载学院-->
+    <json id="loadorgcollege">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                  SELECT orgcollege from organization group by  orgcollege ORDER BY orgcollege DESC
+                     ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--加载组织-->
+    <json id="loadorgname">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                  SELECT orgname from organization where orgclass=${orgval} or orgcollege=${orgval} group by  orgname ORDER BY orgid
+                     ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--加载工作-->
+    <json id="loadworkname">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                  SELECT workname from organization where orgname=${orgname} group by  workname ORDER BY workname DESC
+                     ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--加载工作-->
+    <json id="loadsupplement">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                  SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(takeDate),'%Y-%m-%d') AS takeDate,
+                           FROM_UNIXTIME(UNIX_TIMESTAMP(supDate),'%Y-%m-%d') AS supDate
+                   from supplement where id=${id} group by  takeDate ORDER BY takeDate DESC
+                     ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--加载工作-->
+    <json id="exchangeOrderId">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+                call pjj_sort_orderId(${studentid},${activityId1},${activityId2})
+                ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+
+    <!--删除补充活动-->
+    <json id="deletesupplement">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql>update supplement SET isDel = '0'  where id=${id}</sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--加载工作-->
+    <json id="loadApplyEndSchooldetail">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                  SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(regimentAuditStatusDate),'%Y-%m-%d') AS regimentAuditStatusDate,
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(collegeAuditStatusDate),'%Y-%m-%d') AS collegeAuditStatusDate,
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(schoolAuditStausDate),'%Y-%m-%d') AS schoolAuditStausDate
+                    FROM gq_activity_end_check
+                    WHERE activityIsDelete='0'
+                    AND  activitySdate!=activityEdate
+                    AND now()< activityEdate
+                    and activityAward is not null
+                     and activityClass!="6"
+                     AND collegeAuditStatus="已通过"
+                     and stuClassName=${className}
+                    ORDER BY schoolAuditStaus,schoolAuditStausDate DESC
+                     ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--查询活动报名状态-->
+    <json id="findActivityEnrollmentStatus">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                  SELECT IF(NOW() > activityApplyedate,'n','y') state
+                  from activities
+                  where activityId = ${activityId}
+                     ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--加载活动班级审核数据-->
+    <json id="loadApplyEndClassdetail">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                  SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(regimentAuditStatusDate),'%Y-%m-%d') AS regimentAuditStatusDate,
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(collegeAuditStatusDate),'%Y-%m-%d') AS collegeAuditStatusDate,
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(schoolAuditStausDate),'%Y-%m-%d') AS schoolAuditStausDate
+                    FROM gq_activity_end_check
+                    WHERE activityIsDelete='0'
+                    AND  activitySdate!=activityEdate
+                    AND now()< activityEdate
+                    and activityAward is not null
+                     and activityClass!="6"
+                     and stuClassName=${className}
+                    ORDER BY schoolAuditStaus,schoolAuditStausDate DESC
+                     ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--加载有多少学生登陆过的次数-->
+    <json id="loadstatistics">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                 SELECT COUNT(DISTINCT(studentID)) AS persons FROM statistics_times_byday
+                     ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--*****************bug修改新增******************-->
+    <!--验证学院是否存在某个学生-->
+    <json id="validateStudentInfo">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                select * from student where studentID=${studentID}
+                     ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--查询print表中最后时间的printid-->
+    <json id="searchlatestprintid">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                 select * from print where studentId=${studentID} order by createDate desc
+                     ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--加载活动结果审核数据-->
+    <json id="loadCheckStudentNum">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                  SELECT * FROM gq_activity_end_check
+                    WHERE activityIsDelete='0' AND  activitySdate!=activityEdate AND ispublish='1' and signUpStatus='已签到'
+                              and activityClass!="6"
+                    and case when ${activityTitle} is not null and ${activityTitle}<>""  then activityTitle like concat('%',${activityTitle},'%')  else 1=1 end
+                    and case when ${studentId} is not null and ${studentId}<>""  then studentID= ${studentId} else 1=1 end
+                    and case when ${studentName} is not null and ${studentName}<>""  then studentName like concat('%',${studentName},'%') else 1=1 end
+                    and case when ${schoolAuditStatus} is not null and ${schoolAuditStatus}<>""  then schoolAuditStaus= ${schoolAuditStatus} else 1=1 end
+                    and case when ${stuCollageName} is not null and ${stuCollageName}<>""  then stuCollageName= ${stuCollageName} else 1=1 end
+                    and case when ${stuMajorName} is not null and ${stuMajorName}<>""  then stuMajorName= ${stuMajorName} else 1=1 end
+                    and case when ${stuGradeName} is not null and ${stuGradeName}<>""  then stuGradeName= ${stuGradeName} else 1=1 end
+                    and case when ${stuClassName} is not null and ${stuClassName}<>""  then stuClassName= ${stuClassName} else 1=1 end
+                     ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--加载团体报名，新建时候的活动列表-->
+    <json id="loadActivitList">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                  SELECT activityId,activityTitle FROM activities WHERE  NOW()<activityApplyedate and activityIsDelete='0' and activityParticipation!='个人'
+                  and case when ${collegeId} is not null and ${collegeId}<>""  then collegeID= ${collegeId}  else 1=1 end
+                  and case when ${deptId} is not null and ${deptId}<>"" then deptID= ${deptId} else 1=1 end
+                  and case when ${className} is not null and ${className}<>"" then collegeID= getCollegeNameByClassName(${className}) else 1=1 end
+                     ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--根据活动ID加载对应活动信息-->
+    <json id="loadActivitDetailById">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                 SELECT  dict("activityClass",activityClass) AS activityClass, dict("activityLevle",activityLevle) AS activityLevle ,dict("activityNature",activityNature) AS activityNature,activityPowers
+                    FROM activities WHERE activityId=${activityId}
+                     ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--根据活动ID加载对应活动信息-->
+    <json id="loadActivitTeamAudit">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+               SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(teamCreateDate),'%Y-%m-%d ') AS teamCreateDate, dict("activityClass",activityClass) AS activityClass, dict("activityLevle",activityLevle) AS activityLevle ,dict("activityNature",activityNature) AS activityNature
+                FROM gq_audit_team_info
+               WHERE applyTeamId IS NOT NULL AND activityIsDelete='0'  AND signUpStatus='已签到' and activityEdate<now()
+              AND CASE WHEN ${supActivityTitle} IS NOT NULL AND ${supActivityTitle}<>'' THEN activityTitle LIKE CONCAT('%', ${supActivityTitle},'%') ELSE 1=1 END
+              AND CASE WHEN ${supStudentId} IS NOT NULL AND ${supStudentId}<>'' THEN studentID LIKE CONCAT('%', ${supStudentId},'%') ELSE 1=1 END
+              AND CASE WHEN ${studentName} IS NOT NULL AND ${studentName}<>'' THEN studentName LIKE CONCAT('%', ${studentName},'%') ELSE 1=1 END
+              AND CASE WHEN ${selectTeamName} IS NOT NULL AND ${selectTeamName}<>'' THEN teamName LIKE CONCAT('%', ${selectTeamName},'%') ELSE 1=1 END
+              AND CASE WHEN ${stuCollageName} IS NOT NULL AND ${stuCollageName}<>'' THEN stuCollageName = ${stuCollageName} ELSE 1=1 END
+              AND CASE WHEN ${stuMajorName} IS NOT NULL AND ${stuMajorName}<>'' THEN stuMajorName = ${stuMajorName} ELSE 1=1 END
+              AND CASE WHEN ${stuGradeName} IS NOT NULL AND ${stuGradeName}<>'' THEN stuGradeName = ${stuGradeName} ELSE 1=1 END
+              AND CASE WHEN ${stuClassName} IS NOT NULL AND ${stuClassName}<>'' THEN stuClassName = ${stuClassName} ELSE 1=1 END
+              AND CASE WHEN ${collegeId} IS NOT NULL AND ${collegeId}<>'' THEN collegeID = ${collegeId} AND collegeAuditStatus='待审核' ELSE 1=1 END
+              AND CASE WHEN ${deptId} IS NOT NULL AND ${deptId}<>'' THEN deptID = ${deptId} AND collegeAuditStatus='待审核'  ELSE 1=1 END
+               AND CASE WHEN ${deptId} IS  NULL AND ${collegeId} IS  NULL THEN  schoolAuditStaus='待审核'  ELSE 1=1 END
+                GROUP BY applyTeamId ORDER BY teamCreateDate DESC
+                     ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--团队活动审核-->
+    <json id="auditTeamActivity">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+                    UPDATE
+                      `secondcourse`.`activityapply`
+                    SET
+                      `regimentAuditStatus` = "已通过",
+                      `regimentAuditStatusDate` = now(),
+                      collegeAuditStatus=(CASE ${status} WHEN "co"  THEN ${type} ELSE collegeAuditStatus END),
+                      collegeAuditStatus=(CASE ${status} WHEN "dept"  THEN ${type} ELSE collegeAuditStatus END),
+                      collegeAuditStatusDate=(CASE ${status} WHEN "co"  THEN now() ELSE collegeAuditStatusDate END),
+                      collegeAuditStatusDate=(CASE ${status} WHEN "dept"  THEN now() ELSE collegeAuditStatusDate END),
+                      schoolAuditStaus=(CASE ${status} WHEN "sc"  THEN ${type} ELSE schoolAuditStaus END),
+                      schoolAuditStausDate=(CASE ${status} WHEN "sc"  THEN now() ELSE schoolAuditStausDate END)
+                    WHERE `applyId` = ${applyId}
+                ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--发布活动 用以进入活动结果审核-->
+    <json id="publishactivity">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+                   UPDATE
+                      `activities`
+                    SET
+                      `ispublish` = '1'
+                    WHERE `activityId` = ${activityId}
+                ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+    <!--根据申请id查询学校审核权限-->
+    <json id="loadschoolauditstatus">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                 SELECT schoolAuditStaus,regimentAuditStatus FROM activityapply WHERE applyId=${applyId}
+                     ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+
+    <!--***********************************微信APP***********************************-->
+    <!--加载未签到的活动信息-->
+    <json id="loadUnsigninActivity">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                 SELECT * FROM gq_apply_activity_student_view
+                 WHERE studentID=${studentID} AND activitySdate<=NOW()
+                 AND (signUpStatus is null or signUpStatus = '未签到')
+                 ORDER BY activitySdate DESC
+                     ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+
+    <!--删除活动签到-->
+    <json id="deleteSigninActivity">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+                   UPDATE `activityapply`
+                    SET `signUpStatus` = '已忽略'
+                    WHERE `applyId` = ${applyId}
+                ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+
+    <!--分页加载先锋新闻-->
+    <json id="loadPointNews">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                 SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(newsDate),'%m-%d') AS nDate
+                   FROM news
+                   WHERE isDelete = '0' AND newsClass = '先锋新闻'
+                   ORDER  BY  newsDate DESC
+                     ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+
+    <!--分页加载先锋青年-->
+    <json id="loadPioneerYouth">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                 SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(newsDate),'%m-%d') AS nDate
+                FROM news
+                WHERE isDelete = '0' AND newsClass = '先锋青年'
+                ORDER  BY  newsDate DESC
+                     ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+
+
+    <!--根据新闻id获取新闻详细内容-->
+    <json id="getNewsDetailById">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(newsDate),'%m-%d') AS nDate
+                FROM news
+                WHERE newsId=${newsId}
+                     ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+
+    <!--分页加载学校活动-->
+    <json id="loadshoolActivtitys">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+            SELECT *,dict("activityClass",activityClass) as activityClassMean
+            FROM activities WHERE activityIsDelete='0'
+            AND activityArea="学校"
+            AND activityEdate!=activitySdate
+            and NOW()<activityEdate
+            ORDER BY activityCreatedate  DESC
+                     ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+
+    <!--分页加载学院活动-->
+    <json id="loadcollegeActivtitys">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+            SELECT *,dict("activityClass",activityClass) as activityClassMean
+            FROM activities WHERE activityIsDelete='0'
+            AND activityArea="学院"
+            and  NOW()<activityEdate
+            AND activityEdate!=activitySdate
+            and (collegeID= getCollegeNameByStudentID(${studentId}) or activityFilter  LIKE CONCAT('%', getCollegeNameByStudentID(${studentId}),'%'))
+            ORDER BY activityCreatedate  DESC
+                     ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+
+    <!--查询活动详情-->
+    <json id="mobileLoadActDetail">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                 SELECT
+                    `activities`.`activityTitle`
+                    , `activityapply`.`applyStudentId`
+                    , `activities`.`activityContent`
+                    , `activities`.`activitySdate`
+                    , `activities`.`activityEdate`
+                    , SUM(activitypoint)/COUNT(activitypoint) AS grade
+                    , `activities`.`activityParticipation`
+                    , `activities`.`activityApplyedate`
+                    , `activities`.`online`
+                 FROM
+                    `secondcourse`.`activities`
+                    LEFT JOIN `secondcourse`.`activityapply`
+                        ON (`activities`.`activityId` = `activityapply`.`applyActivityId`)
+                 WHERE `activities`.`activityId`= ${actId}
+                 GROUP BY `activities`.`activityId`
+                     ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+
+    <!--搜索中加载学院的信息-->
+    <json id="loadCollageName">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                SELECT  DISTINCT(stuCollageName) AS name FROM student  order by stuCollageName
+                         ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--搜索中加载专业的信息-->
+    <json id="loadMajorName">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                SELECT  DISTINCT(stuMajorName) AS name FROM  student where 1=1
+                and case when ${stuCollageName} is not null and ${stuCollageName}<>'' then stuCollageName = ${stuCollageName} else 1=1 end
+                 and case when ${collegeId} is not null and ${collegeId}<>'' then stuCollageName = ${collegeId} else 1=1 end
+                  order by stuGradeName
+                         ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--搜索中加载年级的信息-->
+    <json id="loadGradeName">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                SELECT  DISTINCT(stuGradeName) AS name FROM  student where 1=1
+                and case when ${stuMajorName} is not null and ${stuMajorName}<>'' then stuMajorName = ${stuMajorName} else 1=1 end
+                 and case when ${stuCollageName} is not null and ${stuCollageName}<>'' then stuCollageName = ${stuCollageName} else 1=1 end
+                and case when ${collegeId} is not null and ${collegeId}<>'' then stuCollageName = ${collegeId} else 1=1 end
+                order by stuGradeName
+                         ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--搜索中加载班级的信息-->
+    <json id="loadClassName">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                SELECT  DISTINCT(stuClassName) AS name FROM student where 1=1
+                and case when ${stuGradeName} is not null and ${stuGradeName}<>'' then stuGradeName = ${stuGradeName} else 1=1 end
+                and case when ${collegename} is not null and ${collegename}<>'' then stuCollageName = ${collegename} else 1=1 end
+                and case when ${stuMajorName} is not null and ${stuMajorName}<>'' then stuMajorName = ${stuMajorName} else 1=1 end
+                 and case when ${collegeId} is not null and ${collegeId}<>'' then stuCollageName = ${collegeId} else 1=1 end
+                order by stuClassName
+                         ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--***********加载我的活动,以下四个分类加载***********-->
+    <json id="loadMyActivityAll">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                   SELECT *
+             FROM activities,activityapply
+             WHERE  applyStudentId=${applyStudentId} and activityId=applyActivityId and activityIsDelete='0'
+             ORDER BY applyDate DESC
+            ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <json id="loadMyActivityWill">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                   SELECT *
+             FROM activities,activityapply
+             WHERE  applyStudentId=${applyStudentId} and activityId=applyActivityId  and activitySdate>now() and activityIsDelete='0'
+             ORDER BY applyDate DESC
+            ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+
+    <json id="loadMyActivityUnderway">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                   SELECT *
+             FROM activities,activityapply
+             WHERE  applyStudentId=${applyStudentId} and activityId=applyActivityId and activitySdate<=now() and activityEdate>=now() and activityIsDelete='0'
+             ORDER BY applyDate DESC
+            ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+
+    <json id="loadMyActivityEnd">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                   SELECT *
+             FROM activities,activityapply
+             WHERE  applyStudentId=${applyStudentId} and activityId=applyActivityId and activityEdate<now() and activityIsDelete='0'
+             ORDER BY applyDate DESC
+            ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--****************加载我的活动END****************-->
+
+    <!--活动打分评价-->
+    <json id="updateRate">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql><![CDATA[
+                   UPDATE
+                     activityapply
+                    SET
+                      activitypoint=${activitypoint}
+                    WHERE applyActivityId = ${applyActivityId} and applyStudentId=${applyStudentId}
+                ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+
+    <!--加载正常活动的审核公示详情-->
+    <json id="loadCheckDetailByApply">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                    select *,FROM_UNIXTIME(UNIX_TIMESTAMP(activitySdate),'%Y-%m-%d ') AS activitySdate,
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(activityEdate),'%Y-%m-%d ') AS activityEdate
+                    from gq_apply_activity_student_view where applyId=${applyId}
+            ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+    <!--加载补充活动活动的审核公示详情-->
+    <json id="loadCheckDetailBySup">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+                    select *,FROM_UNIXTIME(UNIX_TIMESTAMP(takeDate),'%Y-%m-%d') AS takeDate
+                     from zy_supplement_stu where id=${id}
+            ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+
+    <!--mobile活动展示页面-->
+    <json id="loadMobileAct">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page" pagesizevar="rows">
+            <sql><![CDATA[
+               SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(activityCreatedate),'%Y-%m-%d ') AS activityCreatedate,
+                         FROM_UNIXTIME(UNIX_TIMESTAMP(activitySdate),'%Y-%m-%d ') AS activitySdate,
+                         FROM_UNIXTIME(UNIX_TIMESTAMP(activityEdate),'%Y-%m-%d ') AS activityEdate,
+                         FROM_UNIXTIME(UNIX_TIMESTAMP(activityApplyedate),'%Y-%m-%d ') AS activityApplyedate,
+                        dict('activityClass',activityClass) AS activityClassMean,
+                        dict('activityLevle',activityLevle) AS activityLevleMean,
+                        dict('activityNature',activityNature) AS activityNatureMean
+                FROM activities
+                WHERE activityIsDelete='0'
+                    AND activityClass!="6"
+                    AND activityEdate!=activitySdate
+                    and (activityArea='学校' or (activityArea='学院' and collegeID=${stuCollageName}))
+                AND CASE WHEN ${activityClass} IS NOT NULL AND ${activityClass}<>''
+                    THEN activityClass=${activityClass} ELSE 1=1 END
+                AND CASE WHEN ${activityLevle} IS NOT NULL AND ${activityLevle}<>''
+                    THEN activityLevle=${activityLevle} ELSE 1=1 END
+                AND CASE WHEN ${activityNature} IS NOT NULL AND ${activityNature}<>''
+                    THEN activityNature=${activityNature} ELSE 1=1 END
+                AND CASE WHEN ${activityParticipation} IS NOT NULL AND ${activityParticipation}<>''
+                    THEN activityParticipation=${activityParticipation} ELSE 1=1 END
+                AND CASE WHEN ${activityArea} IS NOT NULL AND ${activityArea}<>''
+                    THEN activityArea=${activityArea} ELSE 1=1 END
+                AND CASE WHEN ${activityPowers} IS NOT NULL AND ${activityPowers}<>""
+                    THEN activityPowers LIKE CONCAT('%', ${activityPowers},'%') ELSE 1=1 END
+                AND CASE WHEN ${activityTitle} IS NOT NULL AND ${activityTitle}<>""
+                    THEN activityTitle LIKE CONCAT('%', ${activityTitle},'%') ELSE 1=1 END
+                ORDER BY activityCreatedate DESC
+                 ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+
+    <!--查询学生信息-->
+    <json id="getStudentInfoById">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page"  pagesizevar="rows">
+            <sql><![CDATA[
+               select
+               a.studentName
+               ,a.studentID
+               ,a.stuClassName
+               ,a.stuCollageName
+               ,a.stuMajorName
+               ,a.stuGradeName
+               ,a.stuClassName
+               from student a
+               where a.studentID = ${studentId}
+                     ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+
+    <!--重置密码-->
+    <json id="resetPwd">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql>update student SET studentPwd = ${initPwd} where studentID = ${studentId}</sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+
+    <!--查询帐号信息-->
+    <json id="getUserInfoByName">
+        <sqlquery key="data" datatype="list" totalrowsvar="total" pagevar="page"  pagesizevar="rows">
+            <sql><![CDATA[
+               select
+               a.username
+               ,b.collegename
+               ,c.sysrole_name
+                from sysuser a
+                LEFT JOIN r_sysuer_college b on a.sysuser_id = b.userid
+                LEFT JOIN sysrole c on a.sysrole_id = c.sysrole_id
+                where a.username = ${userName}
+                     ]]></sql>
+        </sqlquery>
+        <output>
+            <field key="rows" jxpath="data"/>
+            <field key="total" jxpath="total"/>
+        </output>
+    </json>
+
+    <!--重置帐号密码-->
+    <json id="resetUserPwd">
+        <sqlquery key="data" datatype="void" resultvar="r" resultmsgvar="rmsg">
+            <sql>update sysuser SET password = ${initPwd} where username = ${userName}</sql>
+        </sqlquery>
+        <output>
+            <field key="resultSet" jxpath="./data"/>
+            <field key="result" jxpath="./r"/>
+            <field key="errormessage" jxpath="./rmsg"/>
+        </output>
+    </json>
+
+
+</beans>
+

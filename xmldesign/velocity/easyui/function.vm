@@ -1,0 +1,9 @@
+#set($funcname=$xml.xpathobj($elem,"./@name"))
+#set($cmds=$xml.xpathobjs($elem,"./*"))
+function ${funcname}(){
+#foreach($item in $cmds)##
+    $velocity.render("${basedir}/xmldesign/velocity/easyui/jscmds/${item.name}.vm",{
+        "elem":$item
+    })##
+#end
+}

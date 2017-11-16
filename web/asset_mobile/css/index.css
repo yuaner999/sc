@@ -1,0 +1,69 @@
+.banner {
+  height: 225px;
+  background: url(../images/index-banner_02.jpg) no-repeat bottom;
+  background-size: cover;
+  margin-bottom: 5px;
+}
+.tab {
+  margin-bottom: 5px;
+  background: rgba(255, 255, 255, 0.8);
+  height: 50px;
+  line-height: 45px;
+  font-size: 18px;
+  color: #bdbdbd;
+}
+.tab .cont {
+  height: 100%;
+  position: relative;
+  transition: transform .2s;
+  -webkit-transition: transform .2s;
+}
+.tab .cont.fly {
+  position: fixed;
+  z-index: 4;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50px;
+  background: rgba(255, 255, 255, 0.8);
+  animation: goUp .2s linear;
+  -webkit-animation: goUp .2s linear;
+}
+.tab .col-50 {
+  height: 100%;
+  position: relative;
+}
+.tab .col-50.sele h3 {
+  color: #5c85ef;
+}
+.tab .col-50.sele:after {
+  content: '';
+  height: 5px;
+  background: #5c85ef;
+  position: absolute;
+  width: 95%;
+  bottom: 0;
+}
+.tab .col-50.sele.left:after {
+  right: 0;
+}
+.tab .col-50.sele.right:after {
+  left: 0;
+}
+@keyframes goUp {
+  0% {
+    transform: translateY(-55px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+@-webkit-keyframes goUp {
+  0% {
+    -webkit-transform: translateY(-55px);
+  }
+  100% {
+    -webkit-transform: translateY(0);
+  }
+}
+/*# sourceMappingURL=index.css.map */

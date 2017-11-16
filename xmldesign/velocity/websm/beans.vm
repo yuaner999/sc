@@ -1,0 +1,19 @@
+#*
+<beans>
+    <statemachine id="">
+        ...
+    </statemachine>
+    ...
+</beans>
+* *#
+#set($items=$xml.xpathobjs($elem,"./*"))
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+#foreach($item in $items)##
+    $velocity.render("${basedir}/xmldesign/velocity/websm/${item.name}.vm",{
+        "elem":$item
+    })
+#end
+</beans>

@@ -1,0 +1,28 @@
+.btnbox {
+  border-top: 1px solid #e9edf4;
+  padding-top: 15px;
+  margin-top: 10px;
+}
+.btnbox button {
+  height: 40px;
+  line-height: 40px;
+}
+.activity {
+  position: relative;
+}
+.delete {
+  position: absolute;
+  top: 0;
+  width: 67px;
+  right: -67px;
+  height: 100%;
+  background: #f98777;
+}
+.list {
+  overflow: hidden;
+}
+.dropLeft {
+  transform: translateX(-67px);
+  -webkit-transform: translateX(-67px);
+}
+/*# sourceMappingURL=activitySignin.css.map */

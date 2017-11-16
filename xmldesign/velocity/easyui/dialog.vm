@@ -1,0 +1,38 @@
+#*
+elem:
+    <dialog id="dlg" title="创建任务" width="" height="">
+        <content>
+            <datagrid id="dg2" title="测试" url="">
+                <headers sql="SELECT * FROM db.table"/>
+                <toolbar>
+                    <button id="aaad"/>
+                </toolbar>
+            </datagrid>
+        </content>
+        <buttons>
+            <button id="dialog_ok"/>
+            <button id="dialog_cancel"/>
+        </buttons>
+    </dialog>
+* *#
+#set($id=$xml.xpathobj($elem,"./@id"))
+#set($title=$xml.xpathobj($elem,"./@title"))
+#set($width=$xml.xpathobj($elem,"./@width","600px"))
+#set($height=$xml.xpathobj($elem,"./@height","400px"))
+#set($buttons=$xml.xpathobjs($elem,"./buttons/*"))
+#set($contentitems=$xml.xpathobjs($elem,"./content/*"))
+<div id="$id" class="easyui-dialog" title="$title" style="width:$width;height:$height;padding:10px"
+     data-options="iconCls: 'icon-save',buttons:'#buttons_$id',modal:true">
+    #foreach($contentitem in $contentitems)##
+        $velocity.render("${basedir}/xmldesign/velocity/easyui/${contentitem.name}.vm",{
+            "elem":$contentitem
+        })##
+    #end
+</div>
+<div id="buttons_$id">
+#foreach($button in $buttons)##
+    $velocity.render("${basedir}/xmldesign/velocity/easyui/${button.name}.vm",{
+        "elem":$button
+    })##
+#end
+</div>

@@ -1,0 +1,87 @@
+/***公共样式****/
+*{
+	margin: 0px;
+	padding: 0px;
+	font-family: "微软雅黑";
+}
+.input_memo_text{
+	color: #ff2e21;
+	font-size: 12px;
+}
+img{
+	border: 0px;
+	border-style: none;
+}
+a{
+	text-decoration: none;
+}
+ul,ol,li{
+	list-style: none;
+}
+body{
+	letter-spacing: 1px;
+	color: #666;;
+	margin: 0 auto;
+	min-width: 1040px;
+	box-shadow: 0 0 10px 3px #000;
+}
+img.load{
+	background: url(../img/loading-1.gif) no-repeat center;
+}
+
+.footer{
+	background: #2b458c;
+	height: 96px;
+	text-align: center;
+}
+.footdown{
+	padding-bottom: 20px;
+	background: inherit;
+}
+.footup{
+	color: #abb2cb;
+	padding: 20px 0 20px;
+	border-top: 6px solid #5c85ee;
+}
+.footdown ul{
+	overflow: hidden;
+	display: inline-block;
+}
+.footdown li{
+	float: left;
+	color: #abb2cb;
+	margin-right: 5px;
+}
+.footdown a{
+	color: #abb2cb;
+}
+
+::-webkit-scrollbar {
+	width: 12px;
+	height:7px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.9);
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	background: rgba(92,133,238,0.9);
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.9);
+}
+::-webkit-scrollbar-thumb:window-inactive {
+	background: rgba(92,133,238,0.9);
+}
+#posi ul{
+	display: none;
+}
+::selection{
+	color: #fff;
+	background:#9aa7da ;
+}

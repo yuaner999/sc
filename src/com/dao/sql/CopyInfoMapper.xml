@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.dao.interfaces.CopyInfoDao">
+<select id="CopyStudInfo" parameterType="map" statementType="CALLABLE">
+    CALL wd_copyStudInfo(#{studentID},#{studentPwd},#{studentName},#{studentUsedName},#{studentPhoto},#{studentGender},#{studentNation},
+    #{studentBirthday},#{studentNativePlace},#{studentFamilyAddress},#{studentFamilyPostcode},#{studentIdCard},#{studentPhone},#{studentQQ},
+    #{studentEmail},#{foreignLanguage},#{faith},#{politicsStatus},#{politicsStatusDate},#{usiCampus },#{usiClassId},
+    #{usiBuilding},#{usiRoomNumber},#{entranceDate},#{educationLength},#{trainingMode},#{orientationUnit},#{enrollType},
+    #{schoolRollStatus},#{studentLeader},#{ceeOrigin},#{ceeNumber},#{ceeProvince},#{ceeCity},
+    #{ceeHighSchool},#{stuClassName},#{stuMajorName},#{stuMajorClass},#{stuGradeName},#{stuCollageName},#{stuEconomic})
+</select>
+    <select id="CopyClassInfo" parameterType="map" statementType="CALLABLE">
+        CALL wd_copyClassInfo(#{classId},#{className},#{classCollegeId},#{classMajorKindId},#{classMajorId},#{classGradeId},#{isDelete},
+        #{classRemark},#{createMan},#{createDate},#{updateMan},#{updateDate})
+    </select>
+    <select id="CopyCollegeInfo" parameterType="map" statementType="CALLABLE">
+        CALL wd_copyCollegeInfo(#{collegeId},#{collegeName},#{isDelete},#{collegeRemark},#{createMan},#{createDate},#{updateMan},
+        #{updateDate})
+    </select>
+    <select id="CopyGradeInfo" parameterType="map" statementType="CALLABLE">
+        CALL wd_copyGradeInfo(#{gradeId},#{gradeName},#{isDelete},#{gradeRemark},#{createMan},#{createDate},#{updateMan},
+        #{updateDate})
+    </select>
+    <select id="CopyMajorInfo" parameterType="map" statementType="CALLABLE">
+        CALL wd_copyMajorInfo(#{majorId},#{majorName},#{majorCollegeId},#{parentMajorId},#{isDelete},#{majorRemark},#{createMan},
+        #{createDate},#{updateMan},#{updateDate})
+    </select>
+    </mapper>

@@ -1,0 +1,28 @@
+/** 此css为了使editor内容不至于过大，需要所在td元素在editor外层放一个div，来约束大小 **/
+td>div{
+    padding: 0 !important;
+    max-width: 100px;
+    max-height: 34px;
+    overflow: hidden;
+    -ms-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    cursor: pointer;
+}
+.new{
+    max-width: 1026px !important;
+    min-width: 368px !important;
+    left: 136px !important;
+    top: 50px !important;
+    height:auto !important;
+    padding-bottom: 70px;
+    margin-bottom: 10px;
+}
+.select{
+    width: 244px!important;
+}
+#userphoto_box{
+    height:auto !important;
+}
+#userphoto_box img{
+    margin-top: 22px;
+}

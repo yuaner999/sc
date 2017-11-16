@@ -1,0 +1,29 @@
+.input-group {
+  background: #fff;
+  margin: 9px 0 24px;
+}
+.input-group ~ .blue-btn.block {
+  height: 40px;
+}
+.hint{
+  color: #f98777;
+  font-size: 12px;
+  padding-bottom: 10px;
+  display: block;
+}
+.checkimg{
+  right: 0;
+  top: 8px;
+  height: 30px;
+  width: 90px;
+  background-color: #ccc;
+  transition: all .4s;
+  font-size: 14px;
+  -webkit-transition: all .4s;
+  position: absolute;
+}
+.checkimg img{
+  width: 100%;
+  height: 100%;
+}
+/*# sourceMappingURL=change.css.map */

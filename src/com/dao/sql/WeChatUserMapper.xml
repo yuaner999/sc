@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.dao.interfaces.WeChatUserDao">
+
+    <!--查询当前用户是否存在-->
+    <select id="getNowUser" parameterType="string" resultType="map">
+        SELECT * FROM student where openID=#{0,jdbcType=VARCHAR}
+    </select>
+
+    <!--新建新的微信用户-->
+    <insert id="addWeChatStudent" parameterType="map">
+        UPDATE `student`
+        SET `openID` = #{openid,jdbcType=VARCHAR}
+        WHERE `studentID` = #{studentID,jdbcType=VARCHAR}
+    </insert>
+</mapper>

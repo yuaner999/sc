@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.dao.interfaces.GenerPdfDao">
+
+    <!--* 学生证补办-->
+    <insert id="saveStudentCard" parameterType="map">
+        INSERT INTO studentcardrepair
+        (id,studentName,studentID,studentGenger,collegeName,className,homeAddress,stationName,reason,money,createdate,status_office)
+        VALUES
+        (uuid(),#{studentName,jdbcType=VARCHAR},#{studentID,jdbcType=VARCHAR},#{studentGenger,jdbcType=VARCHAR},#{collegeName,jdbcType=VARCHAR},
+        #{className,jdbcType=VARCHAR},#{homeAddress,jdbcType=VARCHAR},#{stationName,jdbcType=VARCHAR},#{reason,jdbcType=VARCHAR},#{money,jdbcType=VARCHAR},
+        NOW(),'待处理');
+    </insert>
+
+    <!--* 在读证明-->
+    <insert id="saveInStudyProve" parameterType="map">
+        INSERT INTO studentprove
+        (proveId,proveStuId,proveStuName,proveCollName,proveMajorName,proveClass,proveStuIdcard,proveStuEduLen,proveCreateDate,proveColStatu,proveOffStatu)
+        VALUES
+        (uuid(),#{proveStuId,jdbcType=VARCHAR},#{proveStuName,jdbcType=VARCHAR},#{proveCollName,jdbcType=VARCHAR},#{proveMajorName,jdbcType=VARCHAR},
+        #{proveClass,jdbcType=VARCHAR},#{proveStuIdcard,jdbcType=VARCHAR},#{proveStuEduLen,jdbcType=VARCHAR},now(),'待处理','待处理')
+    </insert>
+    
+</mapper>

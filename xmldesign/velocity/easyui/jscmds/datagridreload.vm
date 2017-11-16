@@ -1,0 +1,5 @@
+#*
+<datagridreload datagridid="" />
+* *#
+#set($id=$xml.xpathobj($elem,"./@datagridid"))
+$("#$id").datagrid("reload");

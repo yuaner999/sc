@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.dao.interfaces.ActivityEndCheckDao">
+    <!--加载学校审核数据（学院）-->
+    <select id="loadCheckNum"  resultType="map" parameterType="map">
+        select stuCollageName,COUNT(stuCollageName) AS totalNum
+        FROM gq_activity_end_check
+        WHERE activityIsDelete='0'
+        AND  activitySdate!=activityEdate
+        and signUpStatus='已签到'
+        AND ispublish='1'
+        and activityClass!="6"
+        <if test="loadstatus != null and loadstatus!='' ">
+            AND  schoolAuditStaus=#{loadstatus}
+        </if>
+        AND stuCollageName IS NOT NULL
+        GROUP BY stuCollageName ORDER BY stuCollageName
+    </select>
+    <!--加载学院审核数据（专业）-->
+    <select id="loadCheckMajorNum"  resultType="map" parameterType="map">
+        SELECT stuMajorName,COUNT(stuMajorName) AS totalNum
+        FROM gq_activity_end_check
+        WHERE activityIsDelete='0'
+        AND  activitySdate!=activityEdate
+        and signUpStatus='已签到'
+        AND ispublish='1'
+        AND activityClass!="6"
+        <if test="status == 'sc'">
+            AND  schoolAuditStaus=#{loadstatus}
+        </if>
+        <if test="status == 'co'">
+            AND  collegeAuditStatus=#{loadstatus}
+        </if>
+        AND stuCollageName=#{collegeName}
+        GROUP BY stuMajorName ORDER BY stuMajorName
+    </select>
+    <!--加载班级审核数据（班级）-->
+    <select id="loadCheckClassNum"  resultType="map" parameterType="map">
+        SELECT stuClassName,COUNT(stuClassName) AS totalNum
+        FROM gq_activity_end_check
+        WHERE activityIsDelete='0'
+        AND  activitySdate!=activityEdate
+        and signUpStatus='已签到'
+        AND ispublish='1'
+        AND activityClass!="6"
+        <if test="status == 'sc'">
+            AND  schoolAuditStaus=#{loadstatus}
+        </if>
+        <if test="status == 'co'">
+            AND  collegeAuditStatus=#{loadstatus}
+        </if>
+        AND stuMajorName=#{majorName}
+        GROUP BY stuClassName ORDER BY stuClassName
+    </select>
+    <!--加载班级审核数据（学生）-->
+    <select id="loadCheckStudentNum"  resultType="map" parameterType="map">
+        SELECT *,
+        FROM_UNIXTIME(UNIX_TIMESTAMP(regimentAuditStatusDate),'%Y-%m-%d %H:%i:%s') AS regimentAuditStatusDates,
+        FROM_UNIXTIME(UNIX_TIMESTAMP(collegeAuditStatusDate),'%Y-%m-%d %H:%i:%s') AS collegeAuditStatusDates,
+        FROM_UNIXTIME(UNIX_TIMESTAMP(schoolAuditStausDate),'%Y-%m-%d %H:%i:%s') AS schoolAuditStausDates
+        FROM gq_activity_end_check
+        WHERE activityIsDelete='0'
+        AND  activitySdate!=activityEdate
+        and signUpStatus='已签到'
+        AND ispublish='1'
+        and activityClass!="6"
+        <if test="status == 'sc'">
+            AND  schoolAuditStaus=#{loadstatus}
+        </if>
+        <if test="status == 'co'">
+            AND  collegeAuditStatus=#{loadstatus}
+        </if>
+        <if test="status == 'cl'">
+            AND regimentAuditStatus=#{loadstatus}
+        </if>
+        and stuClassName = #{className}
+       ORDER BY studentName
+    </select>
+    <!--验证学校重复审核-->
+    <select id="testSchoolRecheck"  resultType="map" parameterType="map">
+        SELECT applyId FROM gq_activity_end_check   where activityIsDelete='0'
+        AND  activitySdate!=activityEdate
+        AND ispublish='1'
+        AND regimentAuditStatus="已通过"
+        AND collegeAuditStatus="已通过"
+        and activityClass!="6" and schoolAuditStaus !='待审核' and  schoolAuditStaus is not NULL  and stuCollageName in
+        <foreach collection="idslist" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+    <!--验证学院重复审核-->
+    <select id="testCollegeRecheck"  resultType="map" parameterType="map">
+        SELECT applyId FROM gq_activity_end_check   WHERE activityIsDelete='0'
+        AND  activitySdate!=activityEdate
+        AND ispublish='1'
+        AND stuCollageName=#{collegeName}
+        AND activityClass!="6"
+        <if test="status =='co' ">
+            and collegeAuditStatus !='待审核' AND  collegeAuditStatus IS NOT NULL
+        </if>
+        <if test=" status =='sc' ">
+           and schoolAuditStaus !='待审核' AND  schoolAuditStaus IS NOT NULL
+        </if>
+        and stuMajorName in
+        <foreach collection="idslist" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+
+    </select>
+    <!--验证专业重复审核-->
+    <select id="testMajorRecheck"  resultType="map" parameterType="map">
+        SELECT applyId FROM gq_activity_end_check   WHERE activityIsDelete='0'
+        AND  activitySdate!=activityEdate
+        AND ispublish='1'
+        AND stuMajorName=#{majorName}
+        AND activityClass!="6"
+        <if test="status =='co' ">
+            and collegeAuditStatus !='待审核' AND  collegeAuditStatus IS NOT NULL
+        </if>
+        <if test=" status =='sc' ">
+            and schoolAuditStaus !='待审核' AND  schoolAuditStaus IS NOT NULL
+        </if>
+        and stuClassName in
+        <foreach collection="idslist" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+    <!--验证班级重复审核-->
+    <select id="testClassRecheck"  resultType="map" parameterType="map">
+        SELECT applyId FROM gq_activity_end_check   WHERE activityIsDelete='0'
+        AND  activitySdate!=activityEdate
+        AND ispublish='1'
+        AND activityClass!="6"
+        <if test="status =='co' ">
+            and collegeAuditStatus !='待审核' AND  collegeAuditStatus IS NOT NULL
+        </if>
+        <if test=" status =='sc' ">
+            and schoolAuditStaus !='待审核' AND  schoolAuditStaus IS NOT NULL
+        </if>
+        <if test=" status =='cl' ">
+            and regimentAuditStatus !='待审核' AND  regimentAuditStatus IS NOT NULL
+        </if>
+        and applyStudentId in
+        <foreach collection="idslist" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+    <!-- 学校审核-->
+    <update id="SchoolAuditApply" parameterType="map">
+        UPDATE
+        `secondcourse`.`activityapply`
+        SET
+        `schoolAuditStaus` = #{type},
+        `schoolAuditStausDate` = now()
+        where (schoolAuditStaus = '待审核' or schoolAuditStaus is null) and  `applyId` in
+        <foreach collection="li" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+    <!-- 学院审核-->
+    <update id="CollegeAuditApply" parameterType="map">
+        UPDATE
+        `secondcourse`.`activityapply`
+        <set>
+            <if test="status =='co' ">
+                collegeAuditStatus = #{type},collegeAuditStatusDate=now(),
+            </if>
+            <if test=" status =='sc' ">
+                `schoolAuditStaus` = #{type}, `schoolAuditStausDate` = now(),
+            </if>
+        </set>
+        where
+        `applyId` in
+        <foreach collection="li" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        <if test="status =='co' ">
+           and (collegeAuditStatus = '待审核' or collegeAuditStatus is null)
+        </if>
+        <if test=" status =='sc' ">
+            and (schoolAuditStaus = '待审核' or schoolAuditStaus is null)
+        </if>
+
+    </update>
+    <!-- 专业审核-->
+    <update id="MajorAuditApply" parameterType="map">
+        UPDATE
+        `secondcourse`.`activityapply`
+        <set>
+            <if test="status =='co' ">
+                collegeAuditStatus = #{type},collegeAuditStatusDate=now(),
+            </if>
+            <if test=" status =='sc' ">
+                `schoolAuditStaus` = #{type}, `schoolAuditStausDate` = now(),
+            </if>
+        </set>
+        where
+        `applyId` in
+        <foreach collection="li" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        <if test="status =='co' ">
+            and (collegeAuditStatus = '待审核' or collegeAuditStatus is null)
+        </if>
+        <if test=" status =='sc' ">
+            and (schoolAuditStaus = '待审核' or schoolAuditStaus is null)
+        </if>
+    </update>
+    <!-- 班级审核-->
+    <update id="ClassAuditApply" parameterType="map">
+        UPDATE
+        `secondcourse`.`activityapply`
+        <set>
+            <if test="status =='co' ">
+                collegeAuditStatus = #{type},collegeAuditStatusDate=now(),
+            </if>
+            <if test=" status =='sc' ">
+                `schoolAuditStaus` = #{type}, `schoolAuditStausDate` = now(),
+            </if>
+            <if test=" status =='cl' ">
+                `regimentAuditStatus` = #{type}, `regimentAuditStatusDate` = now(),
+            </if>
+        </set>
+        where
+        `applyId` in
+        <foreach collection="li" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        <if test="status =='co' ">
+            and (collegeAuditStatus = '待审核' or collegeAuditStatus is null)
+        </if>
+        <if test="status =='sc' ">
+            and (schoolAuditStaus = '待审核' or schoolAuditStaus is null)
+        </if>
+        <if test="status =='cl' ">
+            and (regimentAuditStatus = '待审核' or regimentAuditStatus is null)
+        </if>
+    </update>
+    <!-- 超级管理员审核-->
+    <update id="superAuditApply" parameterType="map">
+        UPDATE
+        `secondcourse`.`activityapply`
+        <set>
+            <if test="status =='college' ">
+                collegeAuditStatus = #{type},collegeAuditStatusDate=now(),
+            </if>
+            <if test=" status =='school' ">
+                `schoolAuditStaus` = #{type}, `schoolAuditStausDate` = now(),
+            </if>
+            <if test=" status =='class' ">
+                `regimentAuditStatus` = #{type}, `regimentAuditStatusDate` = now(),
+            </if>
+        </set>
+        where
+        `applyId` in
+        <foreach collection="li" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+    <!--根据学院查询申请id-->
+    <select id="selectApplyIdByCollege"  resultType="string" parameterType="map">
+        SELECT applyId FROM gq_activity_end_check WHERE
+        activityIsDelete='0'
+        AND  activitySdate!=activityEdate
+        AND ispublish='1'
+        and signUpStatus='已签到'
+        and activityClass!="6"
+        and regimentAuditStatus='已通过' and collegeAuditStatus='已通过' and schoolAuditStaus='待审核'
+        AND stuCollageName IN
+        <foreach collection="idslist" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+    <!--根据专业查询申请id-->
+    <select id="selectApplyIdByMajor"  resultType="string" parameterType="map">
+        SELECT applyId FROM gq_activity_end_check WHERE
+        activityIsDelete='0'
+        AND  activitySdate!=activityEdate
+        AND ispublish='1'
+        and signUpStatus='已签到'
+        and activityClass!="6"
+        AND stuCollageName=#{collegeName}
+        <if test="status =='sc' ">
+            and regimentAuditStatus='已通过' and collegeAuditStatus='已通过' and schoolAuditStaus='待审核'
+        </if>
+        <if test="status =='co' ">
+            and regimentAuditStatus='已通过' and collegeAuditStatus='待审核'
+        </if>
+        AND stuMajorName IN
+        <foreach collection="idslist" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+    <!--根据班级查询申请id-->
+    <select id="selectApplyIdByClass"  resultType="string" parameterType="map">
+        SELECT applyId FROM gq_activity_end_check WHERE
+        activityIsDelete='0'
+        AND  activitySdate!=activityEdate
+        AND ispublish='1'
+        and signUpStatus='已签到'
+        and activityClass!="6"
+        AND stuMajorName=#{majorName}
+        <if test="status =='sc' ">
+            and regimentAuditStatus='已通过' and collegeAuditStatus='已通过' and schoolAuditStaus='待审核'
+        </if>
+        <if test="status =='co' ">
+            and regimentAuditStatus='已通过' and collegeAuditStatus='待审核'
+        </if>
+        AND stuClassName IN
+        <foreach collection="idslist" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+    <!--根据学生查询申请id-->
+    <select id="selectApplyIdByStudentID"  resultType="string" parameterType="map">
+        SELECT applyId FROM gq_activity_end_check WHERE
+        activityIsDelete='0'
+        AND  activitySdate!=activityEdate
+        AND ispublish='1'
+        and signUpStatus='已签到'
+        and activityClass!="6"
+        <if test="status =='sc' ">
+            and regimentAuditStatus='已通过' and collegeAuditStatus='已通过' and schoolAuditStaus='待审核'
+        </if>
+        <if test="status =='co' ">
+            and regimentAuditStatus='已通过' and collegeAuditStatus='待审核'
+        </if>
+        <if test="status =='cl' ">
+            and regimentAuditStatus='待审核'
+        </if>
+        AND applyId IN
+        <foreach collection="idslist" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+</mapper>

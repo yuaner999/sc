@@ -1,0 +1,5 @@
+#*
+* <alert text=""/>
+* *#
+#set($text=$xml.xpathobj($elem,"./@text"))
+alert("$text");

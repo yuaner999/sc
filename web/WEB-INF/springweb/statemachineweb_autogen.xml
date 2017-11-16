@@ -1,0 +1,2577 @@
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    
+<bean id="menu" class="com.superstatemachine.web.WebStatemachine">
+    <property name="states" >
+        <list>
+            <bean p:name="init" p:viewName="menu" class="com.superstatemachine.web.ViewState2">
+    <property name="enterProcessors">
+        <list>
+                            
+<ref bean="jspPageProcessor" />
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT * FROM sysmenu order by sort
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    </list>
+    </property>
+</bean>
+        </list>
+    </property>
+    <property name="transitions">
+        <list>
+                    </list>
+    </property>
+</bean>
+
+    
+<bean id="sysusermanage" class="com.superstatemachine.web.WebStatemachine">
+    <property name="states" >
+        <list>
+            <bean p:name="init" p:viewName="sysusermanage" class="com.superstatemachine.web.ViewState2">
+    <property name="enterProcessors">
+        <list>
+                            
+<ref bean="jspPageProcessor" />
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT *,getrolename(sysrole_id) as sysrolename FROM sysrole where is_sysrole!='2654264' and sysrole_id!='instructor' order by ruler_level
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="collegedata"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT stuCollageName  FROM student group by stuCollageName order by stuCollageName
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="depts"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT *  FROM department where isDelete = '0' order by deptName 
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="grades"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT stuGradeName  FROM student group by stuGradeName order by stuGradeName 
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="classdata"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT stuClassName  FROM student group by stuClassName order by stuClassName 
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    </list>
+    </property>
+</bean>
+        </list>
+    </property>
+    <property name="transitions">
+        <list>
+                    </list>
+    </property>
+</bean>
+
+    
+<bean id="MajorManage" class="com.superstatemachine.web.WebStatemachine">
+    <property name="states" >
+        <list>
+            <bean p:name="init" p:viewName="MajorManage" class="com.superstatemachine.web.ViewState2">
+    <property name="enterProcessors">
+        <list>
+                            
+<ref bean="jspPageProcessor" />
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="colleges"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT stuCollageName FROM student WHERE stuCollageName IS NOT NULL GROUP BY stuCollageName ORDER BY stuCollageName
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    </list>
+    </property>
+</bean>
+        </list>
+    </property>
+    <property name="transitions">
+        <list>
+                    </list>
+    </property>
+</bean>
+
+    
+<bean id="ClassManage" class="com.superstatemachine.web.WebStatemachine">
+    <property name="states" >
+        <list>
+            <bean p:name="init" p:viewName="ClassManage" class="com.superstatemachine.web.ViewState2">
+    <property name="enterProcessors">
+        <list>
+                            
+<ref bean="jspPageProcessor" />
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="colleges"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT stuCollageName FROM student WHERE stuCollageName IS NOT NULL GROUP BY stuCollageName ORDER BY stuCollageName
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="grades"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT stuGradeName FROM student WHERE stuGradeName IS NOT NULL GROUP BY stuGradeName ORDER BY stuGradeName
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    </list>
+    </property>
+</bean>
+        </list>
+    </property>
+    <property name="transitions">
+        <list>
+                    </list>
+    </property>
+</bean>
+
+    
+<bean id="activitiesManage" class="com.superstatemachine.web.WebStatemachine">
+    <property name="states" >
+        <list>
+            <bean p:name="init" p:viewName="activitiesManage" class="com.superstatemachine.web.ViewState2">
+    <property name="enterProcessors">
+        <list>
+                            
+<ref bean="jspPageProcessor" />
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="activityClasses"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT  * FROM sysdict WHERE dict_key='activityClass' AND dict_value!="6"
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="activityLevels"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT  * FROM sysdict WHERE dict_key='activityLevle' order by dict_value
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="activNatures"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT  * FROM sysdict WHERE dict_key='activityNature' order by dict_value
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="colleges"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT stuCollageName FROM student WHERE stuCollageName IS NOT NULL GROUP BY stuCollageName ORDER BY stuCollageName
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="grades"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT stuGradeName FROM student WHERE stuGradeName IS NOT NULL GROUP BY stuGradeName ORDER BY stuGradeName
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    </list>
+    </property>
+</bean>
+        </list>
+    </property>
+    <property name="transitions">
+        <list>
+                    </list>
+    </property>
+</bean>
+
+    
+<bean id="activitiesManage_school" class="com.superstatemachine.web.WebStatemachine">
+    <property name="states" >
+        <list>
+            <bean p:name="init" p:viewName="activitiesManage_school" class="com.superstatemachine.web.ViewState2">
+    <property name="enterProcessors">
+        <list>
+                            
+<ref bean="jspPageProcessor" />
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="activityClasses"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT  * FROM sysdict WHERE dict_key='activityClass' AND dict_value!="6"
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="activityLevels"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT  * FROM sysdict WHERE dict_key='activityLevle'  order by dict_value
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="activNatures"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT  * FROM sysdict WHERE dict_key='activityNature' order by dict_value
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="colleges"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT stuCollageName FROM student WHERE stuCollageName IS NOT NULL GROUP BY stuCollageName ORDER BY stuCollageName
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="grades"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT stuGradeName FROM student WHERE stuGradeName IS NOT NULL GROUP BY stuGradeName ORDER BY stuGradeName
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    </list>
+    </property>
+</bean>
+        </list>
+    </property>
+    <property name="transitions">
+        <list>
+                    </list>
+    </property>
+</bean>
+
+    
+<bean id="activitiesManage_college" class="com.superstatemachine.web.WebStatemachine">
+    <property name="states" >
+        <list>
+            <bean p:name="init" p:viewName="activitiesManage_college" class="com.superstatemachine.web.ViewState2">
+    <property name="enterProcessors">
+        <list>
+                            
+<ref bean="jspPageProcessor" />
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="activityClasses"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT  * FROM sysdict WHERE dict_key='activityClass' AND dict_value!="6"
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="activityLevels"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT  * FROM sysdict WHERE dict_key='activityLevle' order by dict_value
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="activNatures"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT  * FROM sysdict WHERE dict_key='activityNature' order by dict_value
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="colleges"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT stuCollageName FROM student WHERE stuCollageName IS NOT NULL GROUP BY stuCollageName ORDER BY stuCollageName
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="grades"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT stuGradeName FROM student WHERE stuGradeName IS NOT NULL GROUP BY stuGradeName ORDER BY stuGradeName
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    </list>
+    </property>
+</bean>
+        </list>
+    </property>
+    <property name="transitions">
+        <list>
+                    </list>
+    </property>
+</bean>
+
+    
+<bean id="activitiesManage_dept" class="com.superstatemachine.web.WebStatemachine">
+    <property name="states" >
+        <list>
+            <bean p:name="init" p:viewName="activitiesManage_dept" class="com.superstatemachine.web.ViewState2">
+    <property name="enterProcessors">
+        <list>
+                            
+<ref bean="jspPageProcessor" />
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="activityClasses"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT  * FROM sysdict WHERE dict_key='activityClass' AND dict_value!="6"
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="activityLevels"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT  * FROM sysdict WHERE dict_key='activityLevle' order by dict_value
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="activNatures"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT  * FROM sysdict WHERE dict_key='activityNature' order by dict_value
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="colleges"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT stuCollageName FROM student WHERE stuCollageName IS NOT NULL GROUP BY stuCollageName ORDER BY stuCollageName
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="grades"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT stuGradeName FROM student WHERE stuGradeName IS NOT NULL GROUP BY stuGradeName ORDER BY stuGradeName
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    </list>
+    </property>
+</bean>
+        </list>
+    </property>
+    <property name="transitions">
+        <list>
+                    </list>
+    </property>
+</bean>
+
+    
+<bean id="activityManage_school" class="com.superstatemachine.web.WebStatemachine">
+    <property name="states" >
+        <list>
+            <bean p:name="init" p:viewName="activityManage_school" class="com.superstatemachine.web.ViewState2">
+    <property name="enterProcessors">
+        <list>
+                            
+<ref bean="jspPageProcessor" />
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="activityClasses"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT  * FROM sysdict WHERE dict_key='activityClass' AND dict_value!="6"
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="activityLevels"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT  * FROM sysdict WHERE dict_key='activityLevle' order by dict_value
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="activNatures"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT  * FROM sysdict WHERE dict_key='activityNature' order by dict_value
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="colleges"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT stuCollageName FROM student WHERE stuCollageName IS NOT NULL GROUP BY stuCollageName ORDER BY stuCollageName
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="grades"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT stuGradeName FROM student WHERE stuGradeName IS NOT NULL GROUP BY stuGradeName ORDER BY stuGradeName
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    </list>
+    </property>
+</bean>
+        </list>
+    </property>
+    <property name="transitions">
+        <list>
+                    </list>
+    </property>
+</bean>
+
+    
+<bean id="activityapplyManage_school" class="com.superstatemachine.web.WebStatemachine">
+    <property name="states" >
+        <list>
+            <bean p:name="init" p:viewName="activityapplyManage_school" class="com.superstatemachine.web.ViewState2">
+    <property name="enterProcessors">
+        <list>
+                            
+<ref bean="jspPageProcessor" />
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="activityClasses"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT  * FROM sysdict WHERE dict_key='activityClass' AND dict_value!="6"
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="activityLevels"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT  * FROM sysdict WHERE dict_key='activityLevle' order by dict_value
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="activNatures"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT  * FROM sysdict WHERE dict_key='activityNature' order by dict_value
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="colleges"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT stuCollageName FROM student WHERE stuCollageName IS NOT NULL GROUP BY stuCollageName ORDER BY stuCollageName
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="grades"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT stuGradeName FROM student WHERE stuGradeName IS NOT NULL GROUP BY stuGradeName ORDER BY stuGradeName
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    </list>
+    </property>
+</bean>
+        </list>
+    </property>
+    <property name="transitions">
+        <list>
+                    </list>
+    </property>
+</bean>
+
+    
+<bean id="activityManage_college" class="com.superstatemachine.web.WebStatemachine">
+    <property name="states" >
+        <list>
+            <bean p:name="init" p:viewName="activityManage_college" class="com.superstatemachine.web.ViewState2">
+    <property name="enterProcessors">
+        <list>
+                            
+<ref bean="jspPageProcessor" />
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="activityClasses"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT  * FROM sysdict WHERE dict_key='activityClass' AND dict_value!="6"
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="activityLevels"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT  * FROM sysdict WHERE dict_key='activityLevle' order by dict_value
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="activNatures"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT  * FROM sysdict WHERE dict_key='activityNature' order by dict_value
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="colleges"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT stuCollageName FROM student WHERE stuCollageName IS NOT NULL GROUP BY stuCollageName ORDER BY stuCollageName
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="grades"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT stuGradeName FROM student WHERE stuGradeName IS NOT NULL GROUP BY stuGradeName ORDER BY stuGradeName
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="classdata"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT stuClassName  FROM student
+                    where case when ${collegeId} is not null and ${collegeId} !=""  then stuCollageName= ${collegeId} else 1=1 end
+                    group by stuClassName order by stuClassName
+                
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    </list>
+    </property>
+</bean>
+        </list>
+    </property>
+    <property name="transitions">
+        <list>
+                    </list>
+    </property>
+</bean>
+
+    
+<bean id="activityManage_dept" class="com.superstatemachine.web.WebStatemachine">
+    <property name="states" >
+        <list>
+            <bean p:name="init" p:viewName="activityManage_dept" class="com.superstatemachine.web.ViewState2">
+    <property name="enterProcessors">
+        <list>
+                            
+<ref bean="jspPageProcessor" />
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="activityClasses"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT  * FROM sysdict WHERE dict_key='activityClass' AND dict_value!="6"
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="activityLevels"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT  * FROM sysdict WHERE dict_key='activityLevle' order by dict_value
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="activNatures"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT  * FROM sysdict WHERE dict_key='activityNature' order by dict_value
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="colleges"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT stuCollageName FROM student WHERE stuCollageName IS NOT NULL GROUP BY stuCollageName ORDER BY stuCollageName
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="grades"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT stuGradeName FROM student WHERE stuGradeName IS NOT NULL GROUP BY stuGradeName ORDER BY stuGradeName
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    </list>
+    </property>
+</bean>
+        </list>
+    </property>
+    <property name="transitions">
+        <list>
+                    </list>
+    </property>
+</bean>
+
+    
+<bean id="schoolactivityapplyManage" class="com.superstatemachine.web.WebStatemachine">
+    <property name="states" >
+        <list>
+            <bean p:name="init" p:viewName="schoolactivityapplyManage" class="com.superstatemachine.web.ViewState2">
+    <property name="enterProcessors">
+        <list>
+                            
+<ref bean="jspPageProcessor" />
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="activityAwards"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT  * FROM sysdict WHERE dict_key='activityAward'
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="classdata"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT stuClassName  FROM student group by stuClassName order by stuClassName 
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    </list>
+    </property>
+</bean>
+        </list>
+    </property>
+    <property name="transitions">
+        <list>
+                    </list>
+    </property>
+</bean>
+
+    
+<bean id="schoolactivityapplyManage_dept" class="com.superstatemachine.web.WebStatemachine">
+    <property name="states" >
+        <list>
+            <bean p:name="init" p:viewName="schoolactivityapplyManage_dept" class="com.superstatemachine.web.ViewState2">
+    <property name="enterProcessors">
+        <list>
+                            
+<ref bean="jspPageProcessor" />
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="activityAwards"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT  * FROM sysdict WHERE dict_key='activityAward'
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="classdata"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT stuClassName  FROM student group by stuClassName order by stuClassName 
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    </list>
+    </property>
+</bean>
+        </list>
+    </property>
+    <property name="transitions">
+        <list>
+                    </list>
+    </property>
+</bean>
+
+    
+<bean id="schoolactivityapplyManage_school" class="com.superstatemachine.web.WebStatemachine">
+    <property name="states" >
+        <list>
+            <bean p:name="init" p:viewName="schoolactivityapplyManage_school" class="com.superstatemachine.web.ViewState2">
+    <property name="enterProcessors">
+        <list>
+                            
+<ref bean="jspPageProcessor" />
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="activityAwards"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT  * FROM sysdict WHERE dict_key='activityAward'
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="classdata"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT stuClassName  FROM student group by stuClassName order by stuClassName 
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    </list>
+    </property>
+</bean>
+        </list>
+    </property>
+    <property name="transitions">
+        <list>
+                    </list>
+    </property>
+</bean>
+
+    
+<bean id="schoolactivityapplyManage_grade" class="com.superstatemachine.web.WebStatemachine">
+    <property name="states" >
+        <list>
+            <bean p:name="init" p:viewName="schoolactivityapplyManage_grade" class="com.superstatemachine.web.ViewState2">
+    <property name="enterProcessors">
+        <list>
+                            
+<ref bean="jspPageProcessor" />
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="activityAwards"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT  * FROM sysdict WHERE dict_key='activityAward'
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="classdata"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT stuClassName  FROM student
+
+                    group by stuClassName order by stuClassName 
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    </list>
+    </property>
+</bean>
+        </list>
+    </property>
+    <property name="transitions">
+        <list>
+                    </list>
+    </property>
+</bean>
+
+    
+<bean id="schoolactivityapplyManage_class" class="com.superstatemachine.web.WebStatemachine">
+    <property name="states" >
+        <list>
+            <bean p:name="init" p:viewName="schoolactivityapplyManage_class" class="com.superstatemachine.web.ViewState2">
+    <property name="enterProcessors">
+        <list>
+                            
+<ref bean="jspPageProcessor" />
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="activityAwards"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT  * FROM sysdict WHERE dict_key='activityAward'
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="classdata"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT stuClassName  FROM student group by stuClassName order by stuClassName 
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    </list>
+    </property>
+</bean>
+        </list>
+    </property>
+    <property name="transitions">
+        <list>
+                    </list>
+    </property>
+</bean>
+
+    
+<bean id="schoolactivityapplyManage_college" class="com.superstatemachine.web.WebStatemachine">
+    <property name="states" >
+        <list>
+            <bean p:name="init" p:viewName="schoolactivityapplyManage_college" class="com.superstatemachine.web.ViewState2">
+    <property name="enterProcessors">
+        <list>
+                            
+<ref bean="jspPageProcessor" />
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="activityAwards"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT  * FROM sysdict WHERE dict_key='activityAward'
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="classdata"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT stuClassName  FROM student
+                    where case when ${collegeId} is not null and ${collegeId} !=""  then stuCollageName= ${collegeId} else 1=1 end
+                    group by stuClassName order by stuClassName
+                
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    </list>
+    </property>
+</bean>
+        </list>
+    </property>
+    <property name="transitions">
+        <list>
+                    </list>
+    </property>
+</bean>
+
+    
+<bean id="index" class="com.superstatemachine.web.WebStatemachine">
+    <property name="states" >
+        <list>
+            <bean p:name="init" p:viewName="index" class="com.superstatemachine.web.ViewState2">
+    <property name="enterProcessors">
+        <list>
+                            
+<ref bean="jspPageProcessor" />
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="newses"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                    SELECT  *,FROM_UNIXTIME(UNIX_TIMESTAMP(newsDate),'%Y-%m-%d') AS newsDate FROM news
+                     ORDER BY newsDate DESC
+                     
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="school_activities"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                    SELECT  *,FROM_UNIXTIME(UNIX_TIMESTAMP(activityCreatedate),'%Y-%m-%d') AS activityCreatedate
+                     FROM activities where activityArea ='学校'
+                     and activitySdate<>activityEdate
+                     ORDER BY activityCreatedate DESC
+                     
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="college_activities"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                    SELECT  *,FROM_UNIXTIME(UNIX_TIMESTAMP(activityCreatedate),'%Y-%m-%d') AS activityCreatedate
+                     FROM activities where activityArea ='学院'
+                    and activitySdate<>activityEdate
+                     ORDER BY activityCreatedate DESC
+                     
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    </list>
+    </property>
+</bean>
+        </list>
+    </property>
+    <property name="transitions">
+        <list>
+                    </list>
+    </property>
+</bean>
+
+    
+<bean id="teamActivitiesManage" class="com.superstatemachine.web.WebStatemachine">
+    <property name="states" >
+        <list>
+            <bean p:name="init" p:viewName="teamActivitiesManage" class="com.superstatemachine.web.ViewState2">
+    <property name="enterProcessors">
+        <list>
+                            
+<ref bean="jspPageProcessor" />
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="activities"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                    SELECT activityId,activityTitle FROM activities WHERE activityParticipation!="个人"
+                    and activityIsDelete='0'
+                    and activityClass!='6'
+                    and activitySdate<>activityEdate
+                    ORDER BY activityCreatedate DESC
+                     
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    </list>
+    </property>
+</bean>
+        </list>
+    </property>
+    <property name="transitions">
+        <list>
+                    </list>
+    </property>
+</bean>
+
+    
+<bean id="teamapplyManage" class="com.superstatemachine.web.WebStatemachine">
+    <property name="states" >
+        <list>
+            <bean p:name="init" p:viewName="teamapplyManage" class="com.superstatemachine.web.ViewState2">
+    <property name="enterProcessors">
+        <list>
+                            
+<ref bean="jspPageProcessor" />
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="activities"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                    SELECT activityId,activityTitle FROM activities WHERE activityParticipation!="个人"
+                    and activityIsDelete='0'
+                    and activityClass!='6'
+                    and activitySdate<>activityEdate
+                    ORDER BY activityCreatedate DESC
+                     
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    </list>
+    </property>
+</bean>
+        </list>
+    </property>
+    <property name="transitions">
+        <list>
+                    </list>
+    </property>
+</bean>
+
+    
+<bean id="NotactivityManage" class="com.superstatemachine.web.WebStatemachine">
+    <property name="states" >
+        <list>
+            <bean p:name="init" p:viewName="NotactivityManage" class="com.superstatemachine.web.ViewState2">
+    <property name="enterProcessors">
+        <list>
+                            
+<ref bean="jspPageProcessor" />
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="workLevles"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                   SELECT dict_key AS workLevle FROM nadict WHERE dict_key  LIKE "%级"  ORDER BY createDate DESC
+                     
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="sciencetechnologys"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                    SELECT  dict_value as scienceClass FROM nadict where dict_key="学术科技类"
+                     
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="classworkNames"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                    SELECT dict_value as classworkName FROM nadict where dict_key='班级职务'
+                     
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    </list>
+    </property>
+</bean>
+        </list>
+    </property>
+    <property name="transitions">
+        <list>
+                    </list>
+    </property>
+</bean>
+
+    
+<bean id="notactivityManage_school" class="com.superstatemachine.web.WebStatemachine">
+    <property name="states" >
+        <list>
+            <bean p:name="init" p:viewName="notactivityManage_school" class="com.superstatemachine.web.ViewState2">
+    <property name="enterProcessors">
+        <list>
+                            
+<ref bean="jspPageProcessor" />
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="workLevles"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                   SELECT dict_key AS workLevle FROM nadict WHERE dict_key  LIKE "%级"  ORDER BY createDate DESC
+                     
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="sciencetechnologys"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                    SELECT  dict_value as scienceClass FROM nadict where dict_key="学术科技类"
+                     
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="orgclasses"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                   select orgclass from organization   where orgclass is not null GROUP BY orgclass
+                     
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="orglevels"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                  select orglevel from organization   where orglevel is not null GROUP BY orglevel
+                     
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="workleveles"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                   select worklevel from organization   where worklevel is not null GROUP BY worklevel
+                     
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="stuCollageNames"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                  SELECT stuCollageName  FROM student group by stuCollageName order by stuCollageName
+                     
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="typeNames"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+            SELECT dict_value as typeName FROM nadict where dict_key="奖学金"
+            
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="classworkNames"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                    SELECT dict_value as classworkName FROM nadict where dict_key='班级职务'
+                     
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    </list>
+    </property>
+</bean>
+        </list>
+    </property>
+    <property name="transitions">
+        <list>
+                    </list>
+    </property>
+</bean>
+
+    
+<bean id="NotactivityApply" class="com.superstatemachine.web.WebStatemachine">
+    <property name="states" >
+        <list>
+            <bean p:name="init" p:viewName="NotactivityApply" class="com.superstatemachine.web.ViewState2">
+    <property name="enterProcessors">
+        <list>
+                            
+<ref bean="jspPageProcessor" />
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="workLevles"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                     SELECT dict_key AS workLevle FROM nadict WHERE dict_key  LIKE "%级"  ORDER BY createDate DESC
+                     
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="sciencetechnologys"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                    SELECT  dict_value as scienceClass FROM nadict where dict_key="学术科技类"
+                     
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="classworkNames"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                    SELECT dict_value as classworkName FROM nadict where dict_key='班级职务'
+                     
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    </list>
+    </property>
+</bean>
+        </list>
+    </property>
+    <property name="transitions">
+        <list>
+                    </list>
+    </property>
+</bean>
+
+    
+<bean id="workManage" class="com.superstatemachine.web.WebStatemachine">
+    <property name="states" >
+        <list>
+            <bean p:name="init" p:viewName="workManage" class="com.superstatemachine.web.ViewState2">
+    <property name="enterProcessors">
+        <list>
+                            
+<ref bean="jspPageProcessor" />
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="organizationNames"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                   SELECT  organizationName FROM organization  ORDER BY createDate DESC
+                     
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    </list>
+    </property>
+</bean>
+        </list>
+    </property>
+    <property name="transitions">
+        <list>
+                    </list>
+    </property>
+</bean>
+
+    
+<bean id="workManagenew" class="com.superstatemachine.web.WebStatemachine">
+    <property name="states" >
+        <list>
+            <bean p:name="init" p:viewName="workManagenew" class="com.superstatemachine.web.ViewState2">
+    <property name="enterProcessors">
+        <list>
+                            
+<ref bean="jspPageProcessor" />
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="organizationNames"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                   SELECT  organizationName FROM organization  ORDER BY createDate DESC
+                     
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    </list>
+    </property>
+</bean>
+        </list>
+    </property>
+    <property name="transitions">
+        <list>
+                    </list>
+    </property>
+</bean>
+
+    
+<bean id="organization" class="com.superstatemachine.web.WebStatemachine">
+    <property name="states" >
+        <list>
+            <bean p:name="init" p:viewName="organization" class="com.superstatemachine.web.ViewState2">
+    <property name="enterProcessors">
+        <list>
+                            
+<ref bean="jspPageProcessor" />
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="workLevles"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                     SELECT dict_key AS workLevle FROM nadict WHERE dict_key  LIKE "%级"  ORDER BY createDate DESC
+                     
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    </list>
+    </property>
+</bean>
+        </list>
+    </property>
+    <property name="transitions">
+        <list>
+                    </list>
+    </property>
+</bean>
+
+    
+<bean id="activity_check" class="com.superstatemachine.web.WebStatemachine">
+    <property name="states" >
+        <list>
+            <bean p:name="init" p:viewName="activity_check" class="com.superstatemachine.web.ViewState2">
+    <property name="enterProcessors">
+        <list>
+                            
+<ref bean="jspPageProcessor" />
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="check_info"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                         SELECT * ,FROM_UNIXTIME(UNIX_TIMESTAMP(outAuditDate),'%Y-%m-%d') AS outAuditDates,
+                             FROM_UNIXTIME(UNIX_TIMESTAMP(outDate),'%Y-%m-%d') AS outDates
+                             FROM gq_check_activity ORDER BY outAuditDates DESC
+                
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    </list>
+    </property>
+</bean>
+        </list>
+    </property>
+    <property name="transitions">
+        <list>
+                    </list>
+    </property>
+</bean>
+
+    
+<bean id="resetStudentPwd" class="com.superstatemachine.web.WebStatemachine">
+    <property name="states" >
+        <list>
+            <bean p:name="init" p:viewName="resetStudentPwd" class="com.superstatemachine.web.ViewState2">
+    <property name="enterProcessors">
+        <list>
+                            
+<ref bean="jspPageProcessor" />
+
+                    </list>
+    </property>
+</bean>
+        </list>
+    </property>
+    <property name="transitions">
+        <list>
+                    </list>
+    </property>
+</bean>
+
+    
+<bean id="importThemeActity" class="com.superstatemachine.web.WebStatemachine">
+    <property name="states" >
+        <list>
+            <bean p:name="init" p:viewName="importThemeActity" class="com.superstatemachine.web.ViewState2">
+    <property name="enterProcessors">
+        <list>
+                            
+<ref bean="jspPageProcessor" />
+
+                    </list>
+    </property>
+</bean>
+        </list>
+    </property>
+    <property name="transitions">
+        <list>
+                    </list>
+    </property>
+</bean>
+
+</beans>

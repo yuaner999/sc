@@ -1,0 +1,49 @@
+#set($title=$xml.xpathobj($elem,"./@title"))
+#set($items=$xml.xpathobjs($elem,"./*"))
+#set($startupitems=$xml.xpathobjs($elem,"./javascript/startup/*"))
+#set($functions=$xml.xpathobjs($elem,"./javascript/function"))
+#set($buttons=$xml.xpathobjs($elem,"//button"))
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <title>$title</title>
+    <%@include file="../commons/easyui.jsp"%>
+    <script type="text/javascript">
+        $(function(){
+#foreach($item in $startupitems)##
+    $velocity.render("${basedir}/xmldesign/velocity/easyui/jscmds/${item.name}.vm",{
+        "elem":$item
+    })##
+#end
+        });
+
+#foreach($item in $buttons)##
+        #set($id=$xml.xpathobj($item,"./@id"))
+        #if($item.elements().size()>0)
+        function ${id}click(){
+            #foreach($subitem in $xml.xpathobjs($item,"./*"))##
+                $velocity.render("${basedir}/xmldesign/velocity/easyui/jscmds/${subitem.name}.vm",{
+                    "elem":$subitem
+                })##
+            #end
+        }
+        #end
+#end
+
+#foreach($item in $functions)##
+    $velocity.render("${basedir}/xmldesign/velocity/easyui/function.vm",{
+        "elem":$item
+    })##
+#end
+
+
+    </script>
+</head>
+<body>
+#foreach($item in $items)##
+    $velocity.render("${basedir}/xmldesign/velocity/easyui/${item.name}.vm",{
+        "elem":$item
+    })##
+#end
+</body>
+</html>

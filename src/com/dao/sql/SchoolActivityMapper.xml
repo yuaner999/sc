@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.dao.interfaces.SchoolActivityDao">
+    <!--加载学校活动信息 如果指定了过滤条件那么根据学生id查询相关信息进行过滤-->
+    <select id="loadSchoolActivityList" parameterType="string" resultType="com.model.activities">
+        <![CDATA[
+        SELECT *,dict("activityClass",activityClass) as activityClassMean,IF(activityApplyedate > NOW(),"报名参加","报名已截止") as applyState
+        FROM activities WHERE activityIsDelete='0'
+        AND activityArea="学校"
+        AND activityEdate!=activitySdate
+        and NOW()<activityEdate
+        and (collegeID= getCollegeNameByStudentID(#{0}) or collegeID is NULL)
+         AND (activityFilterType = '不限'
+                or (activityFilterType = '年级' and activityFilter like concat('%',(select stuGradeName FROM student where studentID = #{0}),'%')  )
+                or (activityFilterType = '学院' and activityFilter like concat('%',(select stuCollageName FROM student where studentID = #{0}),'%')  )
+                or (activityFilterType = '年级|学院' and activityFilter like concat('%',(select stuGradeName FROM student where studentID = #{0}),'%') and activityFilter like concat('%',(select stuCollageName FROM student where studentID = #{0}),'%')  )  )
+        ORDER BY activityCreatedate  DESC
+           ]]>
+    </select>
+    <!--加载学院活动信息 如果指定了过滤条件那么根据学生id查询相关信息进行过滤-->
+    <!-- and collegeID= getCollegeNameByStudentID(#{0}) -->
+    <select id="loadcollegeActivityList" parameterType="string" resultType="com.model.activities">
+        <![CDATA[
+        SELECT *,dict("activityClass",activityClass) as activityClassMean,IF(activityApplyedate > NOW(),"报名参加","报名已截止") as applyState
+        FROM activities WHERE activityIsDelete='0'
+        AND activityArea="学院"
+        and  NOW()<activityEdate
+        AND activityEdate!=activitySdate
+        and (collegeID= getCollegeNameByStudentID(#{0}) or collegeID is NULL)
+         AND (activityFilterType = '不限'
+                or (activityFilterType = '年级' and activityFilter like concat('%',(select stuGradeName FROM student where studentID = #{0}),'%')  )
+                or (activityFilterType = '学院' and activityFilter like concat('%',(select stuCollageName FROM student where studentID = #{0}),'%')  )
+                or (activityFilterType = '年级|学院' and activityFilter like concat('%',(select stuGradeName FROM student where studentID = #{0}),'%') and activityFilter like concat('%',(select stuCollageName FROM student where studentID = #{0}),'%')  )  )
+        ORDER BY activityCreatedate  DESC
+             ]]>
+    </select>
+    <!--加载该学生参与的活动-->
+    <!--AND (activitypoint IS NOT NULL  OR activityClass="6") -->
+    <select id="laodStudentActivity" parameterType="map" resultType="map">
+        SELECT a.applyId,a.activityId,a.activityTitle,a.activityClass,
+        a.activityLevle,a.activityNature,a.activityPowers,
+        a.activityIsDelete,a.activityAward,a.applyStudentId,
+        a.applyAuditStatus,a.activitypoint,a.signUpStatus,a.activityCredit,a.worktime,
+        FROM_UNIXTIME(UNIX_TIMESTAMP(a.applyDate),'%Y-%m-%d ') AS applyDate
+        FROM pjj_team_person_activity a
+        left join activityapply ac on a.applyId = ac.applyId
+        <where>
+        <if test="activityClass != null and activityClass !='' ">
+            AND   a.activityClass=#{activityClass}
+        </if>
+        <if test="activityLevle != null and activityLevle !='' ">
+            AND   a.activityLevle=#{activityLevle}
+        </if>
+        <if test="activityNature != null and activityNature !='' ">
+            AND   a.activityNature=#{activityNature}
+        </if>
+        <if test="activityPowers != null and activityPowers !='' ">
+            AND   a.activityPowers like concat('%',#{activityPowers},'%')
+        </if>
+        <if test="activityAward != null and activityAward !='' ">
+            AND   a.activityAward=#{activityAward}
+        </if>
+        <if test="activityIsDelete != null and activityIsDelete !='' ">
+             AND   a.activityIsDelete=#{activityIsDelete}
+        </if>
+        <if test="signUpStatus != null and signUpStatus !='' ">
+             AND   signUpStatus=#{signUpStatus}
+        </if>
+            AND   (a.applyStudentId=#{applyStudentId} or a.studentID=#{applyStudentId})
+            and a.ispublish='1'
+            AND  (ISNULL(ac.isDel) or ac.isDel &lt;&gt; '0')
+    </where>
+        ORDER BY activityCreatedate  DESC
+    </select>
+</mapper>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.dao.interfaces.CheckDao">
+    <!--验证重复举报-->
+    <select id="checkReportAgain" resultType="map" parameterType="map">
+        SELECT * FROM inform
+         WHERE  informStudentId=#{informStudentId} and informApplyId=#{informApplyId} and informByStudentId=#{informByStudentId} and
+         informType=#{informType}
+    </select>
+    <!--增加一条举报信息-->
+    <insert id="insertReportInfo"  parameterType="map">
+       INSERT INTO inform (informId,informStudentId,informApplyId,informByStudentId,informContent,informDate,
+                    informAuditStatus,informType,informTel,acttitle,actaward)
+                    VALUES(UUID(),#{informStudentId},#{informApplyId},#{informByStudentId},
+                    #{informContent},now(),
+                   '待审核',#{informType},#{informTel},#{acttitle},#{actaward})
+    </insert>
+    <!--根据teamId查询team里的学生id-->
+    <select id="studentIdByteamID" resultType="String" parameterType="String">
+        SELECT studentID FROM r_student_team WHERE teamId=#{infomTeamID}
+    </select>
+</mapper>

@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2011 (http://www.altova.com) by liuzg (neu) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:element name="app">
+		<xs:complexType>
+			<xs:choice>
+				<xs:group ref="allcontrols"/>
+				<xs:element ref="javascript"/>
+				<xs:element name="test">
+					<xs:complexType>
+						<xs:attribute name="id" use="required"/>
+						<xs:attribute name="name"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+			<xs:attribute name="title" use="optional" default="网页标题"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="button">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:group ref="jscmds" minOccurs="0"/>
+				<xs:group ref="jslogic"/>
+			</xs:sequence>
+			<xs:attribute name="id" type="xs:ID" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="toolbarline">
+		<xs:complexType>
+			<xs:group ref="basiccontrols" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="toolbar">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="toolbarline" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:group ref="basiccontrols" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="datagrid">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="toolbar" minOccurs="0"/>
+				<xs:element name="headers">
+					<xs:complexType>
+						<xs:attribute name="sql" use="required"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="id" type="xs:ID" use="required"/>
+			<xs:attribute name="title" type="xs:string" use="required"/>
+			<xs:attribute name="url" type="xs:string" use="required"/>
+			<xs:attribute name="height" type="xs:string"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="dialog">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="buttons" minOccurs="1">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="button" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="content" minOccurs="1">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:group ref="allcontrols" minOccurs="0" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element ref="toolbar" minOccurs="0"/>
+			</xs:sequence>
+			<xs:attribute name="id" type="xs:ID" use="required"/>
+			<xs:attribute name="title" type="xs:string" use="required"/>
+			<xs:attribute name="width" type="xs:string"/>
+			<xs:attribute name="height" type="xs:string"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="combobox">
+		<xs:complexType>
+			<xs:attribute name="id" type="xs:ID" use="required"/>
+			<xs:attribute name="url" type="xs:string"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="label">
+		<xs:complexType>
+			<xs:attribute name="id" type="xs:ID"/>
+			<xs:attribute name="text" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="panel">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="toolbarline"/>
+				<xs:element name="content">
+					<xs:complexType>
+						<xs:group ref="allcontrols"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="id" type="xs:ID" use="required"/>
+			<xs:attribute name="title" type="xs:string" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:group name="basiccontrols">
+		<xs:sequence>
+			<xs:element ref="button" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element ref="combobox" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element ref="label" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="allcontrols">
+		<xs:sequence>
+			<xs:group ref="basiccontrols" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:group ref="containers" minOccurs="0"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="containers">
+		<xs:sequence>
+			<xs:element ref="datagrid" minOccurs="0"/>
+			<xs:element ref="panel" minOccurs="0"/>
+			<xs:element ref="dialog" minOccurs="0"/>
+			<xs:element ref="form" minOccurs="0"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:element name="form">
+		<xs:complexType>
+			<xs:attribute name="id" type="xs:ID"/>
+			<xs:attribute name="method" type="xs:string" default="post"/>
+			<xs:attribute name="url" type="xs:string"/>
+			<xs:attribute name="fieldsql" type="xs:string"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="javascript">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="startup" minOccurs="0">
+					<xs:complexType>
+						<xs:group ref="jscmds"/>
+					</xs:complexType>
+				</xs:element>
+				<xs:element ref="function" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:group name="jscmds">
+		<xs:sequence>
+			<xs:element ref="formload" minOccurs="0"/>
+			<xs:element ref="formreset" minOccurs="0"/>
+			<xs:element ref="formsubmit" minOccurs="0"/>
+			<xs:element ref="dialogclose" minOccurs="0"/>
+			<xs:element ref="dialogopen" minOccurs="0"/>
+			<xs:element ref="dialogtitle" minOccurs="0"/>
+			<xs:element ref="alert" minOccurs="0"/>
+			<xs:element ref="datagridreload" minOccurs="0"/>
+			<xs:element ref="datagridselected" minOccurs="0"/>
+			<xs:element ref="panelopen" minOccurs="0"/>
+			<xs:element ref="panelclose" minOccurs="0"/>
+			<xs:element ref="messagerfade" minOccurs="0"/>
+			<xs:element ref="messagerprogressclose" minOccurs="0"/>
+			<xs:element ref="messagerprogressopen" minOccurs="0"/>
+			<xs:element ref="messagershow" minOccurs="0"/>
+			<xs:element ref="messagerslide" minOccurs="0"/>
+			<xs:element ref="formloaddata" minOccurs="0"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:element name="formload">
+		<xs:complexType>
+			<xs:attribute name="formid" use="required"/>
+			<xs:attribute name="url" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="formreset">
+		<xs:complexType>
+			<xs:attribute name="formid" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="formsubmit">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:group ref="jscmds"/>
+			</xs:sequence>
+			<xs:attribute name="formid" use="required"/>
+			<xs:attribute name="url" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="function">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:group ref="jscmds"/>
+				<xs:group ref="jslogic"/>
+			</xs:sequence>
+			<xs:attribute name="name" use="required"/>
+			<xs:attribute name="parameters"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="dialogclose">
+		<xs:complexType>
+			<xs:attribute name="dialogid"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="dialogopen">
+		<xs:complexType>
+			<xs:attribute name="dialogid"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="alert">
+		<xs:complexType>
+			<xs:attribute name="text" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="datagridreload">
+		<xs:complexType>
+			<xs:attribute name="datagridid" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="datagridselected">
+		<xs:complexType>
+			<xs:attribute name="datagridid" use="required"/>
+			<xs:attribute name="var" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="panelopen">
+		<xs:complexType>
+			<xs:attribute name="panelid" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="panelclose">
+		<xs:complexType>
+			<xs:attribute name="panelid" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="messagerfade">
+		<xs:complexType>
+			<xs:attribute name="title" use="required"/>
+			<xs:attribute name="msg" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="messagerprogressclose"/>
+	<xs:element name="messagerprogressopen">
+		<xs:complexType>
+			<xs:attribute name="title" use="required"/>
+			<xs:attribute name="msg" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="messagershow">
+		<xs:complexType>
+			<xs:attribute name="title" use="required"/>
+			<xs:attribute name="msg" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="messagerslide">
+		<xs:complexType>
+			<xs:attribute name="title" use="required"/>
+			<xs:attribute name="msg" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="dialogtitle">
+		<xs:complexType>
+			<xs:attribute name="dialogid" use="required"/>
+			<xs:attribute name="title" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:group name="jslogic">
+		<xs:sequence>
+			<xs:element ref="if"/>
+			<xs:element ref="else"/>
+			<xs:element ref="elseif"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:element name="if">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:group ref="jscmds"/>
+				<xs:group ref="jslogic"/>
+			</xs:sequence>
+			<xs:attribute name="condition" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="else">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:group ref="jscmds"/>
+				<xs:group ref="jslogic"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="elseif">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:group ref="jscmds"/>
+				<xs:group ref="jslogic"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="formloaddata">
+		<xs:complexType>
+			<xs:attribute name="formid" use="required"/>
+			<xs:attribute name="var" use="required"/>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

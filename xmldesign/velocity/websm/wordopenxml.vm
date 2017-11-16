@@ -1,0 +1,3 @@
+#set($templatefile=$xml.xpathobj($elem,"./@templatefile"))
+#set($outfile=$xml.xpathobj($elem,"./@outfile"))
+<!--未完成 word open xml -->

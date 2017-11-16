@@ -1,0 +1,28 @@
+#*
+elem:
+	<json id="tasklist">
+		<sqljson key="tasks" datatype="list">
+			<sql><![CDATA[call db.procedure(${compid},${ttaskstatus});]]></sql>
+		</sqljson>
+		<setvar key="rows" jsonJxpath="." mapJxpath="./tasks"/>
+	</json>
+* *#
+#set($id=$xml.xpathobj($elem,"./@id"))
+#set($items=$xml.xpathobjs($elem,"./*"))
+<bean id="${id}" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+#foreach($item in $items)##
+                    $velocity.render("${basedir}/xmldesign/velocity/jsonsm/${item.name}.vm",{
+                        "elem":$item
+                    })
+#end
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>

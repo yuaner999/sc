@@ -1,0 +1,17 @@
+#*
+elem:
+    <toolbarline>
+        <button id="tool_add"/>
+        <button id="tool_edit"/>
+        <button id="tool_delete"/>
+    </toolbarline>
+* *#
+#set($items=$xml.xpathobjs($elem,"./*"))
+<div>
+#foreach($item in $items)##
+    #set($nodename=$item.name)##
+    $velocity.render("${basedir}/xmldesign/velocity/easyui/${nodename}.vm",{
+        "elem":$item
+    })##
+#end
+</div>

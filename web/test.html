@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="/asset/js/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            $("#btn").click(function(){
+                var str="";
+                for(var i=0;i<=20;i++){
+                    str=str+"a"+i+"|";
+                }
+                console.log(str);
+                console.log("----------------------------");
+                $.ajax({
+                    url:"/printTranscript/getPoint.form",
+                    data:{applyid:str},
+                    type:"post",
+                    dataType:"text",
+                    success:function(data){
+                        console.log(data);
+                        $("#result").html(data);
+                    }
+                });
+            });
+        })
+    </script>
+</head>
+<body>
+<input id="btn" type="button" value="test">
+<div id="result"></div>
+</body>
+</html>

@@ -1,0 +1,9 @@
+#set($condition=$xml.xpathobj($elem,"./@condition"))
+#set($items=$xml.xpathobjs($elem,"./*"))
+if($condition){
+#foreach($item in $items)##
+    $velocity.render("${basedir}/xmldesign/velocity/easyui/jscmds/${item.name}.vm",{
+        "elem":$item
+    })##
+#end
+}

@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.dao.interfaces.StudentDao">
+    <!--查询如何支持项目-->
+    <insert id="saveStudents" parameterType="com.model.Student">
+        INSERT INTO student
+        (studentID,studentPwd,studentName,studentUsedName,studentPhoto,studentGender,studentNation,studentBirthday,
+        studentNativePlace,studentFamilyAddress,studentFamilyPostcode,studentIdCard,studentPhone,studentQQ,
+        studentEmail,foreignLanguage,faith,politicsStatus,politicsStatusDate,usiCampus,usiClassId,usiBuilding, usiRoomNumber,
+        entranceDate, educationLength,trainingMode,orientationUnit,enrollType,schoolRollStatus,studentLeader,ceeOrigin,ceeNumber,
+        ceeProvince,ceeCity,ceeHighSchool)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.studentID,jdbcType=VARCHAR},
+            #{item.studentPwd,jdbcType=VARCHAR},
+            #{item.studentName,jdbcType=VARCHAR},
+            #{item.studentUsedName,jdbcType=VARCHAR},
+            #{item.studentPhoto,jdbcType=VARCHAR},
+            #{item.studentGender,jdbcType=VARCHAR},
+            #{item.studentNation,jdbcType=VARCHAR},
+            #{item.studentBirthday,jdbcType=TIMESTAMP},
+            #{item.studentNativePlace,jdbcType=VARCHAR},
+            #{item.studentFamilyAddress,jdbcType=VARCHAR},
+            #{item.studentFamilyPostcode,jdbcType=VARCHAR},
+            #{item.studentIdCard,jdbcType=VARCHAR},
+            #{item.studentPhone,jdbcType=VARCHAR},
+            #{item.studentQQ,jdbcType=VARCHAR},
+            #{item.studentEmail,jdbcType=VARCHAR},
+            #{item.foreignLanguage,jdbcType=VARCHAR},
+            #{item.faith,jdbcType=VARCHAR},
+            #{item.politicsStatus,jdbcType=VARCHAR},
+            #{item.politicsStatusDate,jdbcType=TIMESTAMP},
+            #{item.usiCampus,jdbcType=VARCHAR},
+            #{item.usiClassId,jdbcType=VARCHAR},
+            #{item.usiBuilding,jdbcType=VARCHAR},
+            #{item.usiRoomNumber,jdbcType=VARCHAR},
+            #{item.entranceDate,jdbcType=VARCHAR},
+            #{item.educationLength,jdbcType=VARCHAR},
+            #{item.trainingMode,jdbcType=VARCHAR},
+            #{item.orientationUnit,jdbcType=VARCHAR},
+            #{item.enrollType,jdbcType=VARCHAR},
+            #{item.schoolRollStatus,jdbcType=VARCHAR},
+            #{item.studentLeader,jdbcType=VARCHAR},
+            #{item.ceeOrigin,jdbcType=VARCHAR},
+            #{item.ceeNumber,jdbcType=VARCHAR},
+            #{item.ceeProvince,jdbcType=VARCHAR},
+            #{item.ceeCity,jdbcType=VARCHAR},
+            #{item.ceeHighSchool,jdbcType=VARCHAR})
+        </foreach>
+    </insert>
+
+    <!--查询批量导入的数据和数据库中的数据有重复-->
+    <select id="getKeys" parameterType="map" resultType="string">
+        SELECT studentID FROM student WHERE studentID IN
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item.studentID,jdbcType=VARCHAR}
+        </foreach>
+    </select>
+
+    <!--* 批量删除-->
+    <delete id="deleteMore" parameterType="list">
+      delete from   student where   studentID IN
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item,jdbcType=VARCHAR}
+        </foreach>
+    </delete>
+
+    <!--* 获取所有的班级名称-->
+    <select id="getClassName" resultType="map">
+      select classId,className from class where isDelete='0'
+    </select>
+
+    <!--* 获取学生信息，通过学号-->
+    <select id="getStudentById" parameterType="string" resultType="com.model.Student_Decoding">
+        select  * from    student WHERE studentID=#{0}
+    </select>
+
+    <!--* 找回密码用到的验证码-->
+    <insert id="saveFindPwdCode" parameterType="string">
+        INSERT INTO findpwdcode (id, studentID,validateID,createtime,isdisable) VALUES (uuid(),#{0},#{1},now(),0)
+    </insert>
+
+    <!--* 加载 && 搜索-->
+    <select id="loadStudents" resultType="com.model.Student_Decoding" parameterType="map">
+        select studentID,studentName,studentUsedName,studentPhoto,studentGender,studentNation,
+        studentNativePlace,studentFamilyAddress,studentFamilyPostcode,studentIdCard,studentPhone,studentQQ,
+        studentEmail,foreignLanguage,faith,politicsStatus,usiCampus,usiClassId,usiBuilding, usiRoomNumber,
+        entranceDate, educationLength,trainingMode,orientationUnit,enrollType,schoolRollStatus,studentLeader,ceeOrigin,ceeNumber,
+        ceeProvince,ceeCity,ceeHighSchool,className,collegeId,collegeName,isNow,instructorId,instructorName,
+         studentBirthday,
+         politicsStatusDate
+         from wh_student_collage_instructor
+        <where>
+            <if test="studentID != null and studentID !='' ">
+                AND   studentID=#{studentID}
+            </if>
+            <if test="studentName != null and studentName !='' ">
+                AND   studentName=#{studentName}
+            </if>
+            <if test="studentUsedName != null and studentUsedName !='' ">
+                AND   studentUsedName like concat('%',#{studentUsedName},'%')
+            </if>
+            <if test="studentGender != null and studentGender !='' ">
+                AND   studentGender=#{studentGender}
+            </if>
+            <if test="studentNation != null and studentNation !='' ">
+                AND   studentNation like concat('%',#{studentNation},'%')
+            </if>
+            <if test="studentNativePlace != null and studentNativePlace !='' ">
+                AND   studentNativePlace like concat('%',#{studentNativePlace},'%')
+            </if>
+            <if test="studentFamilyAddress != null and studentFamilyAddress !='' ">
+                AND studentFamilyAddress like concat('%',#{studentFamilyAddress},'%')
+            </if>
+            <if test="studentIdCard != null and studentIdCard !='' ">
+                AND   studentIdCard=#{studentIdCard}
+            </if>
+            <if test="studentPhone != null and studentPhone !='' ">
+                AND   studentPhone=#{studentPhone}
+            </if>
+            <if test="foreignLanguage != null and foreignLanguage !='' ">
+                AND   foreignLanguage=#{foreignLanguage}
+            </if>
+            <if test="faith != null and faith !='' ">
+                AND    faith like concat('%',#{faith},'%')
+            </if>
+            <if test="politicsStatus != null and politicsStatus !='' ">
+                AND  politicsStatus like =#{politicsStatus}
+            </if>
+            <if test="politics_STime != null and politics_STime !='' ">
+                AND   datediff(politicsStatusDate,#{politics_STime})>=0
+            </if>
+            <if test="politics_ETime != null and politics_ETime !='' ">
+                AND   datediff(politicsStatusDate,#{politics_ETime})&lt;=0
+            </if>
+            <if test="usiCampus != null and usiCampus !='' ">
+                AND  usiCampus =#{usiCampus}
+            </if>
+            <if test="usiClassId != null and usiClassId !='' ">
+                AND   usiClassId=#{usiClassId}
+            </if>
+            <if test="usiBuilding != null and usiBuilding !='' ">
+                AND    usiBuilding like concat('%',#{usiBuilding},'%')
+            </if>
+            <if test="usiRoomNumber != null and usiRoomNumber !='' ">
+                AND   usiRoomNumber=#{usiRoomNumber}
+            </if>
+            <if test="entranceDate != null and entranceDate !='' ">
+                AND   entranceDate like concat('%',#{entranceDate},'%')
+            </if>
+            <if test="educationLength != null and educationLength !='' ">
+                AND   educationLength=#{educationLength}
+            </if>
+            <if test="trainingMode != null and trainingMode !='' ">
+                AND   trainingMode=#{trainingMode}
+            </if>
+            <if test="orientationUnit != null and orientationUnit !='' ">
+                AND  orientationUnit like concat('%',#{orientationUnit},'%')
+            </if>
+            <if test="enrollType != null and enrollType !='' ">
+                AND   enrollType=#{enrollType}
+            </if>
+            <if test="schoolRollStatus != null and schoolRollStatus !='' ">
+                AND   schoolRollStatus=#{schoolRollStatus}
+            </if>
+            <if test="studentLeader != null and studentLeader !='' ">
+                AND  studentLeader like concat('%',#{studentLeader},'%')
+            </if>
+            <if test="ceeOrigin != null and ceeOrigin !='' ">
+                AND ceeOrigin like concat('%',#{ceeOrigin},'%')
+            </if>
+            <if test="ceeNumber != null and ceeNumber !='' ">
+                AND   ceeNumber=#{ceeNumber}
+            </if>
+            <if test="ceeProvince != null and ceeProvince !='' ">
+                AND  ceeProvince like concat('%',#{ceeProvince},'%')
+            </if>
+            <if test="ceeCity != null and ceeCity !='' ">
+                AND    ceeCity like concat('%',#{ceeCity},'%')
+            </if>
+            <if test="ceeHighSchool != null and ceeHighSchool !='' ">
+                AND   ceeHighSchool like concat('%',#{ceeHighSchool},'%')
+            </if>
+            <if test="collegeid != null and collegeid !='' ">
+                AND   collegeid=#{collegeid}
+            </if>
+            <if test="instructorid != null and instructorid !='' ">
+                AND   instructorid=#{instructorid}
+            </if>
+        </where>
+        group by studentID
+            order by studentID desc
+    </select>
+
+    <!--* 新建学生信息-->
+    <insert id="addStudent"  parameterType="com.model.Student_Encoding">
+<![CDATA[
+            INSERT INTO student
+                (studentID,studentName,studentUsedName,studentPhoto,studentGender,studentNation,studentBirthday,
+                studentNativePlace,studentFamilyAddress,studentFamilyPostcode,studentIdCard,studentPhone,studentQQ,
+                studentEmail,foreignLanguage,faith,politicsStatus,politicsStatusDate,usiCampus,usiClassId,usiBuilding, usiRoomNumber,
+                entranceDate, educationLength,trainingMode,orientationUnit,enrollType,schoolRollStatus,studentLeader,ceeOrigin,ceeNumber,
+                ceeProvince,ceeCity,ceeHighSchool)
+            VALUES
+                (#{studentID},#{studentName},#{studentUsedName},#{studentPhoto},#{studentGender},#{studentNation},#{studentBirthday},#{studentNativePlace},
+                #{studentFamilyAddress},#{studentFamilyPostcode},#{studentIdCard},#{studentPhone},#{studentQQ},#{studentEmail},#{foreignLanguage},#{faith},
+                #{politicsStatus},#{politicsStatusDate},#{usiCampus},#{usiClassId},#{usiBuilding},#{usiRoomNumber},#{entranceDate},#{educationLength},#{trainingMode},
+                #{orientationUnit},#{enrollType},#{schoolRollStatus},#{studentLeader},#{ceeOrigin},#{ceeNumber},#{ceeProvince},#{ceeCity},#{ceeHighSchool})
+                    ]]>
+    </insert>
+
+    <!--* 修改学生信息-->
+    <update id="editStudent" parameterType="com.model.Student_Encoding">
+      <![CDATA[
+                UPDATE student
+                SET
+                    studentName = #{studentName},
+                    studentUsedName = #{studentUsedName},
+                    studentPhoto = #{studentPhoto},
+                    studentGender = #{studentGender},
+                    studentNation = #{studentNation},
+                    studentBirthday = #{studentBirthday},
+                    studentNativePlace = #{studentNativePlace},
+                    studentFamilyAddress = #{studentFamilyAddress},
+                    studentFamilyPostcode = #{studentFamilyPostcode},
+                    studentIdCard = #{studentIdCard},
+                    studentPhone = #{studentPhone},
+                    studentQQ = #{studentQQ},
+                    studentEmail = #{studentEmail},
+                    foreignLanguage = #{foreignLanguage},
+                    faith = #{faith},
+                    politicsStatus = #{politicsStatus},
+                    politicsStatusDate = #{politicsStatusDate},
+                    usiClassId = #{usiClassId},
+                    usiCampus = #{usiCampus},
+                    usiBuilding = #{usiBuilding},
+                    usiRoomNumber = #{usiRoomNumber},
+                    entranceDate = #{entranceDate},
+                    educationLength = #{educationLength},
+                    trainingMode = #{trainingMode},
+                    orientationUnit = #{orientationUnit},
+                    enrollType = #{enrollType},
+                    schoolRollStatus = #{schoolRollStatus},
+                    studentLeader = #{studentLeader}
+                WHERE studentID = #{studentID}
+                ]]>    
+    </update>
+
+    <!--* 加载——学制-->
+    <select id="loadeducationLength" resultType="string">
+      select educationLength from student group by educationLength order by educationLength
+    </select>
+
+    <!--* 培养方式-->
+    <select id="loadtrainingMode" resultType="string">
+          select trainingMode from student group by trainingMode order by trainingMode
+    </select>
+
+    <!--* 招生类别-->
+    <select id="loadenrollType" resultType="string">
+         select enrollType from student group by enrollType order by trainingMode
+    </select>
+
+    <!--* 学籍状态-->
+    <select id="loadschoolRollStatus" resultType="string">
+        select schoolRollStatus from student group by schoolRollStatus order by schoolRollStatus
+    </select>
+
+    <!--* 前端页面用，加载学生个人信息-->
+    <select id="loadStudentInfo" resultType="com.model.Student_Decoding" parameterType="string">
+            select * from wh_student_collage_instructor where studentID=#{0}
+    </select>
+    <!--* 用于学生修改信息 需要通过学生的id判断开启状态 和时间  用不到-->
+    <!--<select id="loadModiyStudentInfo" resultType="list" parameterType="String">-->
+        <!--SELECT studentID,studentName,studentUsedName,studentPhoto,studentGender,studentNation,-->
+        <!--studentNativePlace,studentFamilyAddress,studentFamilyPostcode,studentIdCard,studentPhone,studentQQ,-->
+        <!--studentEmail,foreignLanguage,faith,politicsStatus,usiCampus,usiClassId,usiBuilding, usiRoomNumber,-->
+        <!--entranceDate, educationLength,trainingMode,orientationUnit,enrollType,schoolRollStatus,studentLeader,ceeOrigin,ceeNumber,-->
+        <!--ceeProvince,ceeCity,ceeHighSchool,className,collegeId,collegeName,isNow,instructorId,instructorName,-->
+        <!--studentBirthday,politicsStatusDate,-->
+        <!--confStartdate,confEnddate-->
+        <!--FROM`jd_studentmodify` WHERE NOW() BETWEEN-->
+        <!--&lt;!&ndash;<where>&ndash;&gt;-->
+            <!--&lt;!&ndash;<if test="studentID != null ">&ndash;&gt;-->
+                <!--&lt;!&ndash;AND   studentID =${studentID}&ndash;&gt;-->
+            <!--&lt;!&ndash;</if>&ndash;&gt;-->
+            <!--&lt;!&ndash;<if test="confStartdate != null ">&ndash;&gt;-->
+                <!--&lt;!&ndash;AND  NOW() >= (SELECT confStartdate FROM`jd_studentmodify` WHERE studentID =${studentID})&ndash;&gt;-->
+            <!--&lt;!&ndash;</if>&ndash;&gt;-->
+            <!--&lt;!&ndash;<if test="confEnddate != null ">&ndash;&gt;-->
+               <!--&lt;!&ndash;AND DATEDIFF ((SELECT confEnddate FROM`jd_studentmodify` WHERE studentID =${studentID}),NOW())>0&ndash;&gt;-->
+            <!--&lt;!&ndash;</if>&ndash;&gt;-->
+        <!--&lt;!&ndash;</where>&ndash;&gt;-->
+        <!--(SELECT confStartdate FROM`jd_studentmodify` WHERE studentID =${studentID})-->
+        <!--AND (SELECT confEnddate FROM`jd_studentmodify` WHERE studentID =${studentID})-->
+        <!--group by studentID-->
+        <!--order by studentID desc-->
+        <!--&#45;&#45;         (SELECT confStartdate FROM`jd_studentmodify` WHERE studentID =${studentID})-->
+        <!--&#45;&#45;         AND (SELECT confEnddate FROM`jd_studentmodify` WHERE studentID =${studentID});-->
+    <!--</select>-->
+</mapper>

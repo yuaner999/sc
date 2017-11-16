@@ -1,0 +1,127 @@
+.dialog{
+    position: absolute;
+    top: 152px;
+    left: 50%;
+    z-index: 100;
+    width: 1026px;
+    height: 748px;
+    margin-left: -513px;
+    border: 1px solid #197FFE;
+    /*margin: 250px auto;*/
+    background-color: #FFFFFF;
+    display:none;
+}
+/*弹出层*/
+.popup{
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 10;
+    width: 100%;
+    height: 100%;
+    opacity: 0.8;
+    filter: alpha(opacity=50);
+    background-color: #a1a1a1;
+    display: none;
+}
+/*头部*/
+.dialog>.header{
+    position: relative;
+    height: 45px;
+    background-color: #1990fe;
+}
+.dialog>.header>span{
+    display: inline-block;
+    /*background-color: pink;*/
+    line-height: 45px;
+    margin-left: 15px;
+    color: #FFFFFF;
+    width: 130px;
+    text-align: center;
+    font-size: 14px;
+    background-image: url(../img/icon_new_new.png);
+    background-repeat: no-repeat;
+    background-position: 5px 14px;
+}
+.dialog>.header>.iconConcel{
+    display: inline-block;
+    position: absolute;
+    width: 20px;
+    height: 45px;
+    right: 20px;
+    cursor: pointer;
+    background-image: url(../img/icon_new_cancel.png);
+    background-repeat: no-repeat;
+    background-position: 5px 14px;
+}
+/*信息页面*/
+/*.dialog .messagePage{*/
+    /*position: relative;*/
+    /*height: 590px;*/
+    /*text-align: center;*/
+    /*overflow-y: auto;*/
+    /*padding-top: 20px;*/
+/*}*/
+/*.messagePage>table{*/
+    /*position: relative;*/
+    /*text-align: left;*/
+    /*display: inline-block;*/
+/*}*/
+/*.messagePage .space{*/
+    /*display: inline-block;*/
+    /*width: 150px;*/
+/*}*/
+/*.messagePage td{*/
+    /*word-break: keep-all;*/
+    /*white-space: nowrap;*/
+    /*display: inline-block;*/
+    /*text-align: left;*/
+    /*padding: 5px 0;*/
+/*}*/
+/*.messagePage .imgTd{*/
+    /*position: relative;*/
+/*}*/
+/*table img{*/
+    /*position: absolute;*/
+    /*font-size: 0;*/
+    /*left: 0;*/
+    /*top: 0;*/
+    /*width: 200px;*/
+/*}*/
+/*.messagePage .nameTd{*/
+    /*font-size: 14px;*/
+    /*color: #1990FE;*/
+    /*width: 100px;*/
+    /*overflow: hidden;*/
+    /*text-overflow: ellipsis;*/
+/*}*/
+/*.messagePage .valueTd{*/
+    /*width: 150px;*/
+/*}*/
+/*.messagePage .valueTd>input{*/
+    /*width: 100%;*/
+/*}*/
+/*.messagePage .valueTd>select{*/
+    /*width: 105%;*/
+/*}*/
+/*按钮*/
+.dialog>.new_buttons{
+    position: absolute;
+    bottom: 42px;
+    right: 30px;
+    margin-top: 40px;
+}
+.dialog>.new_buttons>input{
+    width: 134px;
+    height: 34px;
+    font-size: 16px;
+    color: #1990FE;
+    margin-left: 20px;
+    border: 1px solid #1990FE;
+    background-color: #e9f6ff;
+    cursor: pointer;
+}
+.dialog>.new_buttons>input[value=取消]{
+    color: #FFFFFF;
+    background-color: #197FFE;
+}

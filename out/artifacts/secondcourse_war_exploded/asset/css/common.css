@@ -1,0 +1,86 @@
+*{
+	margin: 0px;
+	padding: 0px;
+	font-family: "微软雅黑";
+}
+img{
+	border: 0px;
+	border-style: none;
+}
+a{
+	text-decoration: none;
+	color: #000000;
+}
+.no_select{
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	-khtml-user-select: none;
+	user-select: none;
+}
+/*easyui对话框   start  */
+.fitem {
+	margin-bottom: 10px;
+	margin-top: 10px;
+	/*width: 310px;*/
+	/*float: left;*/
+}
+#reason{
+	width:300px;
+	height:100px;
+	max-width: 300px;
+	min-width: 300px;
+}
+/*设置奖罚和退学中的字体*/
+.fitem .label{
+	font-family: "微软雅黑";
+	font-size: 15px;
+	height: 30px;
+	line-height: 30px;
+	padding-left: 10px;
+	color: #0E2D5F;
+}
+.fitem label {
+	display: inline-block;
+	text-align: right;
+	width: 120px;
+}
+.fitem  .input_ele {
+	display: inline-block;
+	width: 200px;
+}
+/*easyui对话框  end  */
+.text_{
+	display: inline-block;
+	width: 210px;
+	text-align: right;
+	white-space: nowrap;
+	margin: 3px 0 3px 0;
+}
+.item{
+	margin: 0 0 3px 0;
+	padding: 3px 0 6px 0;
+	border-bottom: 1px solid #eeeeee;
+}
+.input_item{
+	width: 110px;
+}
+#userphoto_box{
+	float: right;
+	overflow: hidden;
+	width: 210px;
+	height: 200px;
+}
+#studentLeader ,.input_area{
+	height: 100px;
+	min-width: 150px;
+	min-height: 100px;
+	max-width: 400px;
+	max-height: 100px;
+	border: 1px solid #95B8E7;
+	border-radius: 6px;
+}
+._flag{
+	color:red;
+	display: none;
+}

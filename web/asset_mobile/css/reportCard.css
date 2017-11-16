@@ -1,0 +1,355 @@
+.flex {
+  display: flex;
+  display: -webkit-flex;
+}
+.alignCenter {
+  display: flex;
+  display: -webkit-flex;
+  -webkit-align-items: center;
+  align-items: center;
+}
+.formRow {
+  padding: 0 17px;
+  background: #fff;
+  margin-bottom: 8px;
+}
+.formRow .row {
+  height: 48px;
+  width: 100%;
+  display: flex;
+  display: -webkit-flex;
+  -webkit-align-items: center;
+  align-items: center;
+  position: relative;
+}
+.formRow .row + .row {
+  border-top: 1px solid #dedede;
+}
+.formRow .row > *:first-child {
+  width: 70px;
+}
+.formRow .row > *:first-child + * {
+  -webkit-flex: 1;
+  flex: 1;
+}
+.formRow .row > *:first-child + input {
+  border: 0;
+  padding: 0;
+  height: 25px;
+}
+.formRow .row .select {
+  justify-content: flex-end;
+  -webkit-justify-content: flex-end;
+}
+.formRow .row .select span {
+  margin-right: 20px;
+  color: #868686;
+}
+.formRow .row select {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}
+.formRow .row .radio {
+  display: flex;
+  display: -webkit-flex;
+}
+.formRow .row .radio label {
+  position: relative;
+  display: flex;
+  display: -webkit-flex;
+  -webkit-align-items: center;
+  align-items: center;
+  margin-right: 18px;
+}
+.formRow .row .radio label i {
+  width: 12px;
+  height: 12px;
+  margin-right: 6px;
+  border-radius: 50%;
+  border: 1px solid #5c85ef;
+  position: relative;
+}
+.formRow .row .radio label input[type=radio] {
+  opacity: 0;
+  position: absolute;
+}
+.formRow .row .radio label input[type=radio]:checked + i:after {
+  content: "";
+  width: 4px;
+  height: 4px;
+  background: #5c85ef;
+  border-radius: 50%;
+  position: absolute;
+  top: 3px;
+  left: 3px;
+}
+.formRow .row .score {
+  display: flex;
+  display: -webkit-flex;
+  -webkit-align-items: center;
+  align-items: center;
+}
+.formRow .row .score span {
+  -webkit-flex: 1;
+  flex: 1;
+}
+.formRow .row .score a {
+  color: #ff775c;
+}
+.formRow .checkBox {
+  padding-bottom: 8px;
+  display: flex;
+  display: -webkit-flex;
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
+}
+.formRow .checkBox label {
+  width: 33.333%;
+  justify-content: center;
+  -webkit-justify-content: center;
+  text-align: center;
+  color: #757575;
+  position: relative;
+  padding-bottom: 8px;
+}
+.formRow .checkBox label * {
+  vertical-align: middle;
+}
+.formRow .checkBox label i {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  border: 1px solid #5c85ef;
+  border-radius: 3px;
+  margin-right: 12px;
+  position: relative;
+}
+.formRow .checkBox label input[type=checkbox] {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}
+.formRow .checkBox label input[type=checkbox]:checked + i:after {
+  content: "";
+  width: 6px;
+  height: 6px;
+  background: #5c85ef;
+  position: absolute;
+  top: 4px;
+  left: 4px;
+}
+.flex1 {
+  -webkit-flex: 1;
+  flex: 1;
+}
+.r {
+  -webkit-transition: all .2s;
+  transition: all .2s;
+  border-right: 2px solid #e0e0e0;
+  border-top: 2px solid #E0E0E0;
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
+  width: 12px;
+  height: 12px;
+}
+.btnBox {
+  margin-top: 40px;
+  padding: 0 17px;
+}
+.btnBox button {
+  display: block;
+  width: 100%;
+  color: #fff;
+  background: #5c85ef;
+  height: 40px;
+  border: 0;
+}
+.icon {
+  background: url(../images/icons.png) no-repeat;
+  background-size: 21px 70px;
+}
+.func {
+  position: fixed;
+  z-index: 2;
+  background: #fff;
+  padding: 0 10px;
+  height: 48px;
+  width: 100%;
+  left: 0;
+  top: 0;
+  display: flex;
+  display: -webkit-flex;
+  -webkit-align-items: center;
+  align-items: center;
+}
+.func b {
+  -webkit-flex: 1;
+  flex: 1;
+}
+.func div {
+  display: flex;
+  display: -webkit-flex;
+  -webkit-align-items: center;
+  align-items: center;
+}
+.func div a {
+  margin-left: 36px;
+}
+.func div a.eye {
+  width: 20.5px;
+  height: 13px;
+  background-position: 0 -57px;
+}
+.func div a.add {
+  width: 19px;
+  height: 19px;
+  background-position: 0 -38px;
+}
+.func div a.delete {
+  width: 15px;
+  height: 19.5px;
+  background-position: 0 0;
+}
+.list {
+  padding-top: 56px;
+}
+.list .category + .category {
+  border-top: 1px solid #e9edf4;
+}
+.list .category.active h1 .r {
+  -webkit-transform: rotate(135deg);
+  transform: rotate(135deg);
+}
+.list .category.active .box {
+  height: auto;
+  -webkit-transform: scaleY(1);
+  transform: scaleY(1);
+}
+.list .category .box {
+  -webkit-transform: scaleY(0);
+  transform: scaleY(0);
+  transform-origin: top;
+  -webkit-transform-origin: top;
+  -webkit-transition: all .2s;
+  transition: all .2s;
+  overflow: hidden;
+  height: 0;
+}
+.list .activity {
+  margin-bottom: 0;
+  border-top: 1px solid #e9edf4;
+}
+.list + .list {
+  border-top: 1px solid #e9edf4;
+}
+.list h1 {
+  padding: 0 17px;
+  height: 48px;
+  display: flex;
+  display: -webkit-flex;
+  -webkit-align-items: center;
+  align-items: center;
+  font-size: 14px;
+  background: #fff;
+}
+.list h1 span {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.list h1 .blue {
+  -webkit-flex: 1;
+  flex: 1;
+  margin-left: 8px;
+  color: #5c85ef;
+}
+.list h1 .blue .red {
+  color: #f98777;
+}
+.list h1 .r {
+  border-color: #757575;
+  -webkit-transition: all .2s;
+  transition: all .2s;
+}
+.list .activity .top .right {
+  color: #424242;
+}
+.list .activity > p {
+  position: relative;
+  transition: .2s all;
+}
+.list .activity > p .text {
+  display: block;
+  color: #757575;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-bottom: 20px;
+}
+.list .activity > p .handle {
+  display: flex;
+  display: -webkit-flex;
+}
+.list .activity > p .handle b {
+  margin-right: 15px;
+}
+.list .activity > p .handle b:nth-of-type(2) {
+  -webkit-flex: 1;
+  flex: 1;
+}
+.list .activity > p .handle .icon {
+  width: 18.5px;
+  height: 18.5px;
+  background-position: 0 -19.5px;
+}
+.list .activity > p label {
+  display: none;
+  position: absolute;
+  top: -1px;
+  left: 0;
+  justify-content: center;
+  -webkit-justify-content: center;
+  text-align: center;
+  color: #757575;
+}
+.list .activity > p label * {
+  vertical-align: middle;
+}
+.list .activity > p label i {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  border: 1px solid #5c85ef;
+  border-radius: 3px;
+  position: relative;
+}
+.list .activity > p label input[type=checkbox] {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}
+.list .activity > p label input[type=checkbox]:checked + i:after {
+  content: "";
+  width: 6px;
+  height: 6px;
+  background: #5c85ef;
+  position: absolute;
+  top: 4px;
+  left: 4px;
+}
+.list .activity.active > p {
+  padding-left: 30px;
+}
+.list .activity.active label {
+  display: block;
+}

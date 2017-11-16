@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.dao.interfaces.SysStatisicDao">
+
+    <!--* 多少用户-->
+    <select id="howManyUsed" resultType="int" parameterType="map">
+      select count(*) as num from (select a.studentid FROM secondcourse.statistics_times_byday a
+      join student b on a.studentid = b.studentID
+       where 1 = 1
+      AND case when #{classId} is not null and #{classId}&lt;&gt;'' then b.stuClassName = #{classId} else 1=1 end
+      AND case when #{collegeId} is not null and #{collegeId}&lt;&gt;'' then b.stuCollageName = #{collegeId} else 1=1 end
+      group by studentid) t
+    </select>
+
+    <!--* 多少人参加活动-->
+    <select id="howManyApplyed" resultType="int" parameterType="map">
+         select count(t.studentId) as num from
+        (select t.studentId from (SELECT applyStudentId as studentId FROM activityapply group by applyStudentId
+        union
+        SELECT supStudentId as studentId FROM supplement ) t
+        join student s on t.studentId = s.studentID
+        where 1 = 1
+        AND case when #{classId} is not null and #{classId}&lt;&gt;'' then s.stuClassName = #{classId} else 1=1 end
+        AND case when #{collegeId} is not null and #{collegeId}&lt;&gt;'' then s.stuCollageName = #{collegeId} else 1=1 end
+        group by t.studentId) t
+    </select>
+
+    <!--* 多少人生成成绩单-->
+    <select id="howManyGennered" resultType="int" parameterType="map">
+      select count(studentid) num from (SELECT a.studentid FROM secondcourse.sixelementpoint a
+      join student b on a.studentid = b.studentID
+      where 1 = 1
+      AND case when #{classId} is not null and #{classId}&lt;&gt;'' then b.stuClassName = #{classId} else 1=1 end
+      AND case when #{collegeId} is not null and #{collegeId}&lt;&gt;'' then b.stuCollageName = #{collegeId} else 1=1 end
+      group by studentid) t
+    </select>
+
+</mapper>

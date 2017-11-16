@@ -1,0 +1,38 @@
+#*
+elem:
+    <statemachine id="test">
+        <state name="init">
+            <sqlquery key="a" datatype="list"/>
+            <sqlquery key="a" datatype="list"/>
+        </state>
+        <state name="page"></state>
+        <transition from="init" to="page" on="">
+            <conditions>
+                <sqlcondition ></sqlcondition>
+            </conditions>
+        </transition>
+    </statemachine>
+* *#
+#set($id=$xml.xpathobj($elem,"./@id"))
+#set($states=$xml.xpathobjs($elem,"./state"))
+#set($transitions=$xml.xpathobjs($elem,"./transition"))
+<bean id="${id}" class="com.superstatemachine.web.WebStatemachine">
+    <property name="states" >
+        <list>
+#foreach($item in $states)##
+            $velocity.render("${basedir}/xmldesign/velocity/websm/${item.name}.vm",{
+                "elem":$item
+            })
+#end
+        </list>
+    </property>
+    <property name="transitions">
+        <list>
+            #foreach($item in $transitions)##
+                $velocity.render("${basedir}/xmldesign/velocity/websm/${item.name}.vm",{
+                    "elem":$item
+                })
+            #end
+        </list>
+    </property>
+</bean>

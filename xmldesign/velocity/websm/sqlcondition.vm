@@ -1,0 +1,6 @@
+#set($str=$xml.xpathobj($elem,"./text()"))
+<bean class="com.superstatemachine.web.SqlCondition">
+    <property name="sql">
+        <value><![CDATA[${str}]]></value>
+    </property>
+</bean>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2013 (http://www.altova.com) by  () -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:element name="beans">
+		<xs:annotation>
+			<xs:documentation>Comment describing your root element</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="json" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="json">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="sqlquery"/>
+				<xs:element ref="output"/>
+				<xs:element ref="ref"/>
+			</xs:sequence>
+			<xs:attribute name="id" type="xs:ID" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="sqlquery">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="sql"/>
+				<xs:element name="objmap" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="propertymappingsetting" minOccurs="0"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="key" use="required"/>
+			<xs:attribute name="datatype" use="required"/>
+			<xs:attribute name="totalrowsvar"/>
+			<xs:attribute name="resultvar"/>
+			<xs:attribute name="resultmsgvar"/>
+			<xs:attribute name="pagevar"/>
+			<xs:attribute name="pagesizevar"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="output">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="field" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+			<xs:attribute name="jxpath"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="propertymappingsetting">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="propertymappingsetting"/>
+			</xs:sequence>
+			<xs:attribute name="field" use="required"/>
+			<xs:attribute name="property"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ref">
+		<xs:complexType>
+			<xs:attribute name="beanid" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="field">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="field" minOccurs="0"/>
+			</xs:sequence>
+			<xs:attribute name="key" use="required"/>
+			<xs:attribute name="jxpath"/>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

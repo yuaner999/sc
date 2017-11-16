@@ -1,0 +1,80 @@
+/*.table{*/
+/*padding-bottom: 39px;*/
+/*}*/
+/*.pagingTurn{*/
+/*top:-56px;*/
+/*}*/
+#dlg{
+    width:100%;
+    height:100%;
+    position: fixed;
+    z-index: 9999;
+    top: 0px;
+    left: 0px;
+    overflow-y: auto;
+    border: 1px solid #197FFE;
+    background-color: #FFFFFF;
+    max-width: 100%;
+}
+.new>ul{
+    padding: 20px !important;
+}
+.btnbox{
+    overflow: hidden;
+    padding-bottom: 30px;
+}
+.btnbox li{
+    float: left;
+    margin-left: 150px;
+    cursor: pointer;
+}
+#supPhotos{
+    margin-top: 22px;
+}
+.sure{
+    border: 1px solid;
+    width: 70px;
+    height: 20px;
+    text-align: center;
+    line-height: 20px;
+    border-radius: 6px;
+}
+.input{
+    width: 238px;
+    height: 29px;
+    border: 1px solid #1990fe;
+    margin-left: 20px;
+}
+.select {
+    width: 162px;
+    height: 28px;
+    border: 1px solid #1990fe;
+}
+.searchContent>div>ul>li>div>span {
+    display: inline-block;
+    position: absolute;
+    z-index: 10;
+    right: 0;
+    top: 0;
+    width: 30px;
+    height: 25px;
+}
+.searchContent>div{
+    position: relative;
+    margin: 0px 25px;
+    min-width: 600px;
+    padding: 35px 10px 13px 10px;
+    border-bottom: 2px solid #fff799;
+}
+.inputbox{
+    display: inline-block;
+    width:50%;
+    vertical-align: top;
+    padding-left: 8px;
+    line-height: 20px;
+}
+.noborder{
+    border: 0px;
+    width: 90px;
+    cursor: pointer;
+}

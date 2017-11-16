@@ -1,0 +1,19 @@
+.footer span,.footer a,.footer p{
+    font-size: 14px;
+    display: inline-block;
+    color: #FFFFFF;
+}
+.footup_left>p{
+    display: block;
+}
+.footup_left, .footup_right{
+    display: inline-block;
+}
+.footup_left{
+    margin-right: 50px;
+}
+.footer a:hover{
+    color: #1990fe;
+    cursor: pointer;
+    text-decoration: underline;
+}

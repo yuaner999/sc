@@ -1,0 +1,151 @@
+/*公共样式*/
+body, div, ul, li, h1, h2, h3, h4, h5, h6, span, a, p ,div{
+	margin: 0px;
+	border: 0px;
+	padding: 0px;
+	display: block;
+	font-family: "微软雅黑";
+	font-size: 12px;
+}
+a{
+	text-decoration: none;
+	display: inline-block;
+}
+a:hover{
+	cursor: pointer;
+}
+ul, li{
+	list-style-type: none;
+}
+
+img{
+	display: block;
+	border: none;
+}
+
+p,span{
+	display: inline-block;
+}
+
+.clearfix{
+	zoom: 1;
+}
+
+.clearfix:after{
+	clear: both;
+	content: "";
+	visibility: hidden;
+	height: 0;
+}
+@media screen and (min-width: 1681px) {
+	h3{
+		position: relative;
+		margin-top: 40px;
+		font-size: 22px;
+		text-align: center;
+		word-spacing: 5px;
+	}
+	/*成绩单*/
+	.grade_list{
+		position: relative;
+		width: 1440px;
+		margin: 0 auto;
+		margin-top: 60px;
+	}
+	.grade_list .grade_list_item{
+		position: relative;
+		width: 100%;
+		margin-bottom: 30px;
+		min-height: 280px;
+	}
+	/*黄色的小块*/
+	.grade_list .grade_list_item .titleYellowBlock{
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 12px;
+		height: 20px;
+		background-color: #fff799;
+	}
+	/*项目名称*/
+	.grade_list .grade_list_item .itemName{
+		position: absolute;
+		top: 0;
+		left: 22px;
+		font-size: 18px;
+		font-weight: bold;
+		color: #1990fe;
+	}
+	/*表格*/
+	.grade_list .grade_list_item_table{
+		position: absolute;
+		top: 40px;
+		border-collapse: collapse;
+		border: 2px solid #4196ff;
+		width: 100%;
+		min-height: 240px;
+		text-align: center;
+	}
+	.grade_list .grade_list_item_table .table_items{
+		position: relative;
+		font-size: 16px;
+		font-weight: bold;
+		color: #1990fe;
+	}
+}
+@media screen and (max-width: 1680px) {
+	h3{
+		position: relative;
+		margin-top: 40px;
+		font-size: 18px;
+		text-align: center;
+		word-spacing: 5px;
+	}
+	/*成绩单*/
+	.grade_list{
+		position: relative;
+		width: 1140px;
+		margin: 0 auto;
+		margin-top: 60px;
+	}
+	.grade_list .grade_list_item{
+		position: relative;
+		width: 100%;
+		margin-bottom: 30px;
+		min-height: 280px;
+	}
+	/*黄色的小块*/
+	.grade_list .grade_list_item .titleYellowBlock{
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 12px;
+		height: 20px;
+		background-color: #fff799;
+	}
+	/*项目名称*/
+	.grade_list .grade_list_item .itemName{
+		position: absolute;
+		top: 0;
+		left: 22px;
+		font-size: 18px;
+		font-weight: bold;
+		color: #1990fe;
+	}
+	/*表格*/
+	.grade_list .grade_list_item_table{
+		position: absolute;
+		top: 40px;
+		border-collapse: collapse;
+		border: 2px solid #4196ff;
+		width: 100%;
+		min-height: 240px;
+		text-align: center;
+	}
+	.grade_list .grade_list_item_table .table_items{
+		position: relative;
+		font-size: 16px;
+		font-weight: bold;
+		color: #1990fe;
+	}
+}

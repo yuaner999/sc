@@ -1,0 +1,37 @@
+.center_ul>ol{
+    width: 90%;
+}
+.hidden{
+    padding: 1.6% 0 0;
+    margin-right: 192px;
+    margin-left: 90px;
+}
+.spacal{
+    right: 87px !important;
+    width: 104px !important;
+}
+.spacal2{
+    position: absolute;
+    left:0;
+    top:24%;
+    width: 75px;
+    text-align: center;
+    background: #5c85ee;
+    color: #fff;
+    font-size: 12px;
+    padding: 5px;
+}
+.choose{
+    overflow: hidden;
+    position: relative;
+    top:15px;
+}
+.choose li{
+    float: left;
+    margin-right: 40px;
+    cursor: pointer;
+}
+.choose li.sele{
+    color: #5c85ee;
+    font-weight:bold;
+}

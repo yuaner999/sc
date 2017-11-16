@@ -1,0 +1,69 @@
+<app title="用户管理" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../schemas/easyui.xsd">
+    <datagrid id="dg" title="人员列表" url="jsons/allusers.form">
+        <headers sql="select * from sysuser"/>
+        <toolbar>
+            <toolbarline>
+                <button id="btnadd">
+                    <dialogopen dialogid="dlgcreate"/>
+                </button>
+                <button id="btnedit">
+                    <datagridselected datagridid="dg" var="data"/>
+                    <if condition="data">
+                        <formloaddata formid="frmedit" var="data"/>
+                        <dialogopen dialogid="dlgedit"/>
+                    </if>
+                    <else>
+                        <alert text="选择要操作的数据"/>
+                    </else>
+                </button>
+                <button id="btndelete"></button>
+            </toolbarline>
+        </toolbar>
+    </datagrid>
+
+    <dialog id="dlgcreate" title="创建用户" >
+        <buttons>
+            <button id="dlgcreateok">
+                <formsubmit formid="frmcreate" url="jsons/createuser.form">
+                    <alert text="已创建成功"/>
+                    <dialogclose dialogid="dlgcreate"/>
+                    <datagridreload datagridid="dg"/>
+                </formsubmit>
+            </button>
+            <button id="dlgcreatecancel">
+                <dialogclose dialogid="dlgcreate"/>
+            </button>
+        </buttons>
+        <content>
+            <form id="frmcreate" method="post" fieldsql="select * from sysuser"/>
+        </content>
+    </dialog>
+
+    <dialog id="dlgedit" title="编辑用户" >
+        <buttons>
+            <button id="dlgeditok">
+                <formsubmit formid="frmedit" url="jsons/edituser.form">
+                    <alert text="已保存成功"/>
+                    <dialogclose dialogid="dlgedit"/>
+                    <datagridreload datagridid="dg"/>
+                </formsubmit>
+            </button>
+            <button id="dlgeditcancel">
+                <dialogclose dialogid="dlgedit"/>
+            </button>
+        </buttons>
+        <content>
+            <form id="frmedit" method="post" fieldsql="select * from sysuser"/>
+        </content>
+    </dialog>
+
+
+    <javascript>
+        <startup>
+            <dialogclose dialogid="dlgcreate"/>
+            <dialogclose dialogid="dlgedit"/>
+
+        </startup>
+    </javascript>
+    
+</app>

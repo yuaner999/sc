@@ -1,0 +1,68 @@
+.page_count_box>ul>li{
+    float: left;
+}
+.page_count_box{
+    text-align: center;
+    margin-top: 2%;
+    width:96%
+    /*width: 256px;*/
+    /*margin: 40px auto;*/
+}
+.page_count_box>ul>li>a.page_btn{
+    display: inline-block;
+    background: url(../../image/font/page_btn.png);
+    width: 24px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    border: 1px solid #bdbdbd;
+    font-size: 12px;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    behavior: url(../../image/font/PIE.htc);
+}
+.page_count_box>ul>li>a.page_btn{
+    color: #2b458c;
+}
+a.page_count{
+    display: inline-block;
+    width: 33px;
+    height: 32px;
+    line-height: 27px;
+    padding-right: 4px;
+    text-align: center;
+}
+a.page_count{
+    font-family: "微软雅黑";
+    font-size: 14px;
+    color: #2b458c;
+}
+.page_count_box>ul>span{
+    float: left;
+    font-family: "微软雅黑";
+    font-size: 14px;
+    position: relative;
+    top: 6px;
+    margin-right: 5px;
+}
+
+a.currentpage{
+    margin:0 7px;
+    background: url(../../../asset_font_new/img/pagebg_03.png) center no-repeat;
+    color: #ffffff;
+}
+.prev_group{
+    display: none;
+}
+#paging_btn_box{
+    display: inline-block;
+    overflow: hidden;
+    margin: 0 auto;
+}
+#paging_btn_box>img{
+    vertical-align: middle;
+    margin:7px 10px ;
+    float: left;
+    cursor: pointer;
+}

@@ -1,0 +1,687 @@
+/*公共样式*/
+body, div, ul, li, h1, h2, h3, h4, h5, h6, span, a, p{
+	margin: 0px;
+	border: 0px;
+	padding: 0px;
+	font-family: "微软雅黑";
+    font-size: 12px;
+}
+a{
+	text-decoration: none;
+	display: block;
+}
+a:hover{
+	cursor: pointer;
+}
+ul,li{
+	list-style-type: none;
+}
+
+img{
+	display: block;
+	border: none;
+}
+
+p{
+	display: inline-block;
+}
+
+.clearfix{
+	zoom: 1;
+}
+
+.clearfix:after{
+	clear: both;
+	content: "";
+	visibility: hidden;
+	height: 0;
+}
+
+/*媒体查询*/
+@media screen and (min-width: 1317px) {
+	/*活动预告和学校新闻*/
+	.NoticeAndNews{
+		position: relative;
+		width: 1330px;
+		margin: 0 auto;
+		margin-top: 35px;
+		overflow: hidden;
+		/*background-color: pink;*/
+	}
+	
+	/*活动列表和联系方式*/
+	.activeListAndLink{
+		position: relative;
+		width: 1330px;
+		margin: 0 auto;
+		overflow: hidden;
+		margin-bottom: 42px;
+	}
+	/*公共标题头部*/
+	.public_title_style h3{
+		position: absolute;
+		top: 0px;
+		left: 0px;
+		color: #5c9cd6;
+		font-size: 18px;
+	}
+		
+	.public_title_style .title_more{
+		position: absolute;
+		top: 40%;
+		right: 0;
+		width: 11.69%;
+		height: 55%;
+		text-align: center;
+		border-radius: 5px;
+		behavior: url(../js/PIE.htc); 
+		background-color: #1990fe;
+	}
+	.public_title_style .title_more a{
+		display: inline-block;
+		color: #fff;
+		line-height: 20px;
+		font-size: 16px;
+	}
+	/*活动预约*/
+	.NoticeAndNews .NoticeAndNews_content{
+		position: relative;
+		width: 46.316%;
+		margin-right: 48px;
+		float: left;
+	}
+	.NoticeAndNews .NoticeAndNews_content .NoticeAndNews_content_list .list_item{
+		position: relative;
+		width: 100%;
+		height: 112px;
+		margin-bottom: 19px;
+		overflow: hidden;
+	}
+	.NoticeAndNews .NoticeAndNews_content .NoticeAndNews_content_list .list_item .list_item_content h6{
+		position: absolute;
+		top: 26.76%;
+		left: 0;
+		font-size: 16px;
+		color: #535353;
+		width: 80%;	
+	}
+	.NoticeAndNews .NoticeAndNews_content .NoticeAndNews_content_list .list_item .list_item_content h6 a{
+		position: relative;
+		font-size: 16px;
+		color: #535353;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+	.NoticeAndNews .NoticeAndNews_content .NoticeAndNews_content_list .list_item .list_item_content p{
+		position: absolute;
+		left: 0;
+		bottom: 0;
+		width: 360px;
+		height: 60px;
+		line-height: 160%;
+		color: #535353;
+	}
+	.NoticeAndNews .NoticeAndNews_content .NoticeAndNews_content_list .list_item .list_item_content span{
+		position: absolute;
+		top: 0;
+		right: 0;
+		width: 38.8%;
+		height: 8.93%;
+		font-size: 18px;
+		font-weight: bold;
+		text-align: right;
+		color: #1990fe;
+		border-bottom: 8px solid #fff799;
+	}
+	/*校园新闻*/
+	.school_news .News_content img{
+		position: relative;
+		display: inline-block;
+		width: 340px;
+		height: 185px;
+	}
+	.school_news .News_content .News_content_loading_img{
+		display: inline-block;
+		position: absolute;
+		top: 40%;
+		left: 24%;
+		width: 60px;
+		height: 24px;
+		z-index: -1;
+	}
+	.school_news .News_content .News_content_details{
+		position: relative;
+		float: right;
+		width: 42%;
+		height: 185px;
+		max-height: 185px;
+	}
+	.school_news .News_content .News_content_details h6{
+		position: relative;
+		margin-bottom: 10px;
+	}
+	.school_news .News_content .News_content_details h6 a{
+		display: inline-block;
+		position: relative;
+		font-size: 16px;
+		font-weight: bold;
+		color: #535353;
+		width: 80%;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+	.school_news .News_content .News_content_details p{
+		position: relative;
+		display: inline-block;
+		width: 258px;
+		height: 134px;
+		line-height: 160%;
+		color: #535353;
+		overflow: hidden;
+	}
+	.school_news .News_content .News_content_details span{
+		position: absolute;
+		bottom: 0;
+		right: 2px;
+		width: 50%;
+		height: 8.93%;
+		font-size: 18px;
+		font-weight: bold;
+		text-align: right;
+		color: #1990fe;
+		border-bottom: 8px solid #fff799;
+	}
+	/*活动列表和联系我们的标题*/
+	.activeListAndLink .activeListAndLink_head .activeList{
+		position: relative;
+		width: 46.316%;
+		margin-right: 48px;
+		float: left;
+	}
+	.activeListAndLink .activeListAndLink_head .link{
+		position: relative;
+		width: 46.316%;
+		margin-right: 36px;
+		float: left;
+	}
+	
+	.activeListAndLink .activeListAndLink_body .activeList .titles_list_style .News_titles_list_item{
+		position: relative;
+		width: 78%;
+		margin-bottom: 15px;
+	}
+	.activeListAndLink .activeListAndLink_body .activeList .titles_list_style .News_titles_list_item .News_titles_list_item_pointer{
+		position: relative;
+		width: 82%;
+		height: 8px;
+		border-bottom: 1px dotted #535353;
+	}
+	.activeListAndLink .activeListAndLink_body .activeList .titles_list_style .News_titles_list_item a{
+		position: absolute;
+		top: 0;
+		background-color:#FFF799 ;
+		display: inline-block;
+		max-width: 82%;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		height: 22px;
+		font-size: 14px;
+		font-weight: bolder;
+		color: #535353;
+	}
+	.activeListAndLink .activeListAndLink_body .activeList .titles_list_style .News_titles_list_item .News_titles_list_item_time{
+		position: absolute;
+		right: 0;
+		top: -1px;
+		font-size: 14px;
+		font-weight: bolder;
+		color: #535353;
+	}
+	/*活动列表和联系我们的内容*/
+	.activeListAndLink .activeListAndLink_body .public_NoticeAndNews_style{
+		position: relative;
+		width: 46.316%;
+		margin-right: 48px;
+		float: left;
+	}
+	
+	.activeListAndLink .activeListAndLink_body .link .link_list .link_list_item .link_list_item_name{
+		position: relative;
+		font-size: 14px;
+		margin-right: 15px;
+		color: #535353;
+		line-height: 160%;
+	}
+	.activeListAndLink .activeListAndLink_body .link .link_list .link_list_item .link_list_item_content{
+		position: absolute;
+		right: 0;
+		width: 80%;
+		display: inline-block;
+		font-size: 14px;
+		color: #535353;
+		line-height: 160%;
+	}
+	.activeListAndLink .activeListAndLink_body .link img{
+		position: absolute;
+		top: -58px;
+		right: 15px;
+	}
+	
+	/*学校新闻标题*/
+	.school_news .titles_list_style .News_titles_list_item{
+		position: relative;
+		width: 100%;
+		margin-bottom: 13.5px;
+		height: 15px;
+	}
+	.school_news .titles_list_style .News_titles_list_item .News_titles_list_item_pointer{
+		position: relative;
+		width: 85%;
+		height: 8px;
+		border-bottom: 1px dotted #535353;
+	}
+	.school_news .titles_list_style .News_titles_list_item a{
+		position: absolute;
+		top: 0;
+		background-color:#FFF;
+		display: inline-block;
+		height: 22px;
+		font-size: 14px;
+		font-weight: bolder;
+		color: #535353;
+		max-width: 85%;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+	.school_news .titles_list_style .News_titles_list_item .News_titles_list_item_time{
+		position: absolute;
+		right: 0;
+		top: -1px;
+		color: #535353;
+		font-size: 14px;
+		font-weight: bolder;
+	}
+}
+
+@media screen and (max-width: 1316px){
+	/*活动预告和学校新闻*/
+	.NoticeAndNews{
+		position: relative;
+		width: 1000px;
+		margin: 0 auto;
+		margin-top: 35px;
+		overflow: hidden;
+		/*background-color: pink;*/
+	}
+	
+	/*活动列表和联系方式*/
+	.activeListAndLink{
+		position: relative;
+		width: 1000px;
+		margin: 0 auto;
+		overflow: hidden;
+		margin-bottom: 42px;
+	}
+	
+	.school_news .News_content img{
+		position: relative;
+		display: inline-block;
+		width: 340px;
+		height: 145px;
+	}
+	.school_news .News_content .News_content_loading_img{
+		display: inline-block;
+		position: absolute;
+		top: 40%;
+		left: 18%;
+		width: 60px;
+		height: 24px;
+		z-index: -1;
+	}
+	
+	/*公共标题头部*/
+	.public_title_style h3{
+		position: absolute;
+		top: 0px;
+		left: 0px;
+		color: #5c9cd6;
+		font-size: 14px;
+	}
+	
+	.public_title_style .title_more{
+		position: absolute;
+		top: 30%;
+		right: 0;
+		width: 16%;
+		height: 55%;
+		text-align: center;
+		background-color: #1990fe;
+		border-radius: 5px;
+		behavior: url(../js/PIE.htc);
+	}
+	.public_title_style .title_more a{
+		display: inline-block;
+		color: #fff;
+		line-height: 18px;
+		font-size: 13px;
+	}
+	/*活动预约*/
+	.NoticeAndNews .NoticeAndNews_content{
+		position: relative;
+		width: 46.316%;
+		margin-right: 36px;
+		float: left;
+	}
+	.NoticeAndNews .NoticeAndNews_content .NoticeAndNews_content_list .list_item{
+		position: relative;
+		width: 100%;
+		height: 112px;
+		margin-bottom: 19px;
+		overflow: hidden;
+	}
+	.NoticeAndNews .NoticeAndNews_content .NoticeAndNews_content_list .list_item .list_item_content h6{
+		position: absolute;
+		top: 26.76%;
+		left: 0;
+		font-size: 14px;
+		color: #535353;
+		width: 80%;
+	}
+	.NoticeAndNews .NoticeAndNews_content .NoticeAndNews_content_list .list_item .list_item_content h6 a{
+		position: relative;
+		font-size: 12px;
+		color: #535353;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+	.NoticeAndNews .NoticeAndNews_content .NoticeAndNews_content_list .list_item .list_item_content p{
+		position: absolute;
+		left: 0;
+		bottom: 0;
+		width: 274px;
+		height: 60px;
+		line-height: 160%;
+		color: #535353;
+	}
+	.NoticeAndNews .NoticeAndNews_content .NoticeAndNews_content_list .list_item .list_item_content span{
+		position: absolute;
+		top: 0;
+		right: 0;
+		width: 38.8%;
+		height: 6%;
+		font-size: 14px;
+		font-weight: bold;
+		text-align: right;
+		color: #1990fe;
+		border-bottom: 6px solid #fff799;
+	}
+	/*校园新闻*/
+	.school_news .News_content img{
+		position: relative;
+		display: inline-block;
+		width: 47%
+	}
+	.school_news .News_content .News_content_details{
+		position: relative;
+		float: right;
+		width: 48%;
+		height: 145px;
+		max-height: 145px;
+	}
+	.school_news .News_content .News_content_details h6{
+		position: relative;
+		margin-bottom: 10px;
+	}
+	.school_news .News_content .News_content_details h6 a{
+		display: inline-block;
+		position: relative;
+		font-size: 14px;
+		font-weight: bold;
+		color: #535353;
+		width: 80%;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+	.school_news .News_content .News_content_details p{
+		position: relative;
+		display: inline-block;
+		line-height: 160%;
+		color: #535353;
+		position: relative; 
+		width: 220px;
+		height: 100px;
+		max-height: 100px;
+		overflow: hidden;
+	}
+	.school_news .News_content .News_content_details span{
+		position: absolute;
+		bottom: 0;
+		right: 0;
+		width: 38.8%;
+		height: 6%;
+		font-size: 14px;
+		font-weight: bold;
+		text-align: right;
+		color: #1990fe;
+		border-bottom: 6px solid #fff799;
+	}
+	/*活动列表和联系我们的标题*/
+	.activeListAndLink .activeListAndLink_head .activeList{
+		position: relative;
+		width: 46.316%;
+		margin-right: 36px;
+		float: left;
+	}
+	.activeListAndLink .activeListAndLink_head .link{
+		position: relative;
+		width: 46.316%;
+		margin-right: 36px;
+		float: left;
+	}
+	
+	.activeListAndLink .activeListAndLink_body .activeList .titles_list_style .News_titles_list_item{
+		position: relative;
+		width: 78%;
+		margin-bottom: 15px;
+	}
+	.activeListAndLink .activeListAndLink_body .activeList .titles_list_style .News_titles_list_item .News_titles_list_item_pointer{
+		position: relative;
+		width: 80%;
+		height: 8px;
+		border-bottom: 1px dotted #535353;
+	}
+	.activeListAndLink .activeListAndLink_body .activeList .titles_list_style .News_titles_list_item a{
+		position: absolute;
+		top: 0;
+		background-color:#FFF799 ;
+		display: inline-block;
+		max-width: 80%;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		height: 16px;
+		font-size: 12px;
+		font-weight: bolder;
+		color: #535353;
+	}
+	.activeListAndLink .activeListAndLink_body .activeList .titles_list_style .News_titles_list_item .News_titles_list_item_time{
+		position: absolute;
+		right: 0;
+		top: -1px;
+		font-size: 12px;
+		font-weight: bolder;
+		color: #535353;
+	}
+	/*活动列表和联系我们的内容*/
+	.activeListAndLink .activeListAndLink_body .public_NoticeAndNews_style{
+		position: relative;
+		width: 46.316%;
+		margin-right: 36px;
+		float: left;
+	}
+	
+	.activeListAndLink .activeListAndLink_body .link .link_list .link_list_item .link_list_item_name{
+		position: relative;
+		font-size: 12px;
+		margin-right: 10px;
+		color: #535353;
+		line-height: 160%;
+	}
+	.activeListAndLink .activeListAndLink_body .link .link_list .link_list_item .link_list_item_content{
+		position: absolute;
+		right: 0;
+		width: 77%;
+		display: inline-block;
+		font-size: 12px;
+		color: #535353;
+		line-height: 160%;
+	}
+	.activeListAndLink .activeListAndLink_body .link img{
+		position: absolute;
+		top: -58px;
+		right: 15px;
+	}
+	
+	/*学校新闻标题*/
+	.school_news .titles_list_style .News_titles_list_item{
+		position: relative;
+		width: 100%;
+		margin-bottom: 13.5px;
+		height: 15px;
+	}
+	.school_news .titles_list_style .News_titles_list_item .News_titles_list_item_pointer{
+		position: relative;
+		width: 83%;
+		height: 8px;
+		border-bottom: 1px dotted #535353;
+	}
+	.school_news .titles_list_style .News_titles_list_item a{
+		position: absolute;
+		top: 0;
+		background-color:#FFF;
+		display: inline-block;
+		height: 16px;
+		font-size: 12px;
+		font-weight: bolder;
+		color: #535353;
+		max-width: 83%;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+	.school_news .titles_list_style .News_titles_list_item .News_titles_list_item_time{
+		position: absolute;
+		right: 0;
+		top: -1px;
+		color: #535353;
+		font-size: 12px;
+		font-weight: bolder;
+	}
+}
+/*公共的头部标题*/
+.public_title_style{
+	position: relative;
+	width: 100%;
+	height: 40px;
+}
+.public_title_style .title_underline{
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 30.2%;
+	height: 25%;
+	background-color: #FFF799;
+}
+.public_title_style .title_underline div{
+	width: 24.732%;
+	height: 100%;
+	background-color: #1990fe;
+}
+
+/*活动预告*/
+.NoticeAndNews .NoticeAndNews_content .NoticeAndNews_content_list{
+	position: relative;
+	margin-top: 25px;
+	width: 100%;
+	overflow: hidden;
+}
+.NoticeAndNews .NoticeAndNews_content .NoticeAndNews_content_list .list_item img{
+	position: relative;
+	display: inline-block;
+	width: 38.15%;
+	height: 112px;
+}
+.NoticeAndNews .NoticeAndNews_content .NoticeAndNews_content_list .list_item .loading_img{
+	position: absolute;
+	top: 36%;
+	left: 10%;
+	width: 60px;
+	height: 24px;
+	z-index: -1;
+}
+.NoticeAndNews .NoticeAndNews_content .NoticeAndNews_content_list .list_item .list_item_content{
+	position: relative;
+	float: right;
+	width: 58.77%;
+	height: 100%;
+	overflow: hidden;
+}
+
+/*学校新闻*/
+.school_news .News_content{
+	position: relative;
+	width: 100%;
+	height: 100%;
+	margin-top: 25px;
+	overflow: hidden;
+}
+
+.school_news .titles_list_style{
+	position: relative;
+	margin-top: 35px;
+	width: 100%;
+	max-height: 220px;
+	overflow: hidden;
+}
+
+/*活动列表和联系方式*/
+.activeListAndLink .activeListAndLink_head{
+	position: relative;
+	width: 100%;
+	overflow: hidden;
+}
+.activeListAndLink .activeListAndLink_body{
+	position: relative;
+	margin-top: 25px;
+	width: 100%;
+	height: 138px;
+	background-color: #fff799;
+}
+
+.activeListAndLink .activeListAndLink_body .activeList .titles_list_style{
+	position: relative;
+	margin-top: 22px;
+	margin-left: 22px;
+	width: 100%;
+	overflow: hidden;
+}
+
+/*联系方式*/
+.activeListAndLink .activeListAndLink_body .link .link_list{
+	position: relative;
+	width: 55.2%;
+	margin-top: 20px;
+}
+.activeListAndLink .activeListAndLink_body .link .link_list .link_list_item{
+	position: relative;
+	width: 100%;
+	height: 15px;
+	margin-bottom: 10px;
+}
+

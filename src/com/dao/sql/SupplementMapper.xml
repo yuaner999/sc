@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.dao.interfaces.SupplementDao">
+
+    <!--* 添加一条补充活动-->
+    <insert id="addSupplement" parameterType="map">
+        INSERT INTO supplement
+        (`id`,`supStudentId`,`supClass`,`supActivityTitle`,`supPowers`,`supNature`,`supLevle`,`supCredit`,`supAward`,`workName`,`workClass`,worklevel,scienceClass,
+        `scienceName`,`shipType`,`shipName`,`supPhoto`,`takeDate`,`supDate`,`regimentAuditStatus`,`regimentAuditStatusDate`,`collegeAuditStatus`,
+        `collegeAuditStatusDate`,`schoolAuditStaus`,`schoolAuditStausDate`,orgname,orgcollege,isNewAdd,supType,supWorktime)
+        VALUES (uuid(),#{supStudentId,jdbcType=VARCHAR},#{supClass,jdbcType=VARCHAR},
+       #{supActivityTitle,jdbcType=VARCHAR},#{supPowers,jdbcType=VARCHAR},
+        #{supNature,jdbcType=VARCHAR},#{supLevle,jdbcType=VARCHAR},#{supCredit,jdbcType=VARCHAR},
+        #{supAward,jdbcType=VARCHAR},#{workName,jdbcType=VARCHAR},#{workClass,jdbcType=VARCHAR},#{worklevel,jdbcType=VARCHAR},#{scienceClass,jdbcType=VARCHAR},
+         #{scienceName,jdbcType=VARCHAR},#{shipType,jdbcType=VARCHAR},#{shipName,jdbcType=VARCHAR},
+        #{supPhoto,jdbcType=VARCHAR},#{takeDate,jdbcType=TIMESTAMP},now(),'待审核',now(),'待审核',now(),'待审核',now(),#{orgname,jdbcType=VARCHAR},#{orgcollege,jdbcType=VARCHAR},#{isNewAdd,jdbcType=VARCHAR},#{supType,jdbcType=VARCHAR},#{supWorktime,jdbcType=VARCHAR})
+    </insert>
+    <!--* 修改补充活动-->
+    <update id="eidtSupplement" parameterType="map">
+        <![CDATA[
+                 UPDATE supplement
+                SET
+                    supActivityTitle = #{supActivityTitle},
+                    supPowers = #{supPowers},
+                    supNature = #{supNature},
+                    supLevle = #{supLevle},
+                    supCredit = #{supCredit},
+                    supAward = #{supAward},
+                    workName = #{workName},
+                    workClass = #{workClass},
+                    worklevel=#{worklevel},
+                    scienceClass=#{scienceClass},
+                    scienceName = #{scienceName},
+                    shipType = #{shipType},
+                    shipName = #{shipName},
+                    supPhoto = #{supPhoto},
+                    takeDate = #{takeDate},
+                    supDate =now(),
+                    regimentAuditStatus = #{regimentAuditStatus},
+                    regimentAuditStatusDate = now(),
+                    collegeAuditStatus = #{collegeAuditStatus},
+                    collegeAuditStatusDate = now(),
+                    schoolAuditStaus = #{schoolAuditStaus},
+                    schoolAuditStausDate = now(),
+                    orgname = #{orgname},
+                    supWorktime = #{supWorktime}
+                WHERE id = #{id}
+                ]]>
+    </update>
+    <!--加载已通过的活动补充申请-->
+    <select id="getSupplement" resultType="map" parameterType="string">
+        select *,FROM_UNIXTIME(UNIX_TIMESTAMP(takeDate),'%Y-%m-%d ') AS applyDate,id AS applyId
+         from supplement where supStudentId=#{0} and  (ISNULL(isDel) or isDel &lt;&gt; '0')
+    </select>
+    <!--根据已通过的补充活动申请查询活动-->
+    <select id="getActivityByTitle" resultType="map" parameterType="string">
+        select * from activities where activityTitle=#{0}
+    </select>
+
+    <!--根据打印id获得-->
+    <select id="getApplyIdByprintId" resultType="map" parameterType="string">
+        select * from r_print_activityapply where printId=#{0}
+    </select>
+    <!--根据id获得补充的活动-->
+    <select id="getSupplementAll" resultType="map" parameterType="map">
+        select  *,FROM_UNIXTIME(UNIX_TIMESTAMP(takeDate),'%Y-%m-%d ') AS applyDate,
+                  id AS applyId,dict('activityLevle',supLevle) as activityLevles
+                 from supplement where id IN
+        <foreach collection="applyIds" separator="," item="item" open="(" close=")">
+            #{item,jdbcType=VARCHAR}
+        </foreach>
+    </select>
+    <!--根据id获得补充的活动-->
+    <select id="getSupplementByIds" resultType="map" parameterType="map">
+        select  *,takeDate as applyDate
+        from supplement where id IN
+        <foreach collection="applyIds" separator="," item="item" open="(" close=")">
+            #{item,jdbcType=VARCHAR}
+        </foreach>
+    </select>
+
+    <!--* 查询补充的活动 根据学号-->
+
+    <select id="getSupplementByUser" parameterType="string" resultType="map">
+         select  *,takeDate as applyDate from supplement where
+         supStudentId=#{0} AND schoolAuditStaus='已通过'
+    </select>
+
+    <!--批量插入团日活动-->
+    <insert id="saveThemeActity" parameterType="list">
+        INSERT INTO `supplement`
+        (id,supStudentId,supActivityTitle,takeDate,supPowers,supCredit,supClass,supType,regimentAuditStatus,collegeAuditStatus,schoolAuditStaus)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (uuid(),
+            #{item.supStudentId,jdbcType=VARCHAR},
+            #{item.supActivityTitle,jdbcType=VARCHAR},
+            #{item.takeDate,jdbcType=TIMESTAMP},
+            #{item.supPowers,jdbcType=VARCHAR},
+            #{item.supCredit,jdbcType=VARCHAR},
+            '1',
+            '主题团日'
+            ,'待审核'
+            ,'待审核'
+            ,'待审核')
+        </foreach>
+    </insert>
+
+</mapper>

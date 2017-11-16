@@ -1,0 +1,15 @@
+#* input sample
+elem:
+<button id="dialog_ok" click="ff"/>
+*#
+#set($id=$xml.xpathobj($elem,"./@id"))
+#if($elem.elements().size()>0)
+<a href="javascript:void(0)"
+   class="easyui-linkbutton"
+   data-options="iconCls:'icon-edit',plain:true"
+   onclick="${id}click()">$id</a>
+#else
+<a href="javascript:void(0)"
+   class="easyui-linkbutton"
+   data-options="iconCls:'icon-edit',plain:true">$id</a>
+#end

@@ -1,0 +1,18 @@
+#*
+<formsubmit formid="" url="">
+    <....
+</formsubmit>
+* *#
+#set($id=$xml.xpathobj($elem,"./@formid"))
+#set($url=$xml.xpathobj($elem,"./@url"))
+#set($items=$xml.xpathobjs($elem,"./*"))
+$("#$id").form('submit', {
+    url:"${pageContext.request.contextPath}/$url",
+    success:function(data){
+#foreach($item in $items)##
+        $velocity.render("${basedir}/xmldesign/velocity/easyui/jscmds/${item.name}.vm",{
+            "elem":$item
+        })##
+#end
+    }
+});

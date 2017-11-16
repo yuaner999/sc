@@ -1,0 +1,23 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+ul,li,ol,dl,dt{
+	list-style: none;
+}
+a{
+	text-decoration: none;
+}
+img{
+	border: none;
+	outline-width:0px;
+	vertical-align: top;
+}
+body{
+	font-family: "微软雅黑";
+	color: #1990fe;
+	background: url(../img/bg.png);
+}
+html{
+	margin: 0 auto;
+}

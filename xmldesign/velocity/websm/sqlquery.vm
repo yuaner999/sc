@@ -1,0 +1,40 @@
+#*
+elem:
+    <sqlquery key="list" datatype="list">
+        <sql>SELECT * FROM sysdict WHERE dict_key='ttask_status' ORDER BY dict_value</sql>
+    </sqlquery>
+* *#
+#set($key=$xml.xpathobj($elem,"./@key"))
+#set($datatype=$xml.xpathobj($elem,"./@datatype"))
+#set($objmaps=$xml.xpathobjs($elem,"./objmap/*"))
+#set($totalrowsvar=$xml.xpathobj($elem,"./@totalrowsvar",""))
+#set($resultvar=$xml.xpathobj($elem,"./@resultvar",""))
+#set($resultmsgvar=$xml.xpathobj($elem,"./@resultmsgvar",""))
+#set($pagevar=$xml.xpathobj($elem,"./@pagevar",""))
+#set($pagesizevar=$xml.xpathobj($elem,"./@pagesizevar",""))
+#set($sqlstr=$xml.xpathobj($elem,"./sql/text()"))
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="${datatype}"/>
+    <property name="key" value="${key}"/>
+    <property name="resultvar" value="${resultvar}"/>
+    <property name="resultmsgvar" value="${resultmsgvar}"/>
+    <property name="totalrowsvar" value="${totalrowsvar}"/>
+    <property name="pagevar" value="${pagevar}"/>
+    <property name="pagesizevar" value="${pagesizevar}"/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                ${sqlstr}
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+        #foreach($item in $objmaps)##
+            $velocity.render("${basedir}/xmldesign/velocity/websm/propertymappingsetting.vm",{
+                "elem":$item
+            })
+        #end
+        </list>
+    </property>
+</bean>

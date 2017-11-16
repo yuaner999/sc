@@ -1,0 +1,105 @@
+.guide{
+    display: none;
+    position: absolute;
+    z-index: 999999999999;
+    top:0;
+    left:0;
+    width:100vw;
+    min-width: 1024px;
+}
+.black{
+    display: none;
+    background: #000;
+     filter:alpha(opacity=80);       /* IE */
+     -moz-opacity:0.8;              /* 老版Mozilla */
+     -khtml-opacity:0.8;              /* 老版Safari */
+     opacity: 0.8;           /* 支持opacity的浏览器*/;
+    position: fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+}
+.guide .next{
+    width:87px;
+    height:48px;
+    cursor: pointer;
+    position: absolute;
+}
+.guide .open{
+    background: url(../img/guide/open.png);
+    width:21px;
+    height:21px;
+    cursor: pointer;
+    position: absolute;
+}
+.image{
+    position: relative;
+    z-index: 1000;
+}
+.image ul{
+    position: absolute;
+    display: none;
+}
+.guide1{
+    top:0;
+}
+.guide1 .open{
+    top:310px;
+    right:48px;
+}
+.guide1 .next{
+    bottom: 86px;
+    left:294px;
+}
+.guide2 .open{
+    top:150px;
+    right:31px;
+}
+.guide2 .next{
+    bottom:192px;
+    left:347px;
+}
+.guide3 .open{
+    top:192px;
+    right:232px;
+}
+.guide3 .next{
+    bottom: 128px;
+    left:159px;
+}
+.guide4 .open{
+    top:112px;
+    left:448px;
+}
+.guide4 .next{
+    bottom: 20px;
+    left:222px;
+}
+.guide5 .open{
+    top:85px;
+    right:40px;
+}
+.guide5 .next{
+    bottom: 82px;
+    left:270px;
+}
+.guide3{
+     top:-25px;
+ }
+.guide4{
+    top:360px;
+}
+.guide5{
+    top:50vh;
+    margin-top: -215px;
+    left: 50%;
+    margin-left: -304px;
+}
+.guide .next{
+    z-index: 999999999;
+    background: #ffffff;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=5);
+    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=5);
+    opacity: 0;
+}

@@ -1,0 +1,155 @@
+/*公共样式*/
+body, div, ul, li, h1, h2, h3, h4, h5, h6, span, a, p{
+	margin: 0px;
+	border: 0px;
+	padding: 0px;
+	font-family: "微软雅黑";
+    font-size: 12px;
+}
+a{
+	text-decoration: none;
+}
+a:hover{
+	cursor: pointer;
+}
+ul,li{
+	list-style-type: none;
+}
+
+img{
+	display: block;
+	border: none;
+}
+
+p{
+	display: inline-block;
+}
+
+.clearfix{
+	zoom: 1;
+}
+
+.clearfix:after{
+	clear: both;
+	content: "";
+	visibility: hidden;
+	height: 0;
+}
+/*新建的弹出窗口*/
+.new{
+	position: absolute;
+	top: 152px;
+	left: 304px;
+	z-index: 100;
+	width: 1026px;
+	height: 748px;
+	border: 1px solid #197FFE;
+	/*margin: 250px auto;*/
+	background-color: #FFFFFF;
+	/*display: none;*/
+}
+/*头部*/
+.new>.header{
+	position: relative;
+	height: 45px;
+	background-color: #1990fe;
+}
+.new>.header>span{
+	display: inline-block;
+	/*background-color: pink;*/
+	line-height: 45px;
+	margin-left: 15px;
+	color: #FFFFFF;
+	width: 90px;
+	text-align: center;
+	font-size: 14px;
+	background-image: url(../img/icon_new_new.png);
+	background-repeat: no-repeat;
+	background-position: 5px 14px;
+}
+.new>.header>.iconConcel{
+	display: inline-block;
+	position: absolute;
+	width: 20px;
+	height: 45px;
+	right: 20px;
+	cursor: pointer;
+	background-image: url(../img/icon_new_cancel.png);
+	background-repeat: no-repeat;
+	background-position: 5px 14px;
+}
+/*信息页面*/
+.new .messagePage{
+	position: relative;
+	height: 590px;
+	text-align: center;
+	overflow-y: auto;
+	padding-top: 20px;
+}
+.messagePage>table{
+	position: relative;
+	text-align: left;
+	display: inline-block;
+}
+.messagePage .space{
+	display: inline-block;
+	width: 150px;
+}
+.messagePage td{
+	word-break: keep-all;
+	white-space: nowrap;
+	display: inline-block;
+	text-align: left;
+	padding: 5px 0;
+}
+.messagePage .imgTd{
+	position: relative;
+}
+table img{
+	position: absolute;
+	font-size: 0;
+	left: 0;
+	top: 0;
+	width: 200px;
+}
+.messagePage .nameTd{
+	font-size: 14px;
+	color: #1990FE;
+	width: 100px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.messagePage .valueTd{
+	width: 150px;
+}
+.messagePage .valueTd>input{
+	width: 100%;
+}
+.messagePage .valueTd>select{
+	width: 105%;
+}
+/*按钮*/
+.new>.new_buttons{
+	position: relative;
+	text-align: right;
+	height: 90px;
+	background: #f4f4f4;
+}
+.new>.new_buttons>input{
+	width: 134px;
+	height: 34px;
+	font-size: 16px;
+	color: #1990FE;
+	margin-left: 20px;
+	margin-top: 25px;
+	border: 1px solid #1990FE;
+	background-color: #e9f6ff;
+	cursor: pointer;
+}
+.new>.new_buttons>input[value=取消]{
+	margin-right: 40px;
+}
+.new>.new_buttons>input:hover{
+	color: #FFFFFF;
+	background-color: #1990FE;
+}

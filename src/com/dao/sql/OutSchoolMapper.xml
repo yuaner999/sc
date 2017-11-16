@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.dao.interfaces.OutSchoolDao">
+
+    <!--* 添加一条校外活动-->
+    <insert id="addOutSchoolActivity" parameterType="map">
+        INSERT INTO outschool
+        (outID,outTitle,outContent,outStudentId,outPhoto,outAward,outDate,outAuditStatus,outAuditDate)
+        VALUES (uuid(),#{outTitle,jdbcType=VARCHAR},#{outContent,jdbcType=VARCHAR},#{outStudentId,jdbcType=VARCHAR},
+             #{outPhoto,jdbcType=VARCHAR},#{outAward,jdbcType=VARCHAR},now(),'待处理',now())
+    </insert>
+</mapper>

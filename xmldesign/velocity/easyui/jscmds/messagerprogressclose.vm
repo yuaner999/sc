@@ -1,0 +1,4 @@
+#*
+<messagerprogressclose />
+* *#
+$.messager.progress('close');

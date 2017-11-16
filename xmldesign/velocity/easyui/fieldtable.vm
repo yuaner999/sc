@@ -1,0 +1,25 @@
+#*
+sqlstr:select * from view
+* *#
+$sql.setConnection(${jdbc_driverclass},${jdbc_url},${jdbc_user},${jdbc_pass})
+#set($fields=$sql.fieldquery($sqlstr))
+<table cellpadding="5">
+    #foreach($field in $fields)##
+        #set($label=$field.fieldlabel.replace("_",""))
+        <tr>
+            <td>${field.comment}:</td>
+            <td>
+            #set($filepath="${basedir}/xmldesign/velocity/easyui/fieldeditors/${field.fieldtype}.vm")
+            #if($file.isfileexist($filepath))
+                $velocity.render("${basedir}/xmldesign/velocity/easyui/fieldeditors/${field.fieldtype}.vm",{
+                    "label":$label
+                })##
+            #else
+                $velocity.render("${basedir}/xmldesign/velocity/easyui/fieldeditors/varchar.vm",{
+                    "label":$label
+                })##
+            #end
+            </td>
+        </tr>
+    #end
+</table>

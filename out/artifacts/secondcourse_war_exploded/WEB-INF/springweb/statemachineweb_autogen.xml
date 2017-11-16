@@ -1,0 +1,287 @@
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    
+<bean id="menu" class="com.superstatemachine.web.WebStatemachine">
+    <property name="states" >
+        <list>
+            <bean p:name="init" p:viewName="menu" class="com.superstatemachine.web.ViewState2">
+    <property name="enterProcessors">
+        <list>
+                            
+<ref bean="jspPageProcessor" />
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT * FROM sysmenu order by sort
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    </list>
+    </property>
+</bean>
+        </list>
+    </property>
+    <property name="transitions">
+        <list>
+                    </list>
+    </property>
+</bean>
+
+    
+<bean id="sysusermanage" class="com.superstatemachine.web.WebStatemachine">
+    <property name="states" >
+        <list>
+            <bean p:name="init" p:viewName="sysusermanage" class="com.superstatemachine.web.ViewState2">
+    <property name="enterProcessors">
+        <list>
+                            
+<ref bean="jspPageProcessor" />
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT *,getrolename(sysrole_id) as sysrolename FROM sysrole where is_sysrole!='2654264' and sysrole_id!='instructor' order by sysrole_name
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="collegedata"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT *  FROM college where isDelete = '0' order by createDate desc
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    </list>
+    </property>
+</bean>
+        </list>
+    </property>
+    <property name="transitions">
+        <list>
+                    </list>
+    </property>
+</bean>
+
+    
+<bean id="MajorManage" class="com.superstatemachine.web.WebStatemachine">
+    <property name="states" >
+        <list>
+            <bean p:name="init" p:viewName="MajorManage" class="com.superstatemachine.web.ViewState2">
+    <property name="enterProcessors">
+        <list>
+                            
+<ref bean="jspPageProcessor" />
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="colleges"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT * FROM college where isDelete='0' order by collegeName
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    </list>
+    </property>
+</bean>
+        </list>
+    </property>
+    <property name="transitions">
+        <list>
+                    </list>
+    </property>
+</bean>
+
+    
+<bean id="ClassManage" class="com.superstatemachine.web.WebStatemachine">
+    <property name="states" >
+        <list>
+            <bean p:name="init" p:viewName="ClassManage" class="com.superstatemachine.web.ViewState2">
+    <property name="enterProcessors">
+        <list>
+                            
+<ref bean="jspPageProcessor" />
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="colleges"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT * FROM college where isDelete='0' order by collegeName
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="grades"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT * FROM grade where isDelete='0' order by gradeName
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    </list>
+    </property>
+</bean>
+        </list>
+    </property>
+    <property name="transitions">
+        <list>
+                    </list>
+    </property>
+</bean>
+
+    
+<bean id="InstructorManage" class="com.superstatemachine.web.WebStatemachine">
+    <property name="states" >
+        <list>
+            <bean p:name="init" p:viewName="InstructorManage" class="com.superstatemachine.web.ViewState2">
+    <property name="enterProcessors">
+        <list>
+                            
+<ref bean="jspPageProcessor" />
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="colleges"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT * FROM college where isDelete='0' order by collegeName
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                            
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="grades"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT * FROM grade where isDelete='0' order by gradeName
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    </list>
+    </property>
+</bean>
+        </list>
+    </property>
+    <property name="transitions">
+        <list>
+                    </list>
+    </property>
+</bean>
+
+</beans>

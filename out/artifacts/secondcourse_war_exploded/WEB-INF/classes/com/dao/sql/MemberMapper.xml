@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.dao.interfaces.MemberDao">
+    <!--批量插入-->
+    <insert id="saveMembers" parameterType="list">
+        INSERT INTO `member`
+        (`memberId`, `memberStudentId`, `memberType`,`memberRelation`,`memberName`,`memberBirthday`,`memberWork`,`memberPhone`)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (uuid(),
+            #{item.memberStudentId,jdbcType=VARCHAR},
+            #{item.memberType,jdbcType=VARCHAR},
+            #{item.memberRelation,jdbcType=VARCHAR},
+            #{item.memberName,jdbcType=VARCHAR},
+            #{item.memberBirthday,jdbcType=TIMESTAMP},
+            #{item.memberWork,jdbcType=VARCHAR},
+            #{item.memberPhone,jdbcType=VARCHAR})
+        </foreach>
+    </insert>
+
+
+    <!--* 批量删除-->
+    <delete id="deleteMoreMember" parameterType="list">
+        delete from   member where   memberId IN
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item,jdbcType=VARCHAR}
+        </foreach>
+    </delete>
+    <!--* 删除某学生的全部家庭成员信息-->
+    <delete id="deleteMemberByStudentId" parameterType="string">
+        delete from   member where   memberStudentId = #{memberStudentId}
+    </delete>
+
+    <!--*加载家庭成员信息-->
+    <select id="loadMemberInfo" parameterType="map" resultType="com.model.Member_Decoding">
+        SELECT * FROM wh_member_instructor_college
+        <where>
+            <if test="sqlStr != null and sqlStr !='' ">
+                AND  studentName like concat('%',#{sqlStr},'%')
+            </if>
+            <if test="collegeid != null and collegeid !='' ">
+                AND   collegeid=#{collegeid}
+            </if>
+            <if test="instructorid != null and instructorid !='' ">
+                AND   instructorid=#{instructorid} and idNow='1'
+            </if>
+        </where>
+        order by studentID
+    </select>
+
+    <!--* 添加一条家庭成员信息-->
+    <insert id="addMember" parameterType="com.model.Member_Encoding" >
+        INSERT INTO member (memberId,memberStudentId,memberType,memberRelation,memberName,memberBirthday,memberWork,  memberPhone)
+                    VALUES  (UUID(),${memberStudentId},${memberType},${memberRelation},${memberName},${memberBirthday},${memberWork},${memberPhone})
+    </insert>
+
+    <!--* 加载家庭成员信息-->
+    <select id="loadMemberShip" parameterType="string" resultType="com.model.Member_Decoding">
+          SELECT * FROM wh_member_instructor_college WHERE studentID=#{0}
+    </select>
+    <!--修改家庭成员的信息-->
+    <update id="editStudentMember" parameterType="com.model.Member_Encoding">
+        <![CDATA[
+                UPDATE member
+                SET
+                    memberType  = #{memberType},
+                    memberName = #{memberName},
+                    memberWork= #{memberWork},
+                    memberBirthday  =#{memberBirthday},
+                    memberPhone  = #{memberPhone}
+                    WHERE  memberStudentId = #{memberStudentId}
+                     AND memberRelation = #{memberRelation}
+     ]]>
+    </update>
+
+
+</mapper>

@@ -1,0 +1,80 @@
+
+#themedayPage{
+    width:100%;
+    height:auto;
+    position: relative;
+}
+
+#themedayPage1{
+    padding: 5px;
+    margin-top: 8px ;
+}
+#themedayPage1:after{
+    content: "";
+    display: block;
+    clear: both;
+    height: 0;
+}
+.first {
+    width: 30%;
+    float: left;
+}
+.secound{
+    width:30%;
+    float: left;
+}
+.third{
+    width:30%;
+    float: left;
+}
+
+.themedayPage ol li{
+    margin-left: 5px;
+    margin-top: 5px;
+}
+
+.themedayPage ol li p {
+    color: #5c85ee;
+    font-size: 16px;
+    line-height: 18px;
+    margin-bottom: 15px;
+    border-left: 4px solid #5c85ee;
+    padding-left: 8px;
+}
+
+.themedayPage ol li span {
+    display: block;
+    padding-left: 12px;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+ button {
+    width:350px;
+    height: 35px;
+    background: #5c85ee;
+    color: #fff;
+    font-size: 14px;
+    margin: 0 auto;
+    cursor: pointer;
+
+}
+.button{
+text-align: center;
+}
+ .delete{
+     position: relative;
+     top: 2px;
+     text-align: right;
+ }
+
+ .smdele{
+     width: 20px;
+     height:20px;
+ }
+
+.adele{
+position: absolute;
+    top: 8px;
+    right: 8px;
+}

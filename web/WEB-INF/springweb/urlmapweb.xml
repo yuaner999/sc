@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="supermvc" class="com.supermvc.urlmatchers.StatemachineUrlMatcher">
+        <property name="urlStatemachineMap">
+            <map>
+
+                <!--[region adminpages start]-->
+<entry key="/views/admin/activitiesManage.form" value="jspstatemachine"/>
+<entry key="/views/admin/activitiesManage_college.form" value="jspstatemachine"/>
+<entry key="/views/admin/activitiesManage_dept.form" value="jspstatemachine"/>
+<entry key="/views/admin/activitiesManage_school.form" value="jspstatemachine"/>
+<entry key="/views/admin/activityapplyManage.form" value="jspstatemachine"/>
+<entry key="/views/admin/activityapplyManage_college.form" value="jspstatemachine"/>
+<entry key="/views/admin/activityapplyManage_school.form" value="jspstatemachine"/>
+<entry key="/views/admin/avgPointActivity.form" value="jspstatemachine"/>
+<entry key="/views/admin/blogroll.form" value="jspstatemachine"/>
+<entry key="/views/admin/ClassManage.form" value="jspstatemachine"/>
+<entry key="/views/admin/ClassStudentInfo.form" value="jspstatemachine"/>
+<entry key="/views/admin/CollegeManage.form" value="jspstatemachine"/>
+<entry key="/views/admin/copyInfo.form" value="jspstatemachine"/>
+<entry key="/views/admin/deptManager.form" value="jspstatemachine"/>
+<entry key="/views/admin/GradeManage.form" value="jspstatemachine"/>
+<entry key="/views/admin/informManage.form" value="jspstatemachine"/>
+<entry key="/views/admin/informManage_college.form" value="jspstatemachine"/>
+<entry key="/views/admin/informManage_dept.form" value="jspstatemachine"/>
+<entry key="/views/admin/informManage_school.form" value="jspstatemachine"/>
+<entry key="/views/admin/login.form" value="jspstatemachine"/>
+<entry key="/views/admin/MajorManage.form" value="jspstatemachine"/>
+<entry key="/views/admin/menu.form" value="jspstatemachine"/>
+<entry key="/views/admin/newsManage.form" value="jspstatemachine"/>
+<entry key="/views/admin/newsManage_college.form" value="jspstatemachine"/>
+<entry key="/views/admin/newsManage_school.form" value="jspstatemachine"/>
+<entry key="/views/admin/NotactivityManage.form" value="jspstatemachine"/>
+<entry key="/views/admin/organization.form" value="jspstatemachine"/>
+<entry key="/views/admin/otherActivitiesManage.form" value="jspstatemachine"/>
+<entry key="/views/admin/printManage.form" value="jspstatemachine"/>
+<entry key="/views/admin/queryManager.form" value="jspstatemachine"/>
+<entry key="/views/admin/schoolactivityapplyManage.form" value="jspstatemachine"/>
+<entry key="/views/admin/schoolactivityapplyManage_class.form" value="jspstatemachine"/>
+<entry key="/views/admin/schoolactivityapplyManage_college.form" value="jspstatemachine"/>
+<entry key="/views/admin/schoolactivityapplyManage_dept.form" value="jspstatemachine"/>
+<entry key="/views/admin/schoolactivityapplyManage_grade.form" value="jspstatemachine"/>
+<entry key="/views/admin/schoolactivityapplyManage_school.form" value="jspstatemachine"/>
+<entry key="/views/admin/showSignStatus.form" value="jspstatemachine"/>
+<entry key="/views/admin/signInProccessingPage.form" value="jspstatemachine"/>
+<entry key="/views/admin/sixelementpoint.form" value="jspstatemachine"/>
+<entry key="/views/admin/studentManager.form" value="jspstatemachine"/>
+<entry key="/views/admin/sysaboutnavy.form" value="jspstatemachine"/>
+<entry key="/views/admin/sysmenumanage.form" value="jspstatemachine"/>
+<entry key="/views/admin/sysroleauthoritymanage.form" value="jspstatemachine"/>
+<entry key="/views/admin/sysrolemanage.form" value="jspstatemachine"/>
+<entry key="/views/admin/sysusermanage.form" value="jspstatemachine"/>
+<entry key="/views/admin/teamActivitiesManage.form" value="jspstatemachine"/>
+<entry key="/views/admin/uploadactivity.form" value="jspstatemachine"/>
+<entry key="/views/admin/workManage.form" value="jspstatemachine"/>
+
+                <!--[region adminpages end]-->
+                <!--系统功能-->
+                <entry key="/views/admin/login.form" value="jspstatemachine"/>
+                <entry key="/views/admin/menu.form" value="menu"/>
+                <entry key="/views/admin/sysaboutnavy.form" value="jspstatemachine"/>
+                <entry key="/views/admin/sysmenumanage.form" value="jspstatemachine"/>
+                <entry key="/views/admin/sysroleauthoritymanage.form" value="jspstatemachine"/>
+                <entry key="/views/admin/sysrolemanage.form" value="jspstatemachine"/>
+                <entry key="/views/admin/sysusermanage.form" value="sysusermanage"/>
+
+                <!--后台管理-->
+                <entry key="/views/admin/CollegeManage.form" value="jspstatemachine"/>
+                <entry key="/views/admin/MajorManage.form" value="MajorManage"/>
+                <entry key="/views/admin/GradeManage.form" value="jspstatemachine"/>
+                <entry key="/views/admin/ClassManage.form" value="ClassManage"/>
+                <entry key="/views/admin/studentManager.form" value="jspstatemachine"/>
+                <entry key="/views/admin/activitiesManage.form" value="activitiesManage"/>
+                <entry key="/views/admin/deptManager.form" value="jspstatemachine"/>
+                <entry key="/views/admin/informManage.form" value="jspstatemachine"/>
+                <entry key="/views/admin/schoolactivityapplyManage.form" value="schoolactivityapplyManage"/>
+                <entry key="/views/admin/schoolactivityapplyManage_dept.form" value="schoolactivityapplyManage_dept"/>
+                <entry key="/views/admin/schoolactivityapplyManage_school.form" value="schoolactivityapplyManage_school"/>
+                <entry key="/views/admin/schoolactivityapplyManage_college.form" value="schoolactivityapplyManage_college"/>
+                <entry key="/views/admin/schoolactivityapplyManage_grade.form" value="schoolactivityapplyManage_grade"/>
+                <entry key="/views/admin/schoolactivityapplyManage_class.form" value="schoolactivityapplyManage_class"/>
+                <entry key="/views/admin/activityapplyManage.form" value="jspstatemachine"/>
+                <entry key="/views/admin/newsManage.form" value="jspstatemachine"/>
+                <entry key="/views/admin/newsManage_school.form" value="jspstatemachine"/>
+                <entry key="/views/admin/newsManage_college.form" value="jspstatemachine"/>
+                <entry key="/views/admin/printManage.form" value="jspstatemachine"/>
+                <entry key="/views/admin/showSignStatus.form" value="jspstatemachine"/>
+                <entry key="/views/admin/copyInfo.form" value="jspstatemachine"/>
+                <entry key="/views/admin/blogroll.form" value="jspstatemachine"/>
+                <entry key="/views/admin/activitiesManage_school.form" value="activitiesManage_school"/>
+                <entry key="/views/admin/activitiesManage_college.form" value="activitiesManage_college"/>
+                <entry key="/views/admin/activitiesManage_dept.form" value="activitiesManage_dept"/>
+                <entry key="/views/admin/informManage_dept.form" value="jspstatemachine"/>
+                <entry key="/views/admin/informManage_school.form" value="jspstatemachine"/>
+                <entry key="/views/admin/informManage_college.form" value="jspstatemachine"/>
+                <entry key="/views/admin/activityapplyManage_school.form" value="jspstatemachine"/>
+                <entry key="/views/admin/avgPointActivity.form" value="jspstatemachine"/>
+                <entry key="/views/admin/uploadactivity.form" value="jspstatemachine"/>
+                <entry key="/views/admin/signInProccessingPage.form" value="jspstatemachine"/>
+                <entry key="/views/admin/ClassStudentInfo.form" value="jspstatemachine"/>
+                <entry key="/views/admin/queryManager.form" value="jspstatemachine"/>
+                <entry key="/views/admin/activityapplyManage_college.form" value="jspstatemachine"/>
+                <entry key="/views/admin/sixelementpoint.form" value="jspstatemachine"/>
+                <entry key="/views/admin/otherActivitiesManage.form" value="jspstatemachine"/>
+                <entry key="/views/admin/teamActivitiesManage.form" value="teamActivitiesManage"/>
+                <entry key="/views/admin/NotactivityManage.form" value="NotactivityManage"/>
+                <entry key="/views/admin/workManage.form" value="workManage"/>
+                <entry key="/views/admin/organization.form" value="organization"/>
+
+                <!-- 后台管理-->
+
+                <!--用户管理-->
+                <!--<entry key="/views/font/login.form" value="jspstatemachine"/>-->
+                <entry key="/views/font/index.form" value="jspstatemachine"/>
+                <entry key="/views/font/activityCheck.form" value="activity_check"/>
+                <entry key="/views/font/activityList.form" value="jspstatemachine"/>
+                <entry key="/views/font/news_detail.form" value="jspstatemachine"/>
+                <entry key="/views/font/news_list.form" value="jspstatemachine"/>
+                <entry key="/views/font/oneself.form" value="jspstatemachine"/>
+                <entry key="/views/font/outSchoolActivityApply.form" value="jspstatemachine"/>
+                <entry key="/views/font/login.form" value="jspstatemachine"/>
+                <entry key="/views/font/printPriviewV2.form" value="jspstatemachine"/>
+                <entry key="/views/font/activitydetail.form" value="jspstatemachine"/>
+                <entry key="/views/font/NotactivityApply.form" value="NotactivityApply"/>
+                <entry key="/views/font/applyResult.form" value="jspstatemachine"/>
+                <entry key="/views/font/pioneerNews.form" value="jspstatemachine"/>
+                <entry key="/views/font/pioneerYouth.form" value="jspstatemachine"/>
+                <entry key="/views/font/printPriviewV3.form" value="jspstatemachine"/>
+                <entry key="/views/font/A4.form" value="jspstatemachine"/>
+                <entry key="/views/font/activityState_student.form" value="jspstatemachine"/>
+                <!--用户管理-->
+
+                <!--手机页面-->
+                <entry key="/views/mobile/index.form" value="index"/>
+                <entry key="/views/mobile/news.form" value="jspstatemachine"/>
+                <entry key="/views/mobile/activityDetail.form" value="jspstatemachine"/>
+                <entry key="/views/mobile/activityDisplay.form" value="jspstatemachine"/>
+                <entry key="/views/mobile/activityList.form" value="jspstatemachine"/>
+                <entry key="/views/mobile/activitySignin.form" value="jspstatemachine"/>
+                <entry key="/views/mobile/changePhone.form" value="jspstatemachine"/>
+                <entry key="/views/mobile/changePwd.form" value="jspstatemachine"/>
+                <entry key="/views/mobile/forgetPwd.form" value="jspstatemachine"/>
+                <entry key="/views/mobile/myActivity.form" value="jspstatemachine"/>
+                <entry key="/views/mobile/newsDetail.form" value="jspstatemachine"/>
+                <entry key="/views/mobile/query.form" value="jspstatemachine"/>
+                <entry key="/views/mobile/review.form" value="jspstatemachine"/>
+                <entry key="/views/mobile/showDetail.form" value="jspstatemachine"/>
+                <entry key="/views/mobile/userCenter.form" value="jspstatemachine"/>
+                <entry key="/views/mobile/login.form" value="jspstatemachine"/>
+                <entry key="/views/mobile/index_new.form" value="jspstatemachine"/>
+                <entry key="/views/mobile/newReportCard.form" value="jspstatemachine"/>
+                <entry key="/views/mobile/reportCard.form" value="jspstatemachine"/>
+                <entry key="/views/mobile/themedayPage.form" value="jspstatemachine"/>
+                <entry key="/views/mobile/A4.form" value="jspstatemachine"/>
+                <!--<entry key="/index.form" value="jspstatemachine"/>-->
+                <!--手机页面-->
+
+                <!--新教师界面页面-->
+                <entry key="/views/admin_new/common_stuMsgManage.form" value="jspstatemachine"/>
+                <entry key="/views/admin_new/StuMsgManage.form" value="jspstatemachine"/>
+                <entry key="/views/admin_new/newsManage.form" value="jspstatemachine"/>
+                <entry key="/views/admin_new/newsManage_school.form" value="jspstatemachine"/>
+                <entry key="/views/admin_new/newsManage_college.form" value="jspstatemachine"/>
+                <entry key="/views/admin_new/studentManage.form" value="jspstatemachine"/>
+                <entry key="/views/admin_new/deptManager.form" value="jspstatemachine"/>
+                <entry key="/views/admin_new/menu.form" value="menu"/>
+                <entry key="/views/admin_new/login.form" value="jspstatemachine"/>
+                <entry key="/views/admin_new/activityManage_school.form" value="activityManage_school"/>
+                <entry key="/views/admin_new/activityManage_college.form" value="activityManage_college"/>
+                <entry key="/views/admin_new/activityManage_dept.form" value="activityManage_dept"/>
+                <entry key="/views/admin_new/schoolactivityapplyManage.form" value="schoolactivityapplyManage"/>
+                <entry key="/views/admin_new/schoolactivityapplyManage_dept.form" value="schoolactivityapplyManage_dept"/>
+                <entry key="/views/admin_new/schoolactivityapplyManage_school.form" value="schoolactivityapplyManage_school"/>
+                <entry key="/views/admin_new/schoolactivityapplyManage_college.form" value="schoolactivityapplyManage_college"/>
+                <entry key="/views/admin_new/schoolactivityapplyManage_grade.form" value="schoolactivityapplyManage_grade"/>
+                <entry key="/views/admin_new/schoolactivityapplyManage_class.form" value="schoolactivityapplyManage_class"/>
+                <entry key="/views/admin_new/informbyManage_school.form" value="jspstatemachine"/>
+                <entry key="/views/admin_new/informbyManage_dept.form" value="jspstatemachine"/>
+                <entry key="/views/admin_new/informbyManage_college.form" value="jspstatemachine"/>
+                <entry key="/views/admin_new/outactivityapply_school.form" value="jspstatemachine"/>
+                <entry key="/views/admin_new/outactivityapply_college.form" value="jspstatemachine"/>
+                <entry key="/views/admin_new/notactivityManage_school.form" value="notactivityManage_school"/>
+                <entry key="/views/admin_new/organization.form" value="notactivityManage_school"/>
+                <entry key="/views/admin_new/printManage.form" value="jspstatemachine"/>
+                <entry key="/views/admin_new/teamapplyManage.form" value="teamapplyManage"/>
+                <entry key="/views/admin_new/otheractivityManage.form" value="jspstatemachine"/>
+                <entry key="/views/admin_new/schoolactivityapplyManage.form" value="schoolactivityapplyManage"/>
+                <entry key="/views/admin_new/activityqueryManager.form" value="jspstatemachine"/>
+                <entry key="/views/admin_new/classManage.form" value="jspstatemachine"/>
+                <entry key="/views/admin_new/blogroll.form" value="jspstatemachine"/>
+                <entry key="/views/admin_new/sixelementpoint.form" value="jspstatemachine"/>
+                <entry key="/views/admin_new/workManagenew.form" value="workManagenew"/>
+                <entry key="/views/admin_new/classStudentInfo.form" value="jspstatemachine"/>
+                <entry key="/views/admin_new/uploadInnerActivity.form" value="jspstatemachine"/>
+                <entry key="/views/admin_new/activtiypoint.form" value="jspstatemachine"/>
+                <entry key="/views/admin_new/showsignStatus.form" value="jspstatemachine"/>
+                <entry key="/views/admin_new/signInproccessingPage.form" value="jspstatemachine"/>
+                <entry key="/views/admin_new/password.form" value="jspstatemachine"/>
+                <entry key="/views/admin_new/copyInfo.form" value="jspstatemachine"/>
+                <entry key="/views/admin_new/activityendManage_class.form" value="jspstatemachine"/>
+                <entry key="/views/admin_new/activityendManage_college.form" value="jspstatemachine"/>
+                <entry key="/views/admin_new/activityendManage_school.form" value="jspstatemachine"/>
+                <entry key="/views/admin_new/supplementManage_school.form" value="jspstatemachine"/>
+                <entry key="/views/admin_new/supplementManage_class.form" value="jspstatemachine"/>
+                <entry key="/views/admin_new/supplementManage_college.form" value="jspstatemachine"/>
+                <entry key="/views/admin_new/activityScoreManage.form" value="jspstatemachine"/>
+                <entry key="/views/admin_new/print.form" value="jspstatemachine"/>
+                <entry key="/views/admin_new/activityendManage_detail.form" value="jspstatemachine"/>
+                <entry key="/views/admin_new/showstatistics.form" value="jspstatemachine"/>
+                <entry key="/views/admin_new/sixCategoriesCheck.form" value="jspstatemachine"/>
+                <entry key="/views/admin_new/superadmin_auditActivityEnd.form" value="jspstatemachine"/>
+                <entry key="/views/admin_new/superadmin_auditSupplement.form" value="jspstatemachine"/>
+                <entry key="/views/admin_new/sixCategoriesCheck_college.form" value="jspstatemachine"/>
+                <entry key="/views/admin_new/teamapplyManage_dept.form" value="jspstatemachine"/>
+                <entry key="/views/admin_new/teamapplyManage_college.form" value="jspstatemachine"/>
+                <entry key="/views/admin_new/teamActivityAudit_college.form" value="jspstatemachine"/>
+                <entry key="/views/admin_new/teamActivityAudit_dept.form" value="jspstatemachine"/>
+                <entry key="/views/admin_new/teamActivityAudit.form" value="jspstatemachine"/>
+                <entry key="/views/admin_new/activityqueryManager_college.form" value="jspstatemachine"/>
+                <entry key="/views/admin_new/activityqueryManager_class.form" value="jspstatemachine"/>
+                <entry key="/views/admin_new/teamapplyManage_class.form" value="jspstatemachine"/>
+                <entry key="/views/admin_new/resetStudentPwd.form" value="jspstatemachine"/>
+                <entry key="/views/admin_new/importThemeActity.form" value="jspstatemachine"/>
+                <!--新教师界面页面-->
+                <entry key="/views/font/index_new.form" value="jspstatemachine"/>
+                <entry key="/views/font/header_new.form" value="jspstatemachine"/>
+                <entry key="/views/font/footer_new.form" value="jspstatemachine"/>
+
+            </map>
+        </property>
+    </bean>
+
+
+</beans>

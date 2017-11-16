@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.dao.interfaces.ScholarshipDao">
+
+    <!--批量插入-->
+    <insert id="addscholarship" parameterType="list">
+        INSERT INTO `supplement`
+        ( id,shipName,supStudentId,takeDate,regimentAuditStatus,regimentAuditStatusDate,collegeAuditStatus,collegeAuditStatusDate,schoolAuditStaus,schoolAuditStausDate,supDate)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (uuid(),
+            #{item.shipName,jdbcType=VARCHAR},
+            #{item.supStudentId,jdbcType=VARCHAR},
+            #{item.takeDate,jdbcType=VARCHAR},'已通过',now(),'已通过',now(), '已通过',now(),now())
+        </foreach>
+    </insert>
+</mapper>

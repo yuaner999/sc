@@ -1,0 +1,93 @@
+.tab {
+  margin-bottom: 5px;
+  background: rgba(255, 255, 255, 0.8);
+  height: 50px;
+  line-height: 45px;
+  font-size: 18px;
+  color: #bdbdbd;
+  overflow: hidden;
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 3;
+}
+.tab+.container{
+  padding-top: 55px;
+}
+.tab div {
+  float: left;
+  width: 25%;
+  text-align: center;
+  font-weight: bold;
+  height: 100%;
+  padding: 0 5px;
+  position: relative;
+}
+.tab div.sele {
+  color: #5c85ef;
+}
+.tab div.sele:after {
+  content: '';
+  height: 5px;
+  background: #5c85ef;
+  position: absolute;
+  bottom: 0;
+  left: 5px;
+  width: 90%;
+}
+.null {
+  font-size: 20px;
+  text-align: center;
+  vertical-align: middle;
+  padding-top: 20px;
+  padding-bottom: 10px;
+  color: #ddd;
+}
+.starbox {
+  border-top: 1px solid #b7c8f1;
+  padding-top: 9px;
+  margin-top: 20px;
+}
+.starbox > .blue-btn {
+  height: 40px;
+  line-height: 40px;
+}
+.starbox > .clearfix {
+  height: 40px;
+  line-height: 40px;
+}
+.starbox > .clearfix .left span {
+  font-size: 17px;
+  font-weight: bold;
+  color: #5c85ef;
+  margin-right: 8px;
+}
+.starbox > .clearfix .left .star {
+  display: inline-block;
+}
+.starbox > .clearfix .left .star .icon {
+  width: 26px;
+  height: 25px;
+  background-position: -76px -16px;
+  vertical-align: middle;
+  top: -2px;
+  margin-right: 4px;
+}
+.starbox > .clearfix .left .star .icon.all {
+  background-position: -50px -16px;
+}
+.starbox > .clearfix .left .star .icon.helf {
+  background-position: -56px -67px;
+}
+.starbox > .clearfix .right .blue-btn {
+  width: 80px;
+  height: 30px;
+  line-height: 30px;
+}
+.starbox > .clearfix .right span {
+  color: #b7c8f1;
+  font-weight: bold;
+  font-size: 17px;
+}
+/*# sourceMappingURL=myActivity.css.map */

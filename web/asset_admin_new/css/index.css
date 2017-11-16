@@ -1,0 +1,175 @@
+.section{
+	padding: 0 5%;
+	overflow: hidden;
+	position: relative;
+}
+@media only screen and (max-width: 1441px) {
+	.section{
+		font-size: 14px;
+	}
+}
+@media only screen and (max-width: 1281px) {
+	.section{
+		font-size: 12px;
+	}
+	.content>li{
+		width: 97% !important;
+	}
+}
+.content{
+	margin-right: 300px;
+	overflow: hidden;
+	margin-bottom: 20px;
+}
+.content>li{
+	width: 47%;
+	float: left;
+	margin-right: 3%;
+}.content>li>div{
+	position: relative;
+	margin-bottom: 35px;
+}
+.content>li>div p{
+	display: inline-block;
+	font-weight: bold;
+	color: #2b4590;
+	padding-top: 15px;
+	line-height: 47px;
+	font-size: 18px;
+}
+.content>li>div b{
+	background: url(../images/border_08.png);
+	width: 184px;
+	height: 8px;
+	display: inline-block;
+}
+.content>li>div a{
+	color: #fff;
+	background: #2b458c;
+	display: block;
+	padding: 6px;
+	position: absolute;
+	top: 40px;
+	right: 0;
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	behavior: url(../css/ie-css3.htc);
+}
+.content>li>ol{
+}
+.content>li li{
+	margin-bottom: 35px;
+	overflow: hidden;
+}
+.content>li li>span{
+	width: 38%;
+	margin-right: 2%;
+	float: left;
+}
+.content>li li>span img{
+	width: 100%;
+	height: 100%;
+}
+.content>li li>div{
+	width: 59%;	
+	float: right;
+	line-height: 20px;
+	margin-top: 5px;
+	position: relative;
+}
+.content>li li>div p{
+	position: relative;
+	margin-bottom: 2px;
+}
+.content>li li>div p span{
+	position: absolute;
+	top: -4px;
+	left: 0;
+	background: #2b458c;
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	behavior: url(../css/ie-css3.htc);
+}
+.content>li li>div p span a{
+	color: #fff;
+	padding: 3px 5px;
+	display: block;
+	font-size: 14px;
+}
+.content>li li>div p>a{
+	margin-left: 78px;
+	display: block;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	font-size: 16px;
+	font-weight: bold;
+	color: #535353;
+}
+.content>li li>div p>a:hover{
+	color: #2a458c;
+}
+
+.content>li li>div>span{
+	font-size: 14px;
+	color: #535353;
+	height: 50%;
+	display: block;
+}
+.content>li li>div>b{
+	position: absolute;
+	bottom: 0px;
+	right: 0;
+	font-size: 16px;
+	color: #2b488e;
+	background: url(../images/bborder_02.png) bottom no-repeat;
+}
+.userinfo{
+	position: absolute;
+	top: 28px;
+	right: 5%;
+	width: 298px;
+	border: 1px solid #2a458c;
+}
+.userinfo>p{
+	height: 36px;
+	background: #2a458c;
+	font-size: 12px;
+	color: #fff;
+	line-height: 36px;
+	padding-left: 20px;
+	margin-bottom: 32px;
+}
+.userinfo>p a{
+	font-size: 14px;
+	color: #fff;
+	float: right;
+	margin-right: 20px;
+}
+.info{
+	margin-left: 21px;
+	overflow: hidden;
+}
+.info div{
+	width: 124px;
+	float: left;
+}
+.info div img{
+	width: 100%;
+	height: 163px;
+}
+.info ul{
+	float: right;
+	width: 145px;
+}
+.info ul li{
+	margin-bottom: 10px;
+	font-size: 14px;
+	color: #2a458c;
+	word-break: break-all;
+}
+.model{
+	margin-bottom: 30px;
+}

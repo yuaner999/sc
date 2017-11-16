@@ -1,0 +1,85 @@
+#set($title=$xml.xpathobj($elem,"./@title"))
+#set($tabletitle=$xml.xpathobj($elem,"./@tabletitle"))
+#set($tabledataurl=$xml.xpathobj($elem,"./@tabledataurl"))
+#set($headersql=$xml.xpathobj($elem,"./tableheadersql/text()"))
+#set($formsql=$xml.xpathobj($elem,"./formsql/text()"))
+#set($formcreatesubmiturl=$xml.xpathobj($elem,"./@formcreatesubmiturl"))
+#set($formeditsubmiturl=$xml.xpathobj($elem,"./@formeditsubmiturl"))
+<app title="$title" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../schemas/easyui.xsd">
+
+    <datagrid id="datagrid" title="$tabletitle" url="$tabledataurl">
+        <headers sql="$headersql"/>
+        <toolbar>
+            <toolbarline>
+                <button id="btnadd">
+                    <dialogopen dialogid="dlgcreate"/>
+                </button>
+                <button id="btnedit">
+                    <datagridselected datagridid="datagrid" var="data"/>
+                    <if condition="data">
+                        <formloaddata formid="frmedit" var="data" />
+                        <dialogopen dialogid="dlgedit"/>
+                    </if>
+                    <else>
+                        <alert text="请选择要编辑的数据"/>
+                    </else>
+                </button>
+                <button id="btndelete">
+                    <datagridselected datagridid="datagrid" var="data"/>
+                    <if condition="data">
+                        <alert text="code:delete company"/>
+                        <alert text="操作完成"/>
+                        <datagridreload datagridid="datagrid"/>
+                    </if>
+                    <else>
+                        <alert text="请选择要编辑的数据"/>
+                    </else>
+                </button>
+            </toolbarline>
+        </toolbar>
+    </datagrid>
+
+    <dialog id="dlgcreate" title="创建" >
+        <buttons>
+            <button id="dlgcreateok">
+                <formsubmit formid="frmcreate" url="$formcreatesubmiturl">
+                    <alert text="操作完成"/>
+                    <dialogclose dialogid="dlgcreate"/>
+                    <datagridreload datagridid="datagrid"/>
+                </formsubmit>
+            </button>
+            <button id="dlgcreatecancel">
+                <dialogclose dialogid="dlgcreate"/>
+            </button>
+        </buttons>
+        <content>
+            <form id="frmcreate" method="post" fieldsql="$formsql"/>
+        </content>
+    </dialog>
+
+    <dialog id="dlgedit" title="编辑">
+        <buttons>
+            <button id="dlgeditok">
+                <formsubmit formid="frmedit" url="$formeditsubmiturl">
+                    <alert text="操作完成"/>
+                    <dialogclose dialogid="dlgedit"/>
+                    <datagridreload datagridid="datagrid"/>
+                </formsubmit>
+            </button>
+            <button id="dlgeditcancel">
+                <dialogclose dialogid="dlgedit"/>
+            </button>
+        </buttons>
+        <content>
+            <form id="frmedit" method="post" fieldsql="$formsql"/>
+        </content>
+    </dialog>
+
+    <javascript>
+        <startup>
+            <dialogclose dialogid="dlgcreate"/>
+            <dialogclose dialogid="dlgedit"/>
+        </startup>
+    </javascript>
+
+</app>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="superjson" class="com.supermvc.urlmatchers.JsonStatemachineUrlMatcher">
+        <property name="urlStatemachineMap">
+            <map>
+
+                <entry key="/jsons/test.form" value="test"/>
+                <entry key="/jsons/checkcode.form" value="checkcode"/>
+                <!--[region jsonxml start]-->
+<entry key="/jsons/loadSysUser.form" value="loadSysUser"/>
+<entry key="/jsons/editSysUser.form" value="editSysUser"/>
+<entry key="/jsons/editCollegeManager.form" value="editCollegeManager"/>
+<entry key="/jsons/deleteSysUser.form" value="deleteSysUser"/>
+<entry key="/jsons/deleteCollegeManager.form" value="deleteCollegeManager"/>
+<entry key="/jsons/addCollegeManager.form" value="addCollegeManager"/>
+<entry key="/jsons/addMenu.form" value="addMenu"/>
+<entry key="/jsons/editMenu.form" value="editMenu"/>
+<entry key="/jsons/deleteMenu.form" value="deleteMenu"/>
+<entry key="/jsons/loadSysRole.form" value="loadSysRole"/>
+<entry key="/jsons/addRole.form" value="addRole"/>
+<entry key="/jsons/editRole.form" value="editRole"/>
+<entry key="/jsons/deleteRole.form" value="deleteRole"/>
+<entry key="/jsons/getRoleName.form" value="getRoleName"/>
+<entry key="/jsons/getRoleMenu.form" value="getRoleMenu"/>
+<entry key="/jsons/loadCollege.form" value="loadCollege"/>
+<entry key="/jsons/addCollege.form" value="addCollege"/>
+<entry key="/jsons/editCollege.form" value="editCollege"/>
+<entry key="/jsons/deleteCollege.form" value="deleteCollege"/>
+<entry key="/jsons/loadMajor.form" value="loadMajor"/>
+<entry key="/jsons/loadMajorType.form" value="loadMajorType"/>
+<entry key="/jsons/addMajor.form" value="addMajor"/>
+<entry key="/jsons/editMajor.form" value="editMajor"/>
+<entry key="/jsons/deleteMajor.form" value="deleteMajor"/>
+<entry key="/jsons/loadGrade.form" value="loadGrade"/>
+<entry key="/jsons/addGrade.form" value="addGrade"/>
+<entry key="/jsons/editGrade.form" value="editGrade"/>
+<entry key="/jsons/deleteGrade.form" value="deleteGrade"/>
+<entry key="/jsons/loadClass.form" value="loadClass"/>
+<entry key="/jsons/addClass.form" value="addClass"/>
+<entry key="/jsons/editClass.form" value="editClass"/>
+<entry key="/jsons/deleteClass.form" value="deleteClass"/>
+<entry key="/jsons/loadSeletMajor.form" value="loadSeletMajor"/>
+<entry key="/jsons/loadInstructor.form" value="loadInstructor"/>
+<entry key="/jsons/addInstructor.form" value="addInstructor"/>
+<entry key="/jsons/editInstructor.form" value="editInstructor"/>
+<entry key="/jsons/resetInstructor.form" value="resetInstructor"/>
+<entry key="/jsons/deleteInstructor.form" value="deleteInstructor"/>
+<entry key="/jsons/getInstructorClass.form" value="getInstructorClass"/>
+<entry key="/jsons/getInstructorRelationClass.form" value="getInstructorRelationClass"/>
+<entry key="/jsons/updateInstructorRelationClass.form" value="updateInstructorRelationClass"/>
+<entry key="/jsons/addInstructorRelationClass.form" value="addInstructorRelationClass"/>
+<entry key="/jsons/loadScholarshipNews.form" value="loadScholarshipNews"/>
+<entry key="/jsons/loadScholarshipNewsResult.form" value="loadScholarshipNewsResult"/>
+<entry key="/jsons/addScholarshipNews.form" value="addScholarshipNews"/>
+<entry key="/jsons/editScholarshipNews.form" value="editScholarshipNews"/>
+<entry key="/jsons/deleteScholarshipNews.form" value="deleteScholarshipNews"/>
+<entry key="/jsons/deleteStudent.form" value="deleteStudent"/>
+<entry key="/jsons/loadclassnames.form" value="loadclassnames"/>
+<entry key="/jsons/loadRap.form" value="loadRap"/>
+<entry key="/jsons/addRap.form" value="addRap"/>
+<entry key="/jsons/loadQuitSchool.form" value="loadQuitSchool"/>
+<entry key="/jsons/loadstudentId.form" value="loadstudentId"/>
+<entry key="/jsons/loadstudentId_quit.form" value="loadstudentId_quit"/>
+<entry key="/jsons/addQuitSchool.form" value="addQuitSchool"/>
+<entry key="/jsons/loadDescInfo.form" value="loadDescInfo"/>
+<entry key="/jsons/loadGradeInfo.form" value="loadGradeInfo"/>
+<entry key="/jsons/matchGrade.form" value="matchGrade"/>
+<entry key="/jsons/loadClassInfo.form" value="loadClassInfo"/>
+<entry key="/jsons/addDescLog.form" value="addDescLog"/>
+<entry key="/jsons/loadFindPwdCode.form" value="loadFindPwdCode"/>
+<entry key="/jsons/update_findPwd_Reset.form" value="update_findPwd_Reset"/>
+<entry key="/jsons/edit_findpwdcodestatus.form" value="edit_findpwdcodestatus"/>
+<entry key="/jsons/loadTransferInfo.form" value="loadTransferInfo"/>
+<entry key="/jsons/loadCollegeInfo.form" value="loadCollegeInfo"/>
+<entry key="/jsons/loadMajorInfo.form" value="loadMajorInfo"/>
+<entry key="/jsons/loadMajorInfoByCollegeId.form" value="loadMajorInfoByCollegeId"/>
+<entry key="/jsons/loadClassInfos.form" value="loadClassInfos"/>
+<entry key="/jsons/loadClassInfoByMajorId.form" value="loadClassInfoByMajorId"/>
+<entry key="/jsons/addCollegeChange.form" value="addCollegeChange"/>
+<entry key="/jsons/loadMemberInfo.form" value="loadMemberInfo"/>
+<entry key="/jsons/addMember.form" value="addMember"/>
+<entry key="/jsons/loadOfficeAuditInfo.form" value="loadOfficeAuditInfo"/>
+<entry key="/jsons/officeAuditScholarship.form" value="officeAuditScholarship"/>
+<entry key="/jsons/loadAuditScholarship.form" value="loadAuditScholarship"/>
+<entry key="/jsons/editCollegeSchol.form" value="editCollegeSchol"/>
+<entry key="/jsons/loadinstructorInfo.form" value="loadinstructorInfo"/>
+<entry key="/jsons/loadRapRec.form" value="loadRapRec"/>
+<entry key="/jsons/loadDescInfo2.form" value="loadDescInfo2"/>
+<entry key="/jsons/loadTransferInfo2.form" value="loadTransferInfo2"/>
+<entry key="/jsons/ValidateName.form" value="ValidateName"/>
+<entry key="/jsons/ValidateNum.form" value="ValidateNum"/>
+<entry key="/jsons/saveApplyScholarshipInfo.form" value="saveApplyScholarshipInfo"/>
+<entry key="/jsons/loadNewsList.form" value="loadNewsList"/>
+<entry key="/jsons/loadNewsListById.form" value="loadNewsListById"/>
+<entry key="/jsons/loadScholarshipMessInfo.form" value="loadScholarshipMessInfo"/>
+<entry key="/jsons/loadScholarshipsuccInfo.form" value="loadScholarshipsuccInfo"/>
+<entry key="/jsons/validateScholarshipApply.form" value="validateScholarshipApply"/>
+<entry key="/jsons/newsLayPage.form" value="newsLayPage"/>
+<entry key="/jsons/validateOfficeRecheck.form" value="validateOfficeRecheck"/>
+<entry key="/jsons/loadmstudentinfo.form" value="loadmstudentinfo"/>
+<entry key="/jsons/checkLicense.form" value="checkLicense"/>
+<entry key="/jsons/loadStuInfoEditConfig.form" value="loadStuInfoEditConfig"/>
+<entry key="/jsons/addStuInfoEditConfig.form" value="addStuInfoEditConfig"/>
+<entry key="/jsons/updateStuInfoEditConfig.form" value="updateStuInfoEditConfig"/>
+<entry key="/jsons/delStuInfoEditConfig.form" value="delStuInfoEditConfig"/>
+<entry key="/jsons/loadStuInfoByEditConfig.form" value="loadStuInfoByEditConfig"/>
+<entry key="/jsons/loadCollegeMajor.form" value="loadCollegeMajor"/>
+<entry key="/jsons/loadStuCardApplycationInfo.form" value="loadStuCardApplycationInfo"/>
+<entry key="/jsons/editStuCardApplycation.form" value="editStuCardApplycation"/>
+<entry key="/jsons/loadStuProveInfo.form" value="loadStuProveInfo"/>
+<entry key="/jsons/proveAuditStatu.form" value="proveAuditStatu"/>
+<entry key="/jsons/loadNewsResultLists.form" value="loadNewsResultLists"/>
+
+                <!--[region jsonxml end]-->
+
+            </map>
+        </property>
+    </bean>
+
+
+</beans>

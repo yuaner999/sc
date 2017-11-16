@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.dao.interfaces.NoactivityApplyDao">
+
+    <!--* 添加一条校外活动-->
+    <insert id="addNotactivity" parameterType="map">
+        INSERT INTO notactivity
+        (notid,notStudentId,notClass,createDate,workLevle,organizationName,
+        schoolworkName,classworkName,scienceClass,scienceName,shiptypeName,sciencePhoto,auditStatus,auditStatusDate,auditStatusName)
+        VALUES (uuid(),#{notStudentId,jdbcType=VARCHAR},#{notClass,jdbcType=VARCHAR},now(),#{workLevle,jdbcType=VARCHAR},#{organizationName,jdbcType=VARCHAR},#{schoolworkName,jdbcType=VARCHAR},
+            #{classworkName,jdbcType=VARCHAR}, #{scienceClass,jdbcType=VARCHAR},#{scienceName,jdbcType=VARCHAR},
+            #{shiptypeName,jdbcType=VARCHAR},#{sciencePhoto,jdbcType=VARCHAR},'待处理',now(),#{auditStatusName,jdbcType=VARCHAR})
+    </insert>
+    <!--批量插入-->
+    <insert id="addBotactivities" parameterType="list">
+        INSERT INTO `notactivity`
+        ( `notid`,`notStudentId`, `notClass`, `auditStatus`,`auditStatusDate`,`auditStatusName`,`createDate`,`workLevle`,`organizationName`,`schoolworkName`,`classworkName`,`scienceClass`,`scienceName`,`shiptypeName`,`sciencePhoto`)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (uuid(),
+            #{item.notStudentId,jdbcType=VARCHAR},
+            #{item.notClass,jdbcType=VARCHAR},
+            #{item.auditStatus,jdbcType=VARCHAR},
+            #{item.auditStatusDate,jdbcType=VARCHAR},
+            #{item.auditStatusName,jdbcType=VARCHAR},
+            now(),
+            #{item.workLevle,jdbcType=VARCHAR},
+            #{item.organizationName,jdbcType=TIMESTAMP},
+            #{item.schoolworkName,jdbcType=TIMESTAMP},
+            #{item.classworkName,jdbcType=TIMESTAMP},
+            #{item.scienceClass,jdbcType=TIMESTAMP},
+            #{item.scienceName,jdbcType=TIMESTAMP},
+            #{item.shiptypeName,jdbcType=TIMESTAMP},
+            #{item.sciencePhoto,jdbcType=VARCHAR})
+        </foreach>
+    </insert>
+</mapper>

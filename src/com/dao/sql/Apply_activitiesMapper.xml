@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.dao.interfaces.Apply_activitiesDao">
+    <!--批量插入-->
+    <insert id="saveActivities" parameterType="list">
+        INSERT INTO  activities (activityId,activityImg,activityTitle,activityContent,activityArea,activityClass,activityLevle,
+        activityNature,activityPowers,activityIsInschool,activityLocation,activityParticipation,activityFilterType,
+        activityFilter,activitySdate,activityEdate,activityCreatedate,activityCreator,activityIsDelete,collegeID,deptID,worktime)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.activityId,jdbcType=VARCHAR},
+             #{item.activityImg,jdbcType=VARCHAR},
+             #{item.activityTitle,jdbcType=VARCHAR},
+             #{item.activityContent,jdbcType=VARCHAR},
+            #{item.activityArea,jdbcType=VARCHAR},
+            #{item.activityClass,jdbcType=VARCHAR},
+            #{item.activityLevle,jdbcType=VARCHAR},
+            #{item.activityNature,jdbcType=VARCHAR},
+            #{item.activityPowers,jdbcType=VARCHAR},
+            '校内活动',
+            #{item.activityLocation,jdbcType=VARCHAR},
+            '不限',
+            #{item.activityFilterType,jdbcType=VARCHAR},
+            #{item.activityFilter,jdbcType=VARCHAR},
+            #{item.activitySdate,jdbcType=TIMESTAMP},
+            #{item.activityEdate,jdbcType=TIMESTAMP},
+            #{item.activityCreatedate,jdbcType=TIMESTAMP},
+            #{item.activityCreator,jdbcType=VARCHAR},
+            '0',
+            #{item.collegeID,jdbcType=VARCHAR},
+            #{item.deptID,jdbcType=VARCHAR},
+            #{item.worktime,jdbcType=VARCHAR}
+            )
+        </foreach>
+    </insert>
+    <!--按ID查询-->
+    <select id="ActivityByID" parameterType="string" resultType="com.model.activities">
+           select * from  activities  WHERE activityId=#{0}
+    </select>
+
+    <!--根据key mean查询value-->
+
+    <select id="selectValue" parameterType="map"  resultType="string">
+         SELECT dict_value  FROM sysdict WHERE dict_key=#{dictkey} AND dict_mean=#{dictmean}
+    </select>
+    <!--根据活动标题查询活动id-->
+    <select id="selectActId" parameterType="string"  resultType="string">
+       SELECT activityId FROM activities WHERE activityTitle=#{0}
+    </select>
+</mapper>

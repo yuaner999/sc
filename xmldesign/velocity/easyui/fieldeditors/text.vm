@@ -1,0 +1,1 @@
+<input class="easyui-textbox" type="text" id="$label" name="$label" data-options="required:false">

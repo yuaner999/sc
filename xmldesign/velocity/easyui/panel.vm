@@ -1,0 +1,25 @@
+#*
+elem:
+<panel id="" title="">
+    <toolbarline>
+        <button id="" />
+    </toolbarline>
+    <content>
+
+    </content>
+</panel>
+* *#
+#set($id=$xml.xpathobj($elem,"./@id"))
+#set($title=$xml.xpathobj($elem,"./@title","PanelTitle"))
+#set($width=$xml.xpathobj($elem,"./@width","100%"))
+#set($height=$xml.xpathobj($elem,"./@height","350px"))
+#set($items=$xml.xpathobjs($elem,"./content/*"))
+<div id="$id" class="easyui-panel" title="$title"
+     style="width:$width;height:$height;padding:10px;background:#fafafa;"
+     data-options="iconCls:'icon-save'">
+#foreach($item in $items)##
+    $velocity.render("${basedir}/xmldesign/velocity/easyui/${item.name}.vm",{
+        "elem":$item
+    })##
+#end
+</div>

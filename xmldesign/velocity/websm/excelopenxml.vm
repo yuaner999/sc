@@ -1,0 +1,3 @@
+#set($templatefile=$xml.xpathobj($elem,"./@templatefile"))
+#set($outfile=$xml.xpathobj($elem,"./@outfile"))
+<bean p:filepath="${templatefile}" p:fileoutname="${outfile}" class="com.superstatemachine.office.ExcelOpenXmlTemplateProcessor"/>

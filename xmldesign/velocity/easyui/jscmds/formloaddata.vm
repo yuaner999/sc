@@ -1,0 +1,3 @@
+#set($id=$xml.xpathobj($elem,"./@formid"))
+#set($var=$xml.xpathobj($elem,"./@var"))
+$("#$id").form("load",${var});

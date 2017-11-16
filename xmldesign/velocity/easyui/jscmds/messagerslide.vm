@@ -1,0 +1,11 @@
+#*
+<messagerslide title="" msg="" />
+* *#
+#set($title=$xml.xpathobj($elem,"./@title"))
+#set($msg=$xml.xpathobj($elem,"./@msg"))
+$.messager.show({
+    title:'$title',
+    msg:'$msg',
+    timeout:4000,
+    showType:'slide'
+});

@@ -1,0 +1,649 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="project" default="_init" basedir="../SecondCourse">
+
+    <!--预定义-->
+    <path id="lib_classpath">
+        <fileset dir="${basedir}/xmldesign/ant-jars">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+
+    <taskdef resource="net/sf/antcontrib/antlib.xml" classpathref="lib_classpath"/>
+
+    <classloader name="a" classpathref="lib_classpath"/>
+
+    <taskdef name="textform" classname="com.springbuilder.Tasks.TextFormTask" classpathref="lib_classpath"/>
+    <taskdef name="renderxml" classname="com.springbuilder.Tasks.RenderXmlTask" classpathref="lib_classpath"/>
+    <taskdef name="sqlfield" classname="com.springbuilder.Tasks.SqlFieldQueryTask" classpathref="lib_classpath"/>
+    <taskdef name="readtextfile" classname="com.springbuilder.Tasks.ReadTextfileTask" classpathref="lib_classpath"/>
+    <taskdef name="writetextfile" classname="com.springbuilder.Tasks.WriteTextfileTask" classpathref="lib_classpath"/>
+    <taskdef name="searchfile" classname="com.springbuilder.Tasks.SearchFileTask" classpathref="lib_classpath"/>
+    <taskdef name="listform" classname="com.springbuilder.Tasks.ListFormTask" classpathref="lib_classpath"/>
+    <taskdef name="xpath" classname="com.springbuilder.Tasks.XPathObjTask" classpathref="lib_classpath"/>
+    <taskdef name="sqlquery" classname="com.springbuilder.Tasks.SqlQueryTask" classpathref="lib_classpath"/>
+    <taskdef name="foreachxml" classname="com.springbuilder.Tasks.ForeachXmlTask" classpathref="lib_classpath" />
+    <taskdef name="appendline" classname="com.springbuilder.Tasks.AppendLineTask" classpathref="lib_classpath" />
+    <taskdef name="test" classname="com.springbuilder.Tasks.TestTask" classpathref="lib_classpath" loaderref="a"  />
+    <taskdef name="filename" classname="com.springbuilder.Tasks.FilenameTask" classpathref="lib_classpath" />
+    <taskdef name="filenamewithoutext" classname="com.springbuilder.Tasks.FilenameWithoutExtTask" classpathref="lib_classpath" />
+    <taskdef name="text" classname="com.springbuilder.Tasks.TextTask" classpathref="lib_classpath" />
+    <taskdef name="quicktemplate" classname="com.springbuilder.Tasks.QuickTemplateTask" classpathref="lib_classpath" />
+    <taskdef name="updatexmlregion" classname="com.springbuilder.Tasks.UpdateXmlRegionTask" classpathref="lib_classpath" />
+    <taskdef name="playwav" classname="com.springbuilder.Tasks.PlayWavTask" classpathref="lib_classpath" />
+    <taskdef name="linetrim" classname="com.springbuilder.Tasks.LineTrimTask" classpathref="lib_classpath" />
+    <taskdef name="removeemptyline" classname="com.springbuilder.Tasks.RemoveEmptyLineTask" classpathref="lib_classpath" />
+    <taskdef name="veloctyrender" classname="com.springbuilder.Tasks.VelocityTask" classpathref="lib_classpath" />
+    <taskdef name="regex" classname="com.springbuilder.Tasks.RegexTask" classpathref="lib_classpath" />
+    <typedef name="jdbc" classname="com.springbuilder.models.JdbcConfig" classpathref="lib_classpath" loaderref="a"/>
+    <taskdef name="removesameline" classname="com.springbuilder.Tasks.RemoveSameLinesTask" classpathref="lib_classpath" />
+    <taskdef name="except" classname="com.springbuilder.Tasks.ExceptTask" classpathref="lib_classpath" />
+    <taskdef name="union" classname="com.springbuilder.Tasks.UnionTask" classpathref="lib_classpath" />
+    <taskdef name="intersect" classname="com.springbuilder.Tasks.IntersectTask" classpathref="lib_classpath" />
+
+    <target name="_init">
+        <!--验证服务器设置-->
+        <!--<property name="licenseserver" value="http://192.168.27.100:5080/license/allow"/>-->
+        <!--<property name="licenseserver" value="http://192.168.27.11:5080/license/allow"/>-->
+        <property name="licenseserver" value="http://192.168.0.11:8080/license/allow"/>
+
+        <!--应用程序设置-->
+        <property name="appname" value="secondcourse"/>
+        <property name="appdb" value="secondcourse"/>
+        <property name="applicationcontext" value="/"/>
+        <property name="warfolder" value="out/artifacts/${appname}_war_exploded"/>
+
+        <!--数据库设置-->
+        <!--<property name="jdbc_driverclass" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>-->
+        <property name="jdbc_driverclass" value="com.mysql.jdbc.Driver"/>
+        <!--<property name="jdbc_url" value="jdbc:sqlserver://192.168.27.239:1433;databaseName=${appdb}"/>-->
+        <!--<property name="jdbc_url" value="jdbc:mysql://192.168.27.12/${appdb}"/>-->
+        <property name="jdbc_url" value="jdbc:mysql://192.168.0.166/${appdb}"/>
+        <property name="jdbc_user" value="root"/>
+        <property name="jdbc_pass" value="123456"/>
+
+        <!--状态机-->
+        <property name="websmbuildfile" value="${basedir}/web/WEB-INF/springweb/statemachineweb_autogen.xml"/>
+        <property name="jsonsmbuildfile" value="${basedir}/web/WEB-INF/springjson/statemachinejson_autogen.xml"/>
+
+        <property name="websmurlmapfile" value="${basedir}/web/WEB-INF/springweb/urlmapweb.xml"/>
+        <property name="jsonsmurlmapfile" value="${basedir}/web/WEB-INF/springjson/urlmapjson.xml"/>
+
+        <property name="websmdesignfile" value="${basedir}/xmldesign/springxml/web.xml"/>
+        <property name="jsonsmdesignfile" value="${basedir}/xmldesign/springxml/json.xml"/>
+
+        <!--其他设置-->
+        <property name="backupfolder" value="d:/javaprojects"/>
+    </target>
+
+    <target name="tool_entity_recognize_sql|数据库表遗漏检查" depends="_init">
+
+        <property name="files" value=""/>
+        <property name="file" value=""/>
+        <property name="filepath" value=""/>
+        <property name="ff" value=""/>
+        <property name="a" value=""/>
+        <property name="lines" value=""/>
+        <property name="tables" value=""/>
+
+        <sqlquery
+                sql="select table_schema,table_name from information_schema.tables where table_schema='${appdb}'"
+                resultvar="tables"
+
+                driverclass="${jdbc_driverclass}"
+                url="${jdbc_url}"
+                user="${jdbc_user}"
+                pass="${jdbc_pass}"
+        />
+
+        <xpath elemstr="${tables}" xpath="./row/table_name/text()" resultvar="dbtables"/>
+
+        <searchfile basefolder="${basedir}/xmldesign/app" suffix=".xml" resultvar="files" />
+        <foreachxml var="file" varxpath="./file" xml="${files}" >
+            <xpath elemstr="${file}" xpath="./text()" resultvar="filepath"/>
+
+            <readtextfile filepath="${filepath}" resultvar="ff"/>
+            <regex resultvar="a" group="3" regex=".*?(select).*?(from).*?((?:[a-z][a-z0-9_]*))" text="${ff}"/>
+            <appendline resultvar="lines" line="${a}"/>
+        </foreachxml>
+        <linetrim resultvar="lines"/>
+        <removeemptyline resultvar="lines"/>
+        <textform title="代码中使用的实体" text="${lines}"/>
+        <except set1var="lines" set2var="dbtables" resultvar="lines"/>
+        <textform title="数据库中缺少的实体" text="${lines}"/>
+
+
+
+    </target>
+    <target name="tool_entity_recognize_jsonurl|jsonurl遗漏检查" depends="_init">
+
+        <property name="files" value=""/>
+        <property name="file" value=""/>
+        <property name="filepath" value=""/>
+        <property name="ff" value=""/>
+        <property name="a" value=""/>
+        <property name="lines" value=""/>
+        <property name="jsonxml" value=""/>
+        <property name="jsons" value=""/>
+
+        <readtextfile resultvar="jsonxml" filepath="${basedir}/xmldesign/springxml/json.xml" />
+        <xpath resultvar="jsons" xpath="./json/@id" elemstr="${jsonxml}" />
+
+        <searchfile basefolder="${basedir}/xmldesign/app" suffix=".xml" resultvar="files" />
+        <foreachxml var="file" varxpath="./file" xml="${files}" >
+            <xpath elemstr="${file}" xpath="./text()" resultvar="filepath"/>
+
+            <readtextfile filepath="${filepath}" resultvar="ff"/>
+            <regex resultvar="a" group="3" regex="(jsons)(\/)((?:[a-z][a-z0-9_]*))(\.)(form)" text="${ff}"/>
+            <appendline resultvar="lines" line="${a}"/>
+        </foreachxml>
+        <linetrim resultvar="lines"/>
+        <removeemptyline resultvar="lines"/>
+        <textform text="${lines}" title="代码中已使用的json服务"/>
+        <except set1var="lines" set2var="jsons" resultvar="lines" />
+        <textform text="${lines}" title="jsonxml文件中缺少的json服务"/>
+
+    </target>
+
+    <target name="_废弃_backup_project_winrar" depends="_init">
+        <property name="tarfile" value="${basedir}/../${appname}.rar"/>
+        <property name="winrar" value="c:/program files/WinRAR/winrar.exe"/>
+        <available file="c:/program files/WinRAR/winrar.exe" property="x64" />
+        <if>
+            <equals arg1="x64" arg2="false"/>
+            <then>
+                <property name="winrar" value="c:/Program Files/WinRAR/winrar.exe"/>
+            </then>
+            <else>
+                <property name="winrar" value="c:/Program Files (x86)/WinRAR/winrar.exe"/>
+            </else>
+        </if>
+        <exec executable="${winrar}">
+            <arg line="a -ag -k -r -s -ep1 &quot;${tarfile}&quot; &quot;${basedir}&quot;" />
+        </exec>
+    </target>
+
+    <target name="backup_project_zip" depends="_init">
+        <tstamp>
+            <format property="date" pattern="yyyyMMddHHmmss" />
+        </tstamp>
+        <zip destfile="${backupfolder}/${appname}${date}.zip" basedir="${basedir}" />
+        <runtarget target="sound_a"/>
+    </target>
+
+    <target name="build_statemachine_web_urlmap" depends="_init">
+        <!--声明-->
+        <property name="files" value=""/>
+        <property name="template" value=""/>
+        <property name="result" value=""/>
+
+        <!--设置-->
+        <property name="jspfolder" value="${basedir}/web/WEB-INF/pages/admin"/>
+        <property name="urlmapperpath" value="${websmurlmapfile}"/>
+        <quicktemplate templatename="files" resultvar="template">
+            <![CDATA[
+                <#list xpathobjs(elem,"./*") as fileelem>
+                    <#assign fullfilename=xpathtext(fileelem,".")>
+                    <#assign filename=fullfilename?split("\\")?last>
+                    <#assign filenamewithoutext=filename?split(".")?first>
+                    <entry key="/views/admin/${filenamewithoutext}.form" value="jspstatemachine"/>
+                </#list>
+            ]]>
+        </quicktemplate>
+
+        <!--搜索全部jsp文件-->
+        <searchfile basefolder="${jspfolder}" suffix=".jsp" resultvar="files" />
+
+        <renderxml resultvar="result" templatexmlstr="${template}" xmlstr="${files}"/>
+
+        <linetrim resultvar="result"/>
+        <removeemptyline resultvar="result"/>
+
+        <updatexmlregion text="${result}" filepath="${urlmapperpath}" regionname="adminpages" />
+
+    </target>
+
+    <target name="build_statemachine_web_urlmap2" depends="_init">
+        <!--声明-->
+        <property name="template" value=""/>
+        <property name="result" value=""/>
+        <property name="xml" value=""/>
+
+        <!--设置-->
+        <readtextfile filepath="${websmbuildfile}" resultvar="xml" />
+        <property name="urlmapperpath" value="${websmurlmapfile}"/>
+        <quicktemplate templatename="beans" resultvar="template">
+            <![CDATA[
+                <#list xpathobjs(elem,"./*[local-name()='bean']") as beanelem>
+                    <#assign id=xpathobj(beanelem,"./@id")>
+
+                    <entry key="/views/${id}.form" value="${id}"/>
+                </#list>
+            ]]>
+        </quicktemplate>
+
+        <renderxml resultvar="result" templatexmlstr="${template}" xmlstr="${xml}"/>
+
+        <linetrim resultvar="result"/>
+        <removeemptyline resultvar="result"/>
+
+        <updatexmlregion text="${result}" filepath="${urlmapperpath}" regionname="statemachine" />
+
+
+    </target>
+
+    <target name="build_statemachine_json_urlmap" depends="_init">
+        <!--声明-->
+        <property name="template" value=""/>
+        <property name="result" value=""/>
+        <property name="xml" value=""/>
+
+        <!--设置-->
+        <readtextfile filepath="${jsonsmbuildfile}" resultvar="xml" />
+        <property name="urlmapperpath" value="${jsonsmurlmapfile}"/>
+        <quicktemplate templatename="beans" resultvar="template">
+            <![CDATA[
+                <#list xpathobjs(elem,"./*[local-name()='bean']") as beanelem>
+                    <#assign id=xpathobj(beanelem,"./@id")>
+
+                    <entry key="/jsons/${id}.form" value="${id}"/>
+                </#list>
+            ]]>
+        </quicktemplate>
+
+        <renderxml resultvar="result" templatexmlstr="${template}" xmlstr="${xml}"/>
+
+        <linetrim resultvar="result"/>
+        <removeemptyline resultvar="result"/>
+
+        <updatexmlregion text="${result}" filepath="${urlmapperpath}" regionname="jsonxml" />
+
+
+    </target>
+
+    <target name="_废弃_tool_easyui_table_generator" depends="_init" >
+        <!--声明变量-->
+        <property name="xmlout" value="" />
+        <property name="columns" value="" />
+        <property name="easyuitabletemplate" value="" />
+        <property name="easyuiformtemplate" value="" />
+        <property name="easyuitable" value="" />
+        <property name="easyuiform" value="" />
+        <property name="sqlstr" value="select * from ttask_view" />
+
+        <!--读取easyui的xml模板-->
+        <quicktemplate templatename="columns" resultvar="easyuitabletemplate">
+            <![CDATA[
+            <#list xpathobjs(elem,"./*") as subelem>
+                <#assign colname=xpathtext(subelem,".")?replace('_','')>
+                <#assign comment=xpathobj(subelem,"./@comment")>
+
+                <th data-options="field:'${colname}'">${comment}</th>
+            </#list>
+            ]]>
+        </quicktemplate>
+
+        <!--获取用户输入的sql语句，并保存到变量sqlstr-->
+        <textform title="easyui table 渲染,请输入sql语句" resultvar="sqlstr" text="${sqlstr}" />
+
+        <!--查询sqlstr对应的fields-->
+        <sqlfield
+                sql="${sqlstr}"
+                resultvar="columns"
+
+                driverclass="${jdbc_driverclass}"
+                url="${jdbc_url}"
+                user="${jdbc_user}"
+                pass="${jdbc_pass}"
+        />
+
+        <!--渲染columns 为 easyui的table-->
+        <renderxml resultvar="easyuitable" templatexmlstr="${easyuitabletemplate}" xmlstr="${columns}" />
+        <linetrim resultvar="easyuitable"/>
+        <removeemptyline resultvar="easyuitable"/>
+        <!--显示渲染结果-->
+        <textform title="easyui table 输出" text="${easyuitable}" />
+
+
+
+    </target>
+
+    <target name="_废弃_tool_easyui_form_generator" depends="_init" >
+        <!--声明变量-->
+        <property name="xmlout" value="" />
+        <property name="columns" value="" />
+        <property name="easyuitabletemplate" value="" />
+        <property name="easyuiformtemplate" value="" />
+        <property name="easyuitable" value="" />
+        <property name="easyuiform" value="" />
+        <property name="sqlstr" value="select * from ttask_view" />
+
+        <!--读取easyui的xml模板-->
+        <quicktemplate resultvar="easyuiformtemplate" templatename="columns">
+            <![CDATA[
+            <#list xpathobjs(elem,"./*") as subelem>
+                <#assign colname=xpathtext(subelem,".")?replace('_','')>
+                <#assign comment=xpathobj(subelem,"./@comment")>
+
+                <tr>
+                    <td>${comment}:</td>
+                    <td><input class="easyui-textbox" type="text" id="${colname}" name="${colname}" data-options="required:true" /></td>
+                </tr>
+            </#list>
+            ]]>
+        </quicktemplate>
+
+        <!--获取用户输入的sql语句，并保存到变量sqlstr-->
+        <textform title="easyui table 渲染,请输入sql语句" resultvar="sqlstr" text="${sqlstr}" />
+
+        <!--查询sqlstr对应的fields-->
+        <sqlfield
+                sql="${sqlstr}"
+                resultvar="columns"
+
+                driverclass="${jdbc_driverclass}"
+                url="${jdbc_url}"
+                user="${jdbc_user}"
+                pass="${jdbc_pass}"
+        />
+
+        <textform text="${columns}"/>
+
+        <!--渲染columns 为 easyui的form-->
+        <renderxml resultvar="easyuiform" templatexmlstr="${easyuiformtemplate}" xmlstr="${columns}" />
+
+        <linetrim resultvar="easyuiform"/>
+        <removeemptyline resultvar="easyuiform"/>
+        <!--显示渲染结果-->
+        <textform title="easyui form 输出" text="${easyuiform}" />
+
+
+
+    </target>
+
+    <target name="build_webfolder_refresh|刷新spring" depends="_init">
+
+        <copydir src="../SecondCourse/web" dest="${warfolder}" />
+
+        <tstamp>
+            <format property="date" pattern="yyyyMMddHHmmss" />
+        </tstamp>
+
+        <property name="url" value="http://localhost:8080/refresh.form?${date}" />
+
+        <getMethod url="${url}" responsedataproperty="resp"  />
+
+    </target>
+
+    <target name="tool_sql_update_generator" depends="_init">
+        <property name="tables" value=""/>
+        <property name="selectedtable" value=""/>
+        <property name="updatesqltemplate" value=""/>
+        <property name="updatesql" value=""/>
+        <property name="columns" value=""/>
+        <property name="db" value="${appdb}"/>
+
+        <sqlquery
+                sql="select table_schema,table_name from information_schema.tables where table_schema='${db}'"
+                resultvar="tables"
+
+                driverclass="${jdbc_driverclass}"
+                url="${jdbc_url}"
+                user="${jdbc_user}"
+                pass="${jdbc_pass}"
+        />
+
+        <listform listdata="${tables}" title="选择表" resultvar="selectedtable" listjxpath="./row" listitemvaluejxpath="./table_name/text()"        />
+
+        <xpath elemstr="${selectedtable}" xpath="./table_name/text()" resultvar="tablename"/>
+
+        <sqlquery
+                sql="select * from information_schema.columns where table_schema='${db}' and table_name='${tablename}'"
+                resultvar="columns"
+
+                driverclass="${jdbc_driverclass}"
+                url="${jdbc_url}"
+                user="${jdbc_user}"
+                pass="${jdbc_pass}"
+        />
+
+        <quicktemplate resultvar="updatesqltemplate" templatename="result">
+            <![CDATA[
+                update ${xpathtext(elem,"./row[1]/TABLE_NAME")} set
+                <#list xpathobjs(elem,"./row") as rowelem >
+                    <#assign colname=xpathtext(rowelem,"./COLUMN_NAME") >
+                    ${colname}=${"${"+colname?replace('_','')+"}"}<#if rowelem_has_next>,</#if>
+                </#list>
+                where
+                <#list xpathobjs(elem,"./row") as rowelem >
+                    <#assign colname=xpathtext(rowelem,"./COLUMN_NAME") >
+                    <#if xpathtext(rowelem,"./COLUMN_KEY")=="PRI" >
+                        ${colname}=${"${"+colname?replace('_','')+"}"}
+                    </#if>
+                </#list>
+            ]]>
+        </quicktemplate>
+
+        <renderxml templatexmlstr="${updatesqltemplate}" xmlstr="${columns}" resultvar="updatesql"/>
+
+        <textform text="${updatesql}" />
+
+    </target>
+
+    <target name="tool_sql_procedure_generator" depends="_init">
+        <property name="tables" value=""/>
+        <property name="tablename" value=""/>
+        <property name="selectedtable" value=""/>
+        <property name="insertsqltemplate" value=""/>
+        <property name="insertsql" value=""/>
+        <property name="columns" value=""/>
+        <property name="db" value="${appdb}"/>
+
+        <sqlquery
+                sql="select * from information_schema.routines where routine_schema='${db}'"
+                resultvar="tables"
+
+                driverclass="${jdbc_driverclass}"
+                url="${jdbc_url}"
+                user="${jdbc_user}"
+                pass="${jdbc_pass}"
+        />
+
+        <listform listdata="${tables}" title="选择表" resultvar="selectedtable" listjxpath="./row" listitemvaluejxpath="./ROUTINE_NAME/text()"        />
+
+        <xpath elemstr="${selectedtable}" xpath="./ROUTINE_NAME/text()" resultvar="tablename"/>
+
+        <sqlquery
+                sql="select * from information_schema.PARAMETERS where specific_schema='${db}' and specific_name='${tablename}' and parameter_name is not null order by ordinal_position"
+                resultvar="columns"
+
+                driverclass="${jdbc_driverclass}"
+                url="${jdbc_url}"
+                user="${jdbc_user}"
+                pass="${jdbc_pass}"
+        />
+
+        <quicktemplate resultvar="insertsqltemplate" templatename="result">
+            <![CDATA[
+                call ${xpathtext(elem,"./row[1]/SPECIFIC_NAME")}(
+                <#list xpathobjs(elem,"./row") as rowelem >
+                    <#assign colname=xpathtext(rowelem,"./PARAMETER_NAME") >
+                    ${"${"+colname?replace('_','')+"}"}<#if rowelem_has_next>,</#if>
+                </#list>
+                )
+            ]]>
+        </quicktemplate>
+
+        <renderxml templatexmlstr="${insertsqltemplate}" xmlstr="${columns}" resultvar="insertsql"/>
+
+        <textform text="${insertsql}" />
+
+    </target>
+
+    <target name="tool_sql_insert_generator" depends="_init">
+        <property name="tables" value=""/>
+        <property name="tablename" value=""/>
+        <property name="selectedtable" value=""/>
+        <property name="insertsqltemplate" value=""/>
+        <property name="insertsql" value=""/>
+        <property name="columns" value=""/>
+        <property name="db" value="${appdb}"/>
+
+        <sqlquery
+                sql="select table_schema,table_name from information_schema.tables where table_schema='${db}'"
+                resultvar="tables"
+
+                driverclass="${jdbc_driverclass}"
+                url="${jdbc_url}"
+                user="${jdbc_user}"
+                pass="${jdbc_pass}"
+        />
+
+        <listform listdata="${tables}" title="选择表" resultvar="selectedtable" listjxpath="./row" listitemvaluejxpath="./table_name/text()"        />
+
+        <xpath elemstr="${selectedtable}" xpath="./table_name/text()" resultvar="tablename"/>
+
+        <sqlquery
+                sql="select * from information_schema.columns where table_schema='${db}' and table_name='${tablename}'"
+                resultvar="columns"
+
+                driverclass="${jdbc_driverclass}"
+                url="${jdbc_url}"
+                user="${jdbc_user}"
+                pass="${jdbc_pass}"
+        />
+
+        <quicktemplate resultvar="insertsqltemplate" templatename="result">
+            <![CDATA[
+                insert into ${xpathtext(elem,"./row[1]/TABLE_NAME")} (
+                <#list xpathobjs(elem,"./row") as rowelem >
+                    <#assign colname=xpathtext(rowelem,"./COLUMN_NAME") >
+                    ${colname}<#if rowelem_has_next>,</#if>
+                </#list>
+                )
+                values(
+                <#list xpathobjs(elem,"./row") as rowelem >
+                    <#assign colname=xpathtext(rowelem,"./COLUMN_NAME") >
+                    ${"${"+colname?replace('_','')+"}"}<#if rowelem_has_next>,</#if>
+                </#list>
+                )
+            ]]>
+        </quicktemplate>
+
+        <renderxml templatexmlstr="${insertsqltemplate}" xmlstr="${columns}" resultvar="insertsql"/>
+
+        <textform text="${insertsql}" />
+
+    </target>
+
+    <target name="sound_a">
+        <playwav duration="1200" wavfile="${basedir}/xmldesign/wav/6731.wav"/>
+    </target>
+
+    <target name="tool_easyui_render|编译jsp页面" depends="_init">
+
+        <property name="files" value=""/>
+        <property name="selectedfile" value=""/>
+        <property name="selectedfilepath" value=""/>
+
+        <property name="apptemplate" value=""/>
+        <property name="easyuixml" value=""/>
+        <property name="out" value=""/>
+
+        <searchfile basefolder="${basedir}/xmldesign/app/easyui" suffix=".xml" resultvar="files"/>
+
+        <listform title="选择要渲染的文件" resultvar="selectedfile" listdata="${files}" listjxpath="./*" listitemvaluejxpath="./text()"/>
+        <xpath resultvar="selectedfilepath" xpath="./text()" elemstr="${selectedfile}" />
+
+        <readtextfile resultvar="apptemplate" filepath="${basedir}/xmldesign/velocity/easyui/app.vm" />
+        <readtextfile resultvar="easyuixml" filepath="${selectedfilepath}" />
+
+        <veloctyrender resultvar="out" template="${apptemplate}" xml="${easyuixml}" />
+
+        <textform text="${out}"/>
+
+    </target>
+
+    <target name="tool_easyuicrudapp_render|编译easyuixml页面" depends="_init">
+
+        <property name="files" value=""/>
+        <property name="selectedfile" value=""/>
+        <property name="selectedfilepath" value=""/>
+
+        <property name="apptemplate" value=""/>
+        <property name="apptemplate2" value=""/>
+        <property name="easyuixml" value=""/>
+        <property name="out" value=""/>
+        <property name="curdelem" value=""/>
+        <property name="savetofile" value=""/>
+
+        <searchfile basefolder="${basedir}/xmldesign/app/crudapp" suffix=".xml" resultvar="files"/>
+
+        <listform title="选择要渲染的文件" resultvar="selectedfile" listdata="${files}" listjxpath="./*" listitemvaluejxpath="./text()"/>
+        <xpath resultvar="selectedfilepath" xpath="./text()" elemstr="${selectedfile}" />
+
+
+        <readtextfile resultvar="apptemplate" filepath="${basedir}/xmldesign/velocity/easyuiapp/crudapp/crud.vm" />
+        <readtextfile resultvar="apptemplate2" filepath="${basedir}/xmldesign/velocity/easyui/app.vm" />
+        <readtextfile resultvar="easyuixml" filepath="${selectedfilepath}" />
+
+        <foreachxml var="curdelem" varxpath="./*" xml="${easyuixml}">
+            <veloctyrender resultvar="out" template="${apptemplate}" xml="${curdelem}" />
+            <textform text="${out}"/>
+            <veloctyrender resultvar="out" template="${apptemplate2}" xml="${out}" />
+            <textform text="${out}"/>
+            <xpath resultvar="savetofile" elemstr="${curdelem}" xpath="./@saveto"/>
+            <writetextfile filepath="${basedir}/web/WEB-INF/pages/${savetofile}" text="${out}"/>
+
+        </foreachxml>
+
+
+
+
+
+    </target>
+
+    <target name="build_spring_web|编译web状态机" depends="_init">
+        <property name="selectedfilepath" value="${websmdesignfile}"/>
+
+        <property name="apptemplate" value=""/>
+        <property name="easyuixml" value=""/>
+        <property name="out" value=""/>
+
+        <readtextfile resultvar="apptemplate" filepath="${basedir}/xmldesign/velocity/websm/beans.vm" />
+        <readtextfile resultvar="easyuixml" filepath="${selectedfilepath}" />
+
+        <veloctyrender resultvar="out" template="${apptemplate}" xml="${easyuixml}" />
+
+        <writetextfile text="${out}" filepath="${websmbuildfile}"/>
+
+    </target>
+
+    <target name="build_all" depends="_init">
+
+        <runtarget target="build_spring_json|编译json状态机"/>
+        <runtarget target="build_spring_web|编译web状态机"/>
+        <runtarget target="build_statemachine_json_urlmap"/>
+        <runtarget target="build_statemachine_web_urlmap"/>
+        <runtarget target="build_statemachine_web_urlmap2"/>
+        <runtarget target="build_webfolder_refresh|刷新spring"/>
+        <runtarget target="sound_a"/>
+    </target>
+
+    <target name="build_spring_json|编译json状态机" depends="_init">
+
+        <property name="selectedfilepath" value="${jsonsmdesignfile}"/>
+
+        <property name="apptemplate" value=""/>
+        <property name="easyuixml" value=""/>
+        <property name="out" value=""/>
+
+        <readtextfile resultvar="apptemplate" filepath="${basedir}/xmldesign/velocity/websm/beans.vm" />
+        <readtextfile resultvar="easyuixml" filepath="${selectedfilepath}" />
+
+        <veloctyrender resultvar="out" template="${apptemplate}" xml="${easyuixml}" />
+
+        <writetextfile text="${out}" filepath="${jsonsmbuildfile}" />
+    </target>
+
+</project>

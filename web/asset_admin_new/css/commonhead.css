@@ -1,0 +1,57 @@
+.banner{
+	width: 100%;
+	overflow: hidden;
+}
+.banner img{
+	width: 100%;
+	float: left;
+}
+.nav{
+	background: #2a458c;
+	padding-left: 11%;
+	overflow: hidden;
+}
+.nav li{
+	height: 70px;
+	float: left;
+	line-height: 70px;
+}
+.nav li a{
+	height: 70px;
+	display: block;
+	line-height: 70px;
+	color: #fff;
+	padding: 0 46px;
+}
+.nav li a:active{
+	background: #5a6da5;
+}
+.nav li.select a{
+	background: #5a6da5;
+}
+.nav>div{
+	float: right;
+	height:70px;
+	margin-right: 5%;
+	line-height: 70px;
+}
+.nav>div b,.nav>div p{
+	display: inline-block;
+	vertical-align: middle;
+	color: #fff;
+}
+.nav>div b{
+	background: url(../images/longinuser_04.png);
+	width: 20px;
+	height: 21px;
+}
+.nav>div button{
+	background: #e4e4e4;
+	border: none;
+	width: 46px;
+	height: 22px;
+	text-align: center;
+	color: #2a458c;
+	box-shadow: 0 2px 9px 1px #111111;
+	margin-left: 30px;
+}

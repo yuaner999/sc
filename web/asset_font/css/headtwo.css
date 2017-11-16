@@ -1,0 +1,65 @@
+@media screen and (min-width: 1440px) {
+	.neutitletwo{
+		margin-left:-316px;
+		width:675px;
+	}
+	.pionee{
+		width:408px;
+		margin-left:-204px;
+	}
+	.pionee img{
+		width:408px;
+	}
+	.dimlayout{
+		margin-left:-450px;
+		width:900px;
+	}
+
+}
+@media screen and (max-width: 1440px) {
+	.neutitletwo{
+		margin-left:-254px;
+		width:535px;
+	}
+	.pionee{
+		width:325px;
+		margin-left:-162px;
+	}
+	.pionee img{
+		width:325px;
+	}
+	.dimlayout{
+		margin-left:-350px;
+		width:700px;
+	}
+}
+.neutitletwo{
+	position:absolute;
+	top:35%;
+	left:50%;
+}
+.pionee{
+	position:absolute;
+	top:60%;
+	left:50%;
+	z-index:100;
+}
+.dimlayout{
+	position:absolute;
+	top:58%;
+	left:50%;
+	z-index:10;
+	height:120px;
+	background:-moz-linear-gradient(left,#eeeeee,#000000,#000000,#eeeeee);
+	background:-webkit-linear-gradient(left,#eeeeee,#000000,#000000,#eeeeee);
+	opacity: 0.4;
+	filter:alpha(opacity=40);/*ie专用*/
+}
+
+.pionee p{
+	font-family:"MFLiHei_Noncommercial";
+	font-weight:bold;
+	color:#ffffff;
+	font-size:30px;
+	text-align:center;
+}

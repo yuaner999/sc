@@ -1,0 +1,16 @@
+#set($name=$xml.xpathobj($elem,"./@name"))
+#set($viewname=$xml.xpathobj($elem,"./@viewname",""))
+#set($enterprocessors=$xml.xpathobjs($elem,"./*"))
+#if($enterprocessors.size()>0)
+<bean p:name="$name" p:viewName="$viewname" class="com.superstatemachine.web.ViewState2">
+    <property name="enterProcessors">
+        <list>
+            #foreach($item in $enterprocessors)##
+                $velocity.render("${basedir}/xmldesign/velocity/websm/${item.name}.vm",{
+                    "elem":$item
+                })
+            #end
+        </list>
+    </property>
+</bean>#else
+<bean p:name="$name" p:viewName="$viewname" class="com.superstatemachine.web.ViewState2"/>#end

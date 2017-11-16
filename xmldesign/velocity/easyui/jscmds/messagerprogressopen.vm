@@ -1,0 +1,9 @@
+#*
+<messagerprogressopen title="" msg="" />
+* *#
+#set($title=$xml.xpathobj($elem,"./@title"))
+#set($msg=$xml.xpathobj($elem,"./@msg"))
+$.messager.progress({
+    title:'$title',
+    msg:'$msg'
+});

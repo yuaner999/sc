@@ -1,0 +1,5 @@
+#*
+elem:<ref bean=""/>
+* *#
+#set($beanid=$xml.xpathobj($elem,"./@beanid"))
+<ref bean="${beanid}" />

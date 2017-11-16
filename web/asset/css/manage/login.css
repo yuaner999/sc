@@ -1,0 +1,77 @@
+body{
+	min-width: 800px;
+}
+.background{
+	position: absolute;	
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	min-width: 800px;
+	min-height: 700px;
+	z-index: -1;
+}
+
+.login_div{
+	width: 500px;
+	height: 280px;
+	margin: 0 auto;
+	border: #FFFFFF 1px solid;
+	margin-top: 200px;
+	text-align: center;
+	padding-top: 20px;
+	border-radius: 10px;
+	behavior: url(../../../asset/js/PIE.htc);
+}
+.title_div{
+	font-size: 20px;
+	font-weight: bold;
+	color: #FFFFFF;
+	letter-spacing: 2px;
+}
+.input_div{
+	width: 370px;
+	height: 100px;
+	margin: 0 auto;
+	margin-top: 20px;
+	position: relative;
+}
+.input{
+	width: 260px;
+	height: 30px;
+	line-height: 30px;
+	margin-top: 10px;
+	border: 0px;
+	border-radius: 8px;
+	background: rgba(0,0,0,0.2);
+	-pie-background: rgba(0,0,0,0.2);
+	behavior: url(../../../asset/js/PIE.htc);
+	padding-left: 40px;
+	color: #FFFFFF;
+}
+.input_username{
+	background-image: url(../../image/manage/username.png)!important;
+	background-repeat: no-repeat;
+	background-position: 5px 3px;
+}
+.input_password{
+	background-image: url(../../image/manage/password.png)!important;
+	background-repeat: no-repeat;
+	background-position: 5px 3px;
+}
+.login_btn{
+	width: 60px;
+	height: 60px;
+	position: absolute;
+	background: #5582B2;
+	border-radius: 30px;
+	right: 25px;
+	top: 15px;
+	text-align: center;
+	line-height: 60px;
+	behavior: url(../../../asset/js/PIE.htc);
+}
+.login_btn>img{
+	margin-top: 5px;
+	cursor: pointer;
+}

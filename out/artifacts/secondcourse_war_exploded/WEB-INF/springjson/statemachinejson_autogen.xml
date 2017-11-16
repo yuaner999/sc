@@ -1,0 +1,5905 @@
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    
+<bean id="loadSysUser" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value="total"/>
+    <property name="pagevar" value="page"/>
+    <property name="pagesizevar" value="rows"/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+            select *,getrolename(sysrole_id) as sysrolename,
+            (select collegeid from r_sysuer_college where userid=sysuser_id) as college ,
+            FROM_UNIXTIME(UNIX_TIMESTAMP(create_date),'%Y-%m-%d %H:%i:%s') AS create_date,
+            FROM_UNIXTIME(UNIX_TIMESTAMP(update_date),'%Y-%m-%d %H:%i:%s') AS update_date from sysuser where is_sysadmin='否' and ((${sqlStr} is null) or (username like concat('%',${sqlStr},'%'))) order by create_date desc
+            
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="rows" p:jxpath="data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="total" p:jxpath="total" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="editSysUser" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="void"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value="r"/>
+    <property name="resultmsgvar" value="rmsg"/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                update sysuser
+                set sysrole_id=${sysroleid},update_date=now(),update_man=${loginName},remark=${remark}
+                where sysuser_id=${sysuserid}
+                
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="resultSet" p:jxpath="./data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="result" p:jxpath="./r" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="errormessage" p:jxpath="./rmsg" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="editCollegeManager" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="void"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value="r"/>
+    <property name="resultmsgvar" value="rmsg"/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+               call wh_update_collegeManager(${sysuserid},${username},${sysroleid},${college},${loginname},${remark})
+                
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="resultSet" p:jxpath="./data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="result" p:jxpath="./r" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="errormessage" p:jxpath="./rmsg" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="deleteSysUser" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="void"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value="r"/>
+    <property name="resultmsgvar" value="rmsg"/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                delete from sysuser where sysuser_id=${sysuserid}
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="resultSet" p:jxpath="./data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="result" p:jxpath="./r" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="errormessage" p:jxpath="./rmsg" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="deleteCollegeManager" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="void"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value="r"/>
+    <property name="resultmsgvar" value="rmsg"/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+               call wh_delete_collegeManager(${sysuserid})
+                
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="resultSet" p:jxpath="./data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="result" p:jxpath="./r" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="errormessage" p:jxpath="./rmsg" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="addCollegeManager" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="void"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value="r"/>
+    <property name="resultmsgvar" value="rmsg"/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                call wh_add_collegeManager(${username},${sysroleid},${college},${loginname},${remark})
+                
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="resultSet" p:jxpath="./data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="result" p:jxpath="./r" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="errormessage" p:jxpath="./rmsg" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="addMenu" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="void"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value="r"/>
+    <property name="resultmsgvar" value="rmsg"/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                INSERT INTO sysmenu (sysmenu_id,sysmenu_name,sysmenu_url,parent_menuid,is_sysmanage_menu,sort,create_date,create_man,remark)
+                VALUES(uuid(),${sysmenuname},${sysmenuurl},${parentmenuid},'否',${sort},now(),${loginName},${remark})
+                
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="resultSet" p:jxpath="./data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="result" p:jxpath="./r" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="errormessage" p:jxpath="./rmsg" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="editMenu" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="void"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value="r"/>
+    <property name="resultmsgvar" value="rmsg"/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                UPDATE sysmenu
+                SET sysmenu_name=${sysmenuname},sysmenu_url=${sysmenuurl},
+                    parent_menuid=${parentmenuid},sort=${sort},
+                    update_date=now(),update_man=${loginName},
+                    remark=${remark}
+                WHERE sysmenu_id=${sysmenuid} and sysmenu_id!='2c659331-0d1a-11e6-b867-0025b6dd0800'
+                
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="resultSet" p:jxpath="./data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="result" p:jxpath="./r" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="errormessage" p:jxpath="./rmsg" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="deleteMenu" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="void"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value="r"/>
+    <property name="resultmsgvar" value="rmsg"/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                DELETE FROM sysmenu WHERE sysmenu_id=${sysmenuid} and is_sysmanage_menu='否'
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="resultSet" p:jxpath="./data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="result" p:jxpath="./r" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="errormessage" p:jxpath="./rmsg" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="loadSysRole" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value="total"/>
+    <property name="pagevar" value="page"/>
+    <property name="pagesizevar" value="rows"/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                select *,FROM_UNIXTIME(UNIX_TIMESTAMP(create_date),'%Y-%m-%d %H:%i:%s') AS create_date,FROM_UNIXTIME(UNIX_TIMESTAMP(update_date),'%Y-%m-%d %H:%i:%s') AS update_date
+                from sysrole where
+                is_sysrole in ('是','否') and ((${sqlStr} is null) or (sysrole_name like concat('%',${sqlStr},'%')))
+                order by create_date desc
+                
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="rows" p:jxpath="data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="total" p:jxpath="total" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="addRole" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="void"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value="r"/>
+    <property name="resultmsgvar" value="rmsg"/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                INSERT INTO sysrole (sysrole_id,sysrole_name,is_sysrole,create_date,create_man,remark)
+                VALUES(uuid(),${sysrolename},'否',now(),${loginName},${remark})
+                
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="resultSet" p:jxpath="./data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="result" p:jxpath="./r" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="errormessage" p:jxpath="./rmsg" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="editRole" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="void"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value="r"/>
+    <property name="resultmsgvar" value="rmsg"/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                UPDATE sysrole SET
+                  sysrole_name=${sysrolename},update_date=now(),update_man=${loginName},remark=${remark}
+                  WHERE sysrole_id=${sysroleid} ;
+                
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="resultSet" p:jxpath="./data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="result" p:jxpath="./r" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="errormessage" p:jxpath="./rmsg" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="deleteRole" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="void"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value="r"/>
+    <property name="resultmsgvar" value="rmsg"/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                DELETE FROM sysrole WHERE sysrole_id=${sysroleid} and sysrole_id!='fe785f38-0baf-11e6-883e-0025b6dd0800'
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="resultSet" p:jxpath="./data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="result" p:jxpath="./r" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="errormessage" p:jxpath="./rmsg" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="getRoleName" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value="total"/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT * FROM sysrole where is_sysrole!='2654264'
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="rows" p:jxpath="./data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="total" p:jxpath="./total" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="getRoleMenu" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value="r"/>
+    <property name="resultmsgvar" value="rmsg"/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT * FROM sysrolemenu where sysrole_id=${sysroleId}
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="resultSet" p:jxpath="./data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="result" p:jxpath="./r" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="errormessage" p:jxpath="./rmsg" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="loadCollege" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value="total"/>
+    <property name="pagevar" value="page"/>
+    <property name="pagesizevar" value="rows"/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(createDate),'%Y-%m-%d %H:%i:%s') AS createDate,
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(updateDate),'%Y-%m-%d %H:%i:%s') AS updateDate
+                FROM college where isDelete='0' and ((${sqlStr} is null) or (collegeName like concat('%',${sqlStr},'%')))
+                 and case when ${collegeid} is not null and ${collegeid}<>""  then collegeId= ${collegeid} else 1=1 end
+                 order by collegeName
+                 
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="rows" p:jxpath="data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="total" p:jxpath="total" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="addCollege" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="void"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value="r"/>
+    <property name="resultmsgvar" value="rmsg"/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                INSERT INTO college (collegeId,collegeName,isDelete,collegeRemark,createMan,createDate)
+                    VALUES(uuid(),${collegeName},'0',${collegeRemark},${loginName},now())
+                    
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="resultSet" p:jxpath="./data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="result" p:jxpath="./r" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="errormessage" p:jxpath="./rmsg" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="editCollege" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="void"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value="r"/>
+    <property name="resultmsgvar" value="rmsg"/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                UPDATE college SET
+                    collegeName = ${collegeName},
+                    collegeRemark = ${collegeRemark},
+                    updateMan = ${loginName},
+                    updateDate = now()
+                WHERE collegeId = ${collegeId}
+                
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="resultSet" p:jxpath="./data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="result" p:jxpath="./r" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="errormessage" p:jxpath="./rmsg" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="deleteCollege" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="void"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value="r"/>
+    <property name="resultmsgvar" value="rmsg"/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                UPDATE college SET
+                    isDelete = '1'
+                WHERE collegeId = ${collegeId}
+                
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="resultSet" p:jxpath="./data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="result" p:jxpath="./r" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="errormessage" p:jxpath="./rmsg" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="loadMajor" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value="total"/>
+    <property name="pagevar" value="page"/>
+    <property name="pagesizevar" value="rows"/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(createDate),'%Y-%m-%d %H:%i:%s') AS createDate,
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(updateDate),'%Y-%m-%d %H:%i:%s') AS updateDate,
+                    getCollegeName(majorCollegeId) as majorCollegeName,
+                    getParentMajorName(parentMajorId) as parentMajorName
+                FROM major where isDelete='0' and
+                    ((${sqlStr} is null) or (majorName like concat('%',${sqlStr},'%'))) and
+                    ((${collegeId} is null) or (${collegeId} = 'all') or (majorCollegeId=${collegeId})) order by majorName
+                 
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="rows" p:jxpath="data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="total" p:jxpath="total" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="loadMajorType" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value="r"/>
+    <property name="resultmsgvar" value="rmsg"/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT * FROM major where isDelete='0' and parentMajorId='none' and majorCollegeId=${majorCollegeId} order by majorName
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="resultSet" p:jxpath="./data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="result" p:jxpath="./r" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="errormessage" p:jxpath="./rmsg" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="addMajor" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="void"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value="r"/>
+    <property name="resultmsgvar" value="rmsg"/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                INSERT INTO major (majorId,majorName,majorCollegeId,parentMajorId,isDelete,majorRemark,createMan,createDate)
+                    VALUES(uuid(),${majorName},${majorCollegeId},${parentMajorId},'0',${majorRemark},${loginName},now())
+                    
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="resultSet" p:jxpath="./data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="result" p:jxpath="./r" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="errormessage" p:jxpath="./rmsg" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="editMajor" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="void"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value="r"/>
+    <property name="resultmsgvar" value="rmsg"/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                UPDATE major SET
+                    majorName = ${majorName},
+                    majorCollegeId = ${majorCollegeId},
+                    parentMajorId = ${parentMajorId},
+                    majorRemark = ${majorRemark},
+                    updateMan = ${loginName},
+                    updateDate = now()
+                WHERE majorId = ${majorId}
+                
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="resultSet" p:jxpath="./data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="result" p:jxpath="./r" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="errormessage" p:jxpath="./rmsg" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="deleteMajor" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="void"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value="r"/>
+    <property name="resultmsgvar" value="rmsg"/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                UPDATE major SET
+                    isDelete = '1'
+                WHERE majorId = ${majorId}
+                
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="resultSet" p:jxpath="./data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="result" p:jxpath="./r" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="errormessage" p:jxpath="./rmsg" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="loadGrade" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value="total"/>
+    <property name="pagevar" value="page"/>
+    <property name="pagesizevar" value="rows"/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(createDate),'%Y-%m-%d %H:%i:%s') AS createDate,
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(updateDate),'%Y-%m-%d %H:%i:%s') AS updateDate
+                FROM grade where isDelete='0' and ((${sqlStr} is null) or (gradeName like concat('%',${sqlStr},'%'))) order by gradeName
+                 
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="rows" p:jxpath="data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="total" p:jxpath="total" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="addGrade" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="void"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value="r"/>
+    <property name="resultmsgvar" value="rmsg"/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                INSERT INTO grade (gradeId,gradeName,isDelete,gradeRemark,createMan,createDate)
+                    VALUES(uuid(),${gradeName},'0',${gradeRemark},${loginName},now())
+                    
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="resultSet" p:jxpath="./data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="result" p:jxpath="./r" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="errormessage" p:jxpath="./rmsg" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="editGrade" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="void"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value="r"/>
+    <property name="resultmsgvar" value="rmsg"/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                UPDATE grade SET
+                    gradeName = ${gradeName},
+                    gradeRemark = ${gradeRemark},
+                    updateMan = ${loginName},
+                    updateDate = now()
+                WHERE gradeId = ${gradeId}
+                
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="resultSet" p:jxpath="./data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="result" p:jxpath="./r" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="errormessage" p:jxpath="./rmsg" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="deleteGrade" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="void"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value="r"/>
+    <property name="resultmsgvar" value="rmsg"/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                UPDATE grade SET
+                    isDelete = '1'
+                WHERE gradeId = ${gradeId}
+                
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="resultSet" p:jxpath="./data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="result" p:jxpath="./r" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="errormessage" p:jxpath="./rmsg" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="loadClass" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value="total"/>
+    <property name="pagevar" value="page"/>
+    <property name="pagesizevar" value="rows"/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(createDate),'%Y-%m-%d %H:%i:%s') AS createDate,
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(updateDate),'%Y-%m-%d %H:%i:%s') AS updateDate,
+                    getCollegeName(classCollegeId) as classCollegeName,
+                    getParentMajorName(classMajorKindId) as classMajorKindName,
+                    getParentMajorName(classMajorId) as classMajorName,
+                    getGradeName(classGradeId) as classGradeName
+                FROM class where isDelete='0' and ((${sqlStr} is null) or (className like concat('%',${sqlStr},'%')))
+                and case when ${collegeid} is not null and ${collegeid}<>""  then classCollegeId= ${collegeid} else 1=1 end
+                order by className
+                 
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="rows" p:jxpath="data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="total" p:jxpath="total" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="addClass" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="void"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value="r"/>
+    <property name="resultmsgvar" value="rmsg"/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                INSERT INTO class (classId,className,classCollegeId,classMajorKindId,classMajorId,classGradeId,isDelete,classRemark,createMan,createDate)
+                    VALUES(uuid(),${className},${classCollegeId},${classMajorKindId},${classMajorId},${classGradeId},'0',${classRemark},${loginName},now())
+                    
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="resultSet" p:jxpath="./data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="result" p:jxpath="./r" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="errormessage" p:jxpath="./rmsg" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="editClass" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="void"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value="r"/>
+    <property name="resultmsgvar" value="rmsg"/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                UPDATE class SET
+                    className = ${className},
+                    classCollegeId = ${classCollegeId},
+                    classMajorKindId = ${classMajorKindId},
+                    classMajorId = ${classMajorId},
+                    classGradeId = ${classGradeId},
+                    classRemark = ${classRemark},
+                    updateMan = ${loginName},
+                    updateDate = now()
+                WHERE classId = ${classId}
+                
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="resultSet" p:jxpath="./data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="result" p:jxpath="./r" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="errormessage" p:jxpath="./rmsg" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="deleteClass" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="void"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value="r"/>
+    <property name="resultmsgvar" value="rmsg"/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                UPDATE class SET
+                    isDelete = '1'
+                WHERE classId = ${classId}
+                
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="resultSet" p:jxpath="./data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="result" p:jxpath="./r" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="errormessage" p:jxpath="./rmsg" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="loadSeletMajor" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value="r"/>
+    <property name="resultmsgvar" value="rmsg"/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT * FROM major where isDelete='0' and parentMajorId=${parentMajorId} order by majorName
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="resultSet" p:jxpath="./data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="result" p:jxpath="./r" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="errormessage" p:jxpath="./rmsg" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="loadInstructor" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value="total"/>
+    <property name="pagevar" value="page"/>
+    <property name="pagesizevar" value="rows"/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                  SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(createDate),'%Y-%m-%d %H:%i:%s') AS createDate,
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(updateDate),'%Y-%m-%d %H:%i:%s') AS updateDate,
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(instructorBirthday),'%Y-%m-%d') AS instructorBirthday,
+                    getCollegeName(instructorCollegeId) as instructorCollegeName,
+                    getGradeName(instructorGradeId) as instructorGradeName
+                FROM instructor where isDelete='0' and ((${sqlStr} is null) or (instructorName like concat('%',${sqlStr},'%')))
+                and case when ${collegeid} is not null and ${collegeid}<>""  then instructorCollegeId= ${collegeid} else 1=1 end
+                order by instructorName
+                 
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="rows" p:jxpath="data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="total" p:jxpath="total" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="addInstructor" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="void"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value="r"/>
+    <property name="resultmsgvar" value="rmsg"/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                INSERT INTO instructor (instructorId,instructorName,instructorGender,instructorBirthday,instructorCollegeId,instructorGradeId,instructorLogin,instructorPwd,isDelete,instructorRemark,createMan,createDate,instructorNation,instructorPoliticsStatus,instructorMarriage,instructorIdcard,instructorLocal,instructorNativePlace,instructorHomeaddress,instructorTell,instructorMobile,instructorEducation,instructorWork,instructorCareer)
+                    VALUES(uuid(),${instructorName},${instructorGender},${instructorBirthday},${instructorCollegeId},${instructorGradeId},${instructorLogin},'14E1B600B1FD579F47433B88E8D85291','0',${instructorRemark},${loginName},now(),${instructorNation},${instructorPoliticsStatus},${instructorMarriage},${instructorIdcard},${instructorLocal},${instructorNativePlace},${instructorHomeaddress},${instructorTell},${instructorMobile},${instructorEducation},${instructorWork},${instructorCareer})
+                    
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="resultSet" p:jxpath="./data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="result" p:jxpath="./r" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="errormessage" p:jxpath="./rmsg" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="editInstructor" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="void"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value="r"/>
+    <property name="resultmsgvar" value="rmsg"/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                UPDATE instructor SET
+                    instructorName = ${instructorName},
+                    instructorGender = ${instructorGender},
+                    instructorBirthday = ${instructorBirthday},
+                    instructorCollegeId = ${instructorCollegeId},
+                    instructorGradeId = ${instructorGradeId},
+                    instructorRemark = ${instructorRemark},
+                    updateMan = ${loginName},
+                    updateDate = now(),
+                    instructorNation = ${instructorNation},
+                    instructorPoliticsStatus = ${instructorPoliticsStatus},
+                    instructorMarriage = ${instructorMarriage},
+                    instructorIdcard = ${instructorIdcard},
+                    instructorLocal = ${instructorLocal},
+                    instructorNativePlace = ${instructorNativePlace},
+                    instructorHomeaddress = ${instructorHomeaddress},
+                    instructorTell = ${instructorTell},
+                    instructorMobile = ${instructorMobile},
+                    instructorEducation = ${instructorEducation},
+                    instructorWork = ${instructorWork},
+                    instructorCareer = ${instructorCareer}
+                WHERE instructorId = ${instructorId}
+                
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="resultSet" p:jxpath="./data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="result" p:jxpath="./r" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="errormessage" p:jxpath="./rmsg" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="resetInstructor" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="void"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value="r"/>
+    <property name="resultmsgvar" value="rmsg"/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                UPDATE instructor SET
+                    instructorPwd = '14E1B600B1FD579F47433B88E8D85291'
+                WHERE instructorId = ${instructorId}
+                
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="resultSet" p:jxpath="./data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="result" p:jxpath="./r" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="errormessage" p:jxpath="./rmsg" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="deleteInstructor" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="void"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value="r"/>
+    <property name="resultmsgvar" value="rmsg"/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                call gq_delete_instructor(${instructorId})
+                
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="resultSet" p:jxpath="./data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="result" p:jxpath="./r" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="errormessage" p:jxpath="./rmsg" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="getInstructorClass" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value="r"/>
+    <property name="resultmsgvar" value="rmsg"/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                SELECT classId as id,className as text FROM class where classCollegeId=${classCollegeId} and classGradeId=${classGradeId}
+                order by className
+                
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="resultSet" p:jxpath="./data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="result" p:jxpath="./r" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="errormessage" p:jxpath="./rmsg" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="getInstructorRelationClass" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value="r"/>
+    <property name="resultmsgvar" value="rmsg"/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                SELECT * FROM r_instructor_class where instructorId=${instructorId} and isNow='1'
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="resultSet" p:jxpath="./data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="result" p:jxpath="./r" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="errormessage" p:jxpath="./rmsg" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="updateInstructorRelationClass" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="void"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value="r"/>
+    <property name="resultmsgvar" value="rmsg"/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                UPDATE r_instructor_class SET
+                    isNow = '0',
+                    endDate = now()
+                WHERE instructorId = ${instructorId} and isNow='1'
+                
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="resultSet" p:jxpath="./data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="result" p:jxpath="./r" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="errormessage" p:jxpath="./rmsg" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="addInstructorRelationClass" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="void"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value="r"/>
+    <property name="resultmsgvar" value="rmsg"/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                INSERT INTO r_instructor_class (
+                    ricId,instructorId,classId,isNow,startDate
+                )
+                VALUES(uuid(),${instructorId},${classId},'1',now())
+                
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="resultSet" p:jxpath="./data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="result" p:jxpath="./r" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="errormessage" p:jxpath="./rmsg" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="loadScholarshipNews" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value="total"/>
+    <property name="pagevar" value="page"/>
+    <property name="pagesizevar" value="rows"/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(createDate),'%Y-%m-%d') AS createDate,
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(updateDate),'%Y-%m-%d') AS updateDate,
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(scholarshipnewsDate),'%Y-%m-%d %H:%i:%s') AS scholarshipnewsDate
+                FROM scholarshipnews
+                order by isTop,scholarshipnewsDate desc
+                 
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="rows" p:jxpath="data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="total" p:jxpath="total" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="loadScholarshipNewsResult" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value="total"/>
+    <property name="pagevar" value="page"/>
+    <property name="pagesizevar" value="rows"/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(auditdate_office),'%Y-%m-%d') AS auditdate_office
+                FROM gq_font_newsresult where auditStatus_office='通过'
+                order by auditdate_office desc
+                 
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="rows" p:jxpath="data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="total" p:jxpath="total" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="addScholarshipNews" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="void"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value="r"/>
+    <property name="resultmsgvar" value="rmsg"/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                INSERT INTO scholarshipnews (scholarshipnewsId,scholarshipnewsTitle,scholarshipnewsName,
+                    scholarshipnewsYear,isTop,scholarshipnewsStatus,scholarshipnewsDate,scholarshipnewsContent,
+                    attachment,createMan,createDate)
+                VALUES(uuid(),${scholarshipnewsTitle},${scholarshipnewsName},${scholarshipnewsYear},
+                    ${isTop},${scholarshipnewsStatus},${scholarshipnewsDate},${scholarshipnewsContent},
+                    ${attachment},${loginName},now())
+                    
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="resultSet" p:jxpath="./data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="result" p:jxpath="./r" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="errormessage" p:jxpath="./rmsg" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="editScholarshipNews" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="void"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value="r"/>
+    <property name="resultmsgvar" value="rmsg"/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                UPDATE scholarshipnews SET
+                    scholarshipnewsTitle = ${scholarshipnewsTitle},
+                    scholarshipnewsName = ${scholarshipnewsName},
+                    scholarshipnewsYear = ${scholarshipnewsYear},
+                    isTop = ${isTop},
+                    scholarshipnewsStatus = ${scholarshipnewsStatus},
+                    scholarshipnewsDate = ${scholarshipnewsDate},
+                    scholarshipnewsContent = ${scholarshipnewsContent},
+                    attachment = ${attachment},
+                    updateMan = ${loginName},
+                    updateDate = now()
+                WHERE scholarshipnewsId = ${scholarshipnewsId}
+                
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="resultSet" p:jxpath="./data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="result" p:jxpath="./r" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="errormessage" p:jxpath="./rmsg" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="deleteScholarshipNews" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="void"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value="r"/>
+    <property name="resultmsgvar" value="rmsg"/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                DELETE FROM scholarshipnews WHERE scholarshipnewsId=${scholarshipnewsId}
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="resultSet" p:jxpath="./data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="result" p:jxpath="./r" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="errormessage" p:jxpath="./rmsg" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="deleteStudent" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="void"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value="r"/>
+    <property name="resultmsgvar" value="rmsg"/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                DELETE FROM student WHERE studentID=${studentID}
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="resultSet" p:jxpath="./data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="result" p:jxpath="./r" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="errormessage" p:jxpath="./rmsg" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="loadclassnames" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value="total"/>
+    <property name="pagevar" value="page"/>
+    <property name="pagesizevar" value="rows"/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                select classId,className from class where isDelete='0'
+                and case when ${collegeid} is not null and ${collegeid}<>""  then classCollegeId= ${collegeid} else 1=1 end
+                and case when ${instructorid} is not null and ${instructorid}<>""  then
+                    classId in (select classId from r_instructor_class where instructorId=${instructorid} and isNow='1' )else 1=1 end
+                 
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="rows" p:jxpath="data" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="loadRap" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value="total"/>
+    <property name="pagevar" value="page"/>
+    <property name="pagesizevar" value="rows"/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                select *,
+                 FROM_UNIXTIME(UNIX_TIMESTAMP(rapDate),'%Y-%m-%d') AS rapDate
+                 from wh_rap_instructor_college  where 1=1
+                 and case when ${sqlStr} is not null and ${sqlStr}<>""  then rapStudentId=${sqlStr} else 1=1 end
+                  and case when ${collegeid} is not null and ${collegeid}<>""  then collegeId= ${collegeid} else 1=1 end
+                   and case when ${instructorid} is not null and ${instructorid}<>""  then instructorId=${instructorid} and isNow='1' else 1=1 end
+                 order by rapDate desc
+                 
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="rows" p:jxpath="data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="total" p:jxpath="total" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="addRap" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="void"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value="r"/>
+    <property name="resultmsgvar" value="rmsg"/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                INSERT INTO rap(rapId,rapStudentId,rapType,rapClass,rapName,rapDate)
+                VALUES
+                    (uuid(),${rapStudentId},${rapType},${rapClass},${rapName},${rapDate})
+                    
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="resultSet" p:jxpath="./data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="result" p:jxpath="./r" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="errormessage" p:jxpath="./rmsg" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="loadQuitSchool" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value="total"/>
+    <property name="pagevar" value="page"/>
+    <property name="pagesizevar" value="rows"/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                select *,
+                 FROM_UNIXTIME(UNIX_TIMESTAMP(quitdate),'%Y-%m-%d') AS quitdate
+                 from wh_quitschool_instrunctor_collage  where 1=1
+                 and case when ${sqlStr} is not null and ${sqlStr}<>""  then studentID like concat('%',${sqlStr},'%') else 1=1 end
+                  and case when ${collegeid} is not null and ${collegeid}<>""  then collegeId= ${collegeid} else 1=1 end
+                   and case when ${instructorid} is not null and ${instructorid}<>""  then instructorId=${instructorid} and isNow='1' else 1=1 end
+                 order by quitdate desc
+                 
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="rows" p:jxpath="data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="total" p:jxpath="total" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="loadstudentId" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value="total"/>
+    <property name="pagevar" value="page"/>
+    <property name="pagesizevar" value="rows"/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                select studentID from wh_student_collage_instructor  where studentID=${student_id}
+                and case when ${collegeid} is not null and ${collegeid}<>""  then collegeId= ${collegeid} else 1=1 end
+                 and case when ${instructorid} is not null and ${instructorid}<>""  then instructorId= ${instructorid} and isNow='1' else 1=1 end
+                 
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="rows" p:jxpath="data" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="loadstudentId_quit" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value="total"/>
+    <property name="pagevar" value="page"/>
+    <property name="pagesizevar" value="rows"/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                select studentID from quitschool  where studentID=${student_id}
+                 
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="rows" p:jxpath="data" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="addQuitSchool" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="void"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value="r"/>
+    <property name="resultmsgvar" value="rmsg"/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                call wh_quitschool(${studentID},${reason},${quitdate})
+                    
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="resultSet" p:jxpath="./data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="result" p:jxpath="./r" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="errormessage" p:jxpath="./rmsg" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="loadDescInfo" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value="total"/>
+    <property name="pagevar" value="page"/>
+    <property name="pagesizevar" value="rows"/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                SELECT *, FROM_UNIXTIME(UNIX_TIMESTAMP(demotionDate),'%Y-%m-%d') AS demotionDate
+                FROM wh_demotion_instructor_collage where 1=1
+                and case when ${sqlStr} is not null and ${sqlStr}<>""  then studentName like concat('%',${sqlStr},'%') else 1=1 end
+                and case when ${collegeid} is not null and ${collegeid}<>""  then collegeId= ${collegeid} else 1=1 end
+                and case when ${instructorid} is not null and ${instructorid}<>""  then instructorId= ${instructorid} and isNow='1' else 1=1 end
+                ORDER BY demotionDate desc
+                         
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="rows" p:jxpath="data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="total" p:jxpath="total" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="loadGradeInfo" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value="total"/>
+    <property name="pagevar" value="page"/>
+    <property name="pagesizevar" value="rows"/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+            SELECT * FROM wd_loadgradeinfo
+            WHERE isDelete ='0' AND studentID = ${studentid}
+                 
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="rows" p:jxpath="data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="total" p:jxpath="total" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="matchGrade" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value="total"/>
+    <property name="pagevar" value="page"/>
+    <property name="pagesizevar" value="rows"/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+            SELECT * FROM grade
+            WHERE gradeName LIKE CONCAT('%',${dgnum},'%')
+                 
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="rows" p:jxpath="data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="total" p:jxpath="total" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="loadClassInfo" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value="total"/>
+    <property name="pagevar" value="page"/>
+    <property name="pagesizevar" value="rows"/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                     SELECT  classId,className  FROM   class WHERE classGradeId = ${classGradeId}
+                     and classMajorId=(select classMajorId from class where classId=
+                        (select usiClassId from student where studentID=${student_id}))
+                 
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="rows" p:jxpath="data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="total" p:jxpath="total" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="addDescLog" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="void"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value="r"/>
+    <property name="resultmsgvar" value="rmsg"/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                    call wh_demotion(${demotionStudentId},${descReason},${loadClass},${descDate})
+                 
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="resultSet" p:jxpath="./data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="result" p:jxpath="./r" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="errormessage" p:jxpath="./rmsg" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="loadFindPwdCode" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value="total"/>
+    <property name="pagevar" value="page"/>
+    <property name="pagesizevar" value="rows"/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+            SELECT * from findpwdcode where validateID=${id} and isdisable=0  and datediff(createtime,now())=0
+                         
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="rows" p:jxpath="data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="total" p:jxpath="total" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="update_findPwd_Reset" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="void"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value="r"/>
+    <property name="resultmsgvar" value="rmsg"/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                UPDATE student
+                   SET studentPwd = upper(md5(${newpassword}))
+                      WHERE studentID = (select studentID from findpwdcode where validateID=${id})
+            
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="resultSet" p:jxpath="./data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="result" p:jxpath="./r" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="errormessage" p:jxpath="./rmsg" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="edit_findpwdcodestatus" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="void"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value="r"/>
+    <property name="resultmsgvar" value="rmsg"/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                UPDATE findpwdcode
+                   SET isdisable = 1
+                      WHERE validateID = ${id}
+            
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="resultSet" p:jxpath="./data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="result" p:jxpath="./r" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="errormessage" p:jxpath="./rmsg" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="loadTransferInfo" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value="total"/>
+    <property name="pagevar" value="page"/>
+    <property name="pagesizevar" value="rows"/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+            SELECT * , FROM_UNIXTIME(UNIX_TIMESTAMP(transferDate),'%Y-%m-%d') AS transferDate
+             from   gq_transfer_major where 1=1
+             and case when ${sqlStr} is not null and ${sqlStr}<>""  then studentName like concat('%',${sqlStr},'%') else 1=1 end
+             order by transferDate desc
+                         
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="rows" p:jxpath="data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="total" p:jxpath="total" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="loadCollegeInfo" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value="total"/>
+    <property name="pagevar" value="page"/>
+    <property name="pagesizevar" value="rows"/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+            SELECT collegeId ,collegeName  FROM college where isDelete='0'
+                 
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="rows" p:jxpath="data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="total" p:jxpath="total" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="loadMajorInfo" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value="total"/>
+    <property name="pagevar" value="page"/>
+    <property name="pagesizevar" value="rows"/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                     SELECT  majorId,majorName ,parentMajorId FROM   major WHERE majorCollegeId = ${collegeId}
+                     AND majorName != (SELECT  majorName  FROM   major WHERE majorId = (
+                     SELECT classMajorId FROM class WHERE   classId =(
+                     SELECT   usiClassId  FROM student WHERE studentID = ${studentId})))
+                     AND parentMajorId != 'none'
+                 
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="rows" p:jxpath="data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="total" p:jxpath="total" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="loadMajorInfoByCollegeId" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value="total"/>
+    <property name="pagevar" value="page"/>
+    <property name="pagesizevar" value="rows"/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                     SELECT  majorId,majorName  FROM   major WHERE majorCollegeId = ${collegeId}
+                 
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="rows" p:jxpath="data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="total" p:jxpath="total" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="loadClassInfos" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value="total"/>
+    <property name="pagevar" value="page"/>
+    <property name="pagesizevar" value="rows"/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                     SELECT * FROM class WHERE classMajorId=${majorId} AND classGradeId=
+                    (SELECT classGradeId FROM class WHERE classId=(
+                    SELECT usiClassId FROM student WHERE studentID=${studentId} or studentID=${studentid}))
+                 
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="rows" p:jxpath="data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="total" p:jxpath="total" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="loadClassInfoByMajorId" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value="total"/>
+    <property name="pagevar" value="page"/>
+    <property name="pagesizevar" value="rows"/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                     SELECT * FROM class WHERE classMajorId=${majorId}
+                 
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="rows" p:jxpath="data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="total" p:jxpath="total" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="addCollegeChange" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="void"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value="r"/>
+    <property name="resultmsgvar" value="rmsg"/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                    call gq_changecollege(${transferStudentId},${descReasons},${descClass},${descDates},${descCollege},${descMajor})
+                 
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="resultSet" p:jxpath="./data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="result" p:jxpath="./r" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="errormessage" p:jxpath="./rmsg" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="loadMemberInfo" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value="total"/>
+    <property name="pagevar" value="page"/>
+    <property name="pagesizevar" value="rows"/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                SELECT memberStudentId,studentName,memberType,memberRelation,memberName,memberWork,memberPhone,
+                FROM_UNIXTIME(UNIX_TIMESTAMP(memberBirthday),'%Y-%m-%d') AS memberBirthday
+                FROM wh_member_instructor_college where 1=1
+                 and case when ${sqlStr} is not null and ${sqlStr}<>""  then studentName like concat('%',${sqlStr},'%') else 1=1 end
+                and case when ${collegeid} is not null and ${collegeid}<>""  then collegeId= ${collegeid} else 1=1 end
+                and case when ${instructorid} is not null and ${instructorid}<>""  then instructorId= ${instructorid} and isNow='1' else 1=1 end
+                         
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="rows" p:jxpath="data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="total" p:jxpath="total" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="addMember" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="void"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value="r"/>
+    <property name="resultmsgvar" value="rmsg"/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                    INSERT INTO member (memberId,memberStudentId,memberType,memberRelation,memberName,memberBirthday,memberWork,  memberPhone)
+                    VALUES     (UUID(),${memberStudentId},${memberType},${memberRelation},${memberName},${memberBirthday},${memberWork},${memberPhone})
+                 
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="resultSet" p:jxpath="./data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="result" p:jxpath="./r" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="errormessage" p:jxpath="./rmsg" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="loadOfficeAuditInfo" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value="total"/>
+    <property name="pagevar" value="page"/>
+    <property name="pagesizevar" value="rows"/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+               SELECT *, FROM_UNIXTIME(UNIX_TIMESTAMP(auditdate_college),'%Y-%m-%d') AS auditdate_college,
+                     FROM_UNIXTIME(UNIX_TIMESTAMP(auditdate_office),'%Y-%m-%d') AS auditdate_office,collegeName,studentName,className,majorName
+                     FROM scholarship ,college,student,major,class
+                     where ((${sqlStr} is null) or (student.studentName like concat('%',${sqlStr},'%'))) and
+                     college.collegeId=scholarship.collegeId and scholarship.class=class.classId and scholarship.major=major.majorId and
+                     scholarship.scholarshipStudentId=student.studentID and auditStatus_college='通过' and
+                     ((${filter} is null) or (${filter} = 'all') or (auditStatus_office = ${filter}))
+                         
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="rows" p:jxpath="data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="total" p:jxpath="total" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="officeAuditScholarship" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="void"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value="r"/>
+    <property name="resultmsgvar" value="rmsg"/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                UPDATE scholarship
+                   SET auditStatus_office = ${auditStatusoffice},
+                      auditMemo_office = ${auditMemo_office},
+                      auditdate_office = NOW(),
+                      auditmen_office = ${loginName}
+                      WHERE id = ${id}
+            
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="resultSet" p:jxpath="./data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="result" p:jxpath="./r" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="errormessage" p:jxpath="./rmsg" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="loadAuditScholarship" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value="total"/>
+    <property name="pagevar" value="page"/>
+    <property name="pagesizevar" value="rows"/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                SELECT scholarship.*, student.studentName,
+                FROM_UNIXTIME(UNIX_TIMESTAMP(auditdate_college),'%Y-%m-%d') AS auditdate_college,
+                FROM_UNIXTIME(UNIX_TIMESTAMP(auditdate_office),'%Y-%m-%d') AS auditdate_office,class.className,major.majorName
+                FROM scholarship,student,class,major
+				where scholarship.scholarshipStudentId = student.studentID and student.usiClassId=class.classId and class.classMajorId=major.majorId and
+				((${sqlStr} is null) or (scholarshipName like concat('%',${sqlStr},'%'))) and
+				case when ${filter} is not null and ${filter}<>'' then auditStatus_college = ${filter} else 1=1 end
+                         
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="rows" p:jxpath="data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="total" p:jxpath="total" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="editCollegeSchol" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="void"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value="r"/>
+    <property name="resultmsgvar" value="rmsg"/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                   UPDATE scholarship
+                   SET  auditStatus_college = ${auditStatuscollege},
+                   auditMemo_college =${auditMemocollege},
+                   auditdate_college = NOW(),
+                   auditmen_college =${loginName},
+                   auditStatus_office = '待审核'
+                   WHERE id =${id}
+                                   
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="resultSet" p:jxpath="./data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="result" p:jxpath="./r" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="errormessage" p:jxpath="./rmsg" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="loadinstructorInfo" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value="total"/>
+    <property name="pagevar" value="page"/>
+    <property name="pagesizevar" value="rows"/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                SELECT instructorName,instructorGender
+                FROM instructor
+                LEFT JOIN class
+                ON (instructor.instructorCollegeId = class.classCollegeId) AND (instructor.instructorGradeId = class.classGradeId)
+                LEFT JOIN student
+                ON (class.classId = student.usiClassId)
+                WHERE studentId = ${studentid}
+                         
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="rows" p:jxpath="data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="total" p:jxpath="total" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="loadRapRec" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value="total"/>
+    <property name="pagevar" value="page"/>
+    <property name="pagesizevar" value="rows"/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+               SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(rapDate),'%Y-%m-%d') AS rapDate
+               FROM rap
+               LEFT JOIN student
+               ON (rap.rapStudentId = student.studentID)
+               WHERE studentId = ${studentid}
+                         
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="rows" p:jxpath="data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="total" p:jxpath="total" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="loadDescInfo2" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value="total"/>
+    <property name="pagevar" value="page"/>
+    <property name="pagesizevar" value="rows"/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                SELECT *, FROM_UNIXTIME(UNIX_TIMESTAMP(demotionDate),'%Y-%m-%d') AS demotionDate
+                FROM demotion where demotionStudentId = ${studentid}
+                         
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="rows" p:jxpath="data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="total" p:jxpath="total" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="loadTransferInfo2" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value="total"/>
+    <property name="pagevar" value="page"/>
+    <property name="pagesizevar" value="rows"/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+            SELECT * , FROM_UNIXTIME(UNIX_TIMESTAMP(transferDate),'%Y-%m-%d') AS transferDate
+            from transfer,class
+            WHERE (transfer.transferClassId = class.classId) AND transferStudentId = ${studentid}
+                         
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="rows" p:jxpath="data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="total" p:jxpath="total" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="ValidateName" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value="total"/>
+    <property name="pagevar" value="page"/>
+    <property name="pagesizevar" value="rows"/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                SELECT * FROM student where ${uname} = studentName
+                         
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="rows" p:jxpath="data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="total" p:jxpath="total" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="ValidateNum" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value="total"/>
+    <property name="pagevar" value="page"/>
+    <property name="pagesizevar" value="rows"/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                SELECT * FROM student where ${unum} = studentID
+                         
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="rows" p:jxpath="data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="total" p:jxpath="total" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="saveApplyScholarshipInfo" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="void"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value="r"/>
+    <property name="resultmsgvar" value="rmsg"/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                    INSERT INTO scholarship (id,scholarshipStudentId,file_upload,collegeId,major,class,scholarshipId,scholarshipName,scholarshipYear,auditStatus_college,auditStatus_office)
+                    VALUES   (uuid(),${studentid},${fileupload},(select collegeId from gq_stu_info where studentID=${studentid}),
+                   (select majorId from gq_stu_info where studentID=${studentid}),(select classId from gq_stu_info where studentID=${studentid}),
+                    ${scholarshipId},${scholarshipName},${scholarshipYear},'待审核','待审核')
+                 
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="resultSet" p:jxpath="./data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="result" p:jxpath="./r" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="errormessage" p:jxpath="./rmsg" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="loadNewsList" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value="total"/>
+    <property name="pagevar" value="page"/>
+    <property name="pagesizevar" value="rows"/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+               SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(scholarshipnewsDate),'%Y-%m-%d') AS scholarshipnewsDate,
+                        FROM_UNIXTIME(UNIX_TIMESTAMP(createDate),'%Y-%m-%d') AS createDate,
+                        FROM_UNIXTIME(UNIX_TIMESTAMP(updateDate),'%Y-%m-%d') AS updateDate
+                 FROM scholarshipnews order by scholarshipnewsDate
+                         
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="rows" p:jxpath="data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="total" p:jxpath="total" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="loadNewsListById" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value="total"/>
+    <property name="pagevar" value="page"/>
+    <property name="pagesizevar" value="rows"/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+               SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(scholarshipnewsDate),'%Y-%m-%d') AS scholarshipnewsDate,
+                        FROM_UNIXTIME(UNIX_TIMESTAMP(createDate),'%Y-%m-%d') AS createDate,
+                        FROM_UNIXTIME(UNIX_TIMESTAMP(updateDate),'%Y-%m-%d') AS updateDate
+                 FROM scholarshipnews where ${id} = scholarshipnewsId
+                         
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="rows" p:jxpath="data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="total" p:jxpath="total" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="loadScholarshipMessInfo" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value="total"/>
+    <property name="pagevar" value="page"/>
+    <property name="pagesizevar" value="rows"/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+               SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(auditdate_college),'%Y-%m-%d') AS auditdate_college,
+                        FROM_UNIXTIME(UNIX_TIMESTAMP(auditdate_office),'%Y-%m-%d') AS auditdate_office
+                 FROM scholarship  where ${studentid} = scholarshipStudentId
+                         
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="rows" p:jxpath="data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="total" p:jxpath="total" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="loadScholarshipsuccInfo" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value="total"/>
+    <property name="pagevar" value="page"/>
+    <property name="pagesizevar" value="rows"/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+               SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(auditdate_college),'%Y-%m-%d') AS auditdate_college,
+                        FROM_UNIXTIME(UNIX_TIMESTAMP(auditdate_office),'%Y-%m-%d') AS auditdate_office
+                 FROM scholarship WHERE auditStatus_office = '通过'
+                         
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="rows" p:jxpath="data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="total" p:jxpath="total" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="validateScholarshipApply" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value="total"/>
+    <property name="pagevar" value="page"/>
+    <property name="pagesizevar" value="rows"/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+               SELECT *  FROM scholarship  where scholarshipStudentId = ${studentid} and scholarshipId=${scholarshipnewsId}
+                         
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="rows" p:jxpath="data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="total" p:jxpath="total" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="newsLayPage" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value="total"/>
+    <property name="pagevar" value="page"/>
+    <property name="pagesizevar" value="rows"/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+               SELECT *  FROM scholarshipnews
+                         
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="rows" p:jxpath="data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="total" p:jxpath="total" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="validateOfficeRecheck" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value="total"/>
+    <property name="pagevar" value="page"/>
+    <property name="pagesizevar" value="rows"/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+               SELECT *  FROM scholarship where id=${id}
+                         
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="rows" p:jxpath="data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="total" p:jxpath="total" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="loadmstudentinfo" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value="total"/>
+    <property name="pagevar" value="page"/>
+    <property name="pagesizevar" value="rows"/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+               SELECT * ,FROM_UNIXTIME(UNIX_TIMESTAMP(studentBirthday),'%Y-%m-%d') AS studentBirthday,
+                        FROM_UNIXTIME(UNIX_TIMESTAMP(politicsStatusDate),'%Y-%m-%d') AS politicsStatusDate
+                FROM student WHERE studentID = ${studentID}
+                         
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="rows" p:jxpath="data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="total" p:jxpath="total" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="checkLicense" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value="total"/>
+    <property name="pagevar" value="page"/>
+    <property name="pagesizevar" value="rows"/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+              SELECT * FROM studentinfoeditconfig WHERE confGradeid=
+                (SELECT classGradeId FROM class WHERE classId=
+                (SELECT usiClassId FROM student WHERE studentID=${studentID}) )
+                AND NOW() BETWEEN confStartdate AND confEnddate
+                         
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="rows" p:jxpath="data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="total" p:jxpath="total" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="loadStuInfoEditConfig" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value="total"/>
+    <property name="pagevar" value="page"/>
+    <property name="pagesizevar" value="rows"/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+               SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(confStartdate),'%Y-%m-%d') AS confStartdate,
+                        FROM_UNIXTIME(UNIX_TIMESTAMP(confEnddate),'%Y-%m-%d') AS confEnddate,
+                         FROM_UNIXTIME(UNIX_TIMESTAMP(confCreatedate),'%Y-%m-%d') AS confCreatedate,
+                         grade.gradeName
+                 FROM studentinfoeditconfig,grade where studentinfoeditconfig.confGradeid =grade.gradeId
+                 order by confCreatedate desc
+                         
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="rows" p:jxpath="data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="total" p:jxpath="total" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="addStuInfoEditConfig" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="void"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value="r"/>
+    <property name="resultmsgvar" value="rmsg"/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+               INSERT INTO studentinfoeditconfig( confId,confGradeid,confStartdate,confEnddate,confCreatedate, confCreateman)
+                    VALUES(uuid(),${confGradeid},${confStartdate} ,${confEnddate},now(),${loginName})
+                
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="resultSet" p:jxpath="./data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="result" p:jxpath="./r" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="errormessage" p:jxpath="./rmsg" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="updateStuInfoEditConfig" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="void"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value="r"/>
+    <property name="resultmsgvar" value="rmsg"/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+              UPDATE studentinfoeditconfig
+                 SET  confStartdate = ${confStartdate}, confEnddate = ${confEnddate}
+                WHERE confId = ${confId}
+                
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="resultSet" p:jxpath="./data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="result" p:jxpath="./r" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="errormessage" p:jxpath="./rmsg" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="delStuInfoEditConfig" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="void"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value="r"/>
+    <property name="resultmsgvar" value="rmsg"/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                delete from studentinfoeditconfig where  confId = ${confId}
+                
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="resultSet" p:jxpath="./data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="result" p:jxpath="./r" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="errormessage" p:jxpath="./rmsg" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="loadStuInfoByEditConfig" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value="total"/>
+    <property name="pagevar" value="page"/>
+    <property name="pagesizevar" value="rows"/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+               SELECT * FROM studentinfoeditconfig WHERE confGradeid= (SELECT classGradeId FROM class WHERE
+                        classId=(SELECT usiClassId FROM student WHERE studentID=${studentid}) )
+                        AND NOW() BETWEEN confStartdate AND confEnddate
+                         
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="rows" p:jxpath="data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="total" p:jxpath="total" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="loadCollegeMajor" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value="total"/>
+    <property name="pagevar" value="page"/>
+    <property name="pagesizevar" value="rows"/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+               SELECT * FROM wh_class_college_major WHERE classId =
+                (select usiClassId from student where studentID=${studentid} )
+                         
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="rows" p:jxpath="data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="total" p:jxpath="total" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="loadStuCardApplycationInfo" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value="total"/>
+    <property name="pagevar" value="page"/>
+    <property name="pagesizevar" value="rows"/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+               SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(createdate),'%Y-%m-%d') AS createdate
+                FROM  studentcardrepair where ((${sqlStr} is null) or (studentName like concat('%',${sqlStr},'%')))
+                and ((${filter} is null) or (${filter} = 'all') or (status_office = ${filter}))
+                order by createdate desc
+                         
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="rows" p:jxpath="data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="total" p:jxpath="total" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="editStuCardApplycation" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="void"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value="r"/>
+    <property name="resultmsgvar" value="rmsg"/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+              UPDATE studentcardrepair SET status_office = ${statusoffice} WHERE id = ${id}
+                
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="resultSet" p:jxpath="./data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="result" p:jxpath="./r" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="errormessage" p:jxpath="./rmsg" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="loadStuProveInfo" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value="total"/>
+    <property name="pagevar" value="page"/>
+    <property name="pagesizevar" value="rows"/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+              SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(proveCreateDate),'%Y-%m-%d') AS proveCreateDate
+              FROM studentprove
+              where ((${sqlStr} is null) or (proveStuName like concat('%',${sqlStr},'%')))
+              and case when ${filter} is not null and ${filter}<>'' then proveOffStatu = ${filter} else 1=1 end
+              ORDER BY proveCreateDate DESC
+                         
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="rows" p:jxpath="data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="total" p:jxpath="total" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="proveAuditStatu" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="void"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value="r"/>
+    <property name="resultmsgvar" value="rmsg"/>
+    <property name="totalrowsvar" value=""/>
+    <property name="pagevar" value=""/>
+    <property name="pagesizevar" value=""/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+                UPDATE studentprove
+                SET proveOffStatu = ${proveOffStatu}
+                WHERE proveId = ${proveId}
+                
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="resultSet" p:jxpath="./data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="result" p:jxpath="./r" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="errormessage" p:jxpath="./rmsg" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+    
+<bean id="loadNewsResultLists" class="com.superstatemachine.web.WebStatemachine">
+<property name="states" >
+    <list>
+        <bean p:name="init" class="com.superstatemachine.json.State2" >
+            <property name="enterProcessors">
+                <list>
+                    
+<bean class="com.superstatemachine.web.SqlWebDataSourceProcessor">
+    <property name="datatype" value="list"/>
+    <property name="key" value="data"/>
+    <property name="resultvar" value=""/>
+    <property name="resultmsgvar" value=""/>
+    <property name="totalrowsvar" value="total"/>
+    <property name="pagevar" value="page"/>
+    <property name="pagesizevar" value="rows"/>
+    <property name="sql" >
+        <value>
+            <![CDATA[
+                
+            select *,FROM_UNIXTIME(UNIX_TIMESTAMP(auditdate_office),'%Y-%m-%d') AS auditdate_office from gq_font_newsresult where auditStatus_office='通过'
+            order by auditdate_office  desc
+            
+            ]]>
+        </value>
+    </property>
+    <property name="objMap">
+        <list>
+                </list>
+    </property>
+</bean>
+
+                    
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+                            <bean p:field="rows" p:jxpath="data" class="com.superstatemachine.json.JsonField" />
+
+                            <bean p:field="total" p:jxpath="total" class="com.superstatemachine.json.JsonField" />
+
+                        </list>
+        </property>
+    </bean>
+</property>
+</bean>
+
+                </list>
+            </property>
+        </bean>
+    </list>
+</property>
+</bean>
+
+</beans>

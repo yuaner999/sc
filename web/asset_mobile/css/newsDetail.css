@@ -1,0 +1,30 @@
+body {
+  background: #fff;
+}
+.padding {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+.padding h3 {
+  line-height: 24px;
+  font-size: 14px;
+  color: #535353;
+}
+.padding .detail p {
+  padding-top: 22px;
+  text-indent: 28px;
+  color: #757575;
+  font-size: 12px;
+  line-height: 20px;
+}
+.padding .detail img {
+  width: 100%;
+  display: block;
+  padding-top: 22px;
+}
+.padding .clearfix .right {
+  color: #5c85ef;
+  font-size: 12px;
+  line-height: 25px;
+}
+/*# sourceMappingURL=newsDetail.css.map */

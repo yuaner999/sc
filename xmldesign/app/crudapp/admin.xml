@@ -1,0 +1,26 @@
+<app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../schemas/crudapp.xsd">
+    <crud title="商店人员管理"
+          saveto="admin/shopusermanagement.jsp"
+          tabletitle="人员列表"
+          tabledataurl="jsons/shopallusers.form"
+          formcreatesubmiturl="jsons/shopcreateuser.form"
+          formeditsubmiturl="jsons/shopedituser.form">
+        <formsql>select * from sysuser</formsql>
+        <tableheadersql>select * from shop_group_user_view</tableheadersql>
+    </crud>
+    <crud title="组管理" tabletitle="组列表"
+          tabledataurl="jsons/shopallgroups.form"
+          formcreatesubmiturl="jsons/shopaddgroup.form"
+          formeditsubmiturl="shopeditgroup"
+          saveto="admin/shopgroupmanagement.jsp">
+        <formsql>select * from sysgroup</formsql>
+        <tableheadersql>select * from shop_group_view</tableheadersql>
+    </crud>
+    <crud title="权限管理" tabletitle="权限列表" tabledataurl="jsons/shopallprivilege.form"
+          formcreatesubmiturl="shopaddprivilege"
+          formeditsubmiturl="shopeditprivilege"
+          saveto="admin/privilegemanagement.jsp">
+        <formsql>select * from sysprivilege</formsql>
+        <tableheadersql>select * from sysprivilege</tableheadersql>
+    </crud>
+</app>

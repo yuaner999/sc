@@ -1,0 +1,23 @@
+#*
+elem:
+    <toolbar>
+        <toolbarline>
+            <button id="tool_add"/>
+            <button id="tool_edit"/>
+            <button id="tool_delete"/>
+        </toolbarline>
+        <toolbarline>
+            <label text="任务状态"/>
+            <combobox id="combo_taskstatus" url=""/>
+        </toolbarline>
+    </toolbar>
+* *#
+#set($items=$xml.xpathobjs($elem,"./*"))
+<div id="${id}">
+#foreach($item in $items)##
+    #set($name=$item.name)
+    $velocity.render("${basedir}/xmldesign/velocity/easyui/${name}.vm",{
+        "elem":$item
+    })##
+#end
+</div>

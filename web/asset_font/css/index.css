@@ -1,0 +1,860 @@
+
+img{
+	display: block;
+	border: none;
+}
+.person_MsgContent{
+	position: absolute;
+	top:0;
+	left:0;
+	height: 100%;
+	width: 100%;
+	margin-left: 85px;
+}
+.item2 label,.item3 label,.item4 label,.item5 label{
+	font-size: 16px;
+	color: #294284;
+	font-weight:bold;
+	display: inline-block;
+	vertical-align: middle;
+	padding: 2px;
+	padding-left: 28px;
+	position: absolute;
+}
+.item2 span,.item3 span,.item4 span,.item5 span{
+	font-size: 16px;
+	color: #515151;
+	display: block;
+	vertical-align: middle;
+	padding: 2px;
+	margin-left: 65px;
+	overflow: hidden;
+	-ms-text-overflow: ellipsis;
+	text-overflow: ellipsis;
+	white-space:nowrap;
+}
+.person_msg{
+	position: absolute;
+	top:0;
+	left:200px;
+	text-align: left;
+	width: 100%;
+}
+.item1{
+	margin-top: 26px;
+	margin-bottom: 60px;
+	font-size: 18px;
+	color: #515151;
+}
+.item1 label{
+	display: inline-block;
+	width: 23px;
+	height: 23px;
+	background: url(../../asset_font_new/img/userlogo_03.png);
+	vertical-align: middle;
+	margin-right: 6px;
+	position: relative;
+	top:-2px;
+}
+.item6{
+	font-size: 16px;
+	color: #294284;
+}
+.item6 label{
+	display: inline-block;
+	background: url(../../asset_font_new/img/mynum_07.png);
+	width: 23px;
+	height: 23px;
+	margin-right: 6px;
+	position: relative;
+	top:-2px;
+	vertical-align: middle;
+}
+.itemBox{
+	/*width:100%;*/
+	/*margin-top: 15px;*/
+	overflow: hidden;
+}
+.itemBox li{
+	/*float: left;*/
+	width: 15.5%;
+	margin:10px 1% 10px 0;
+	/*margin-right: 1%;*/
+}
+.item2{
+	background: url(../../asset_font_new/img/item2_11.png) left center no-repeat;
+}
+.item3{
+	background: url(../../asset_font_new/img/item3_11.png) left center no-repeat;
+}
+.item4{
+	background: url(../../asset_font_new/img/item4_11.png) left center no-repeat;
+}
+.item5{
+	background: url(../../asset_font_new/img/item5_11.png) left center no-repeat;
+}
+#changeInfo{
+	position: absolute;
+	top:250px;
+	left:0;
+	padding: 2px;
+	font-size: 16px;
+	color: #515151;
+	padding-left: 28px;
+	background: url(../../asset_font_new/img/changeInfo_15.png) left center no-repeat;
+	cursor: pointer;
+}
+.reck{
+	position: absolute;
+	top:0;
+	right: 0;
+	height: 100%;
+	margin-right: 85px;
+}
+#posi{
+	position: relative !important;
+	float: left;
+}
+.mynum{
+	margin-left: 130px;
+	height: 100%;
+	float: left;
+	color: #5c85ee;
+	margin-right: 70px;
+}
+.mynum li{
+	width: 250px;
+	margin-top: 26px;
+	position: relative;
+	font-size: 16px;
+	font-weight: bold;
+}
+.mynum li b{
+	position: absolute;
+	left: -50px;
+	top:0;
+	height: 20px;
+	line-height:20px;
+}
+.mynum li div{
+	height: 20px;
+	position: relative;
+}
+.mynum li div span{
+	position: absolute;
+	right: -35px;
+	height: 20px;
+	line-height:20px;
+
+}
+@media screen and (min-width: 1600px){
+	.person_MsgContent{
+		margin-left: 125px;
+	}
+	.reck{
+		margin-right: 125px;
+	}
+}
+@media screen and (min-width: 1600px){
+	/*第二课堂个人信息*/
+	.secondClassMsgContent{
+		position: relative;
+		width: 1440px;
+		margin: 0 auto;
+		overflow: hidden;
+		margin-top: 40px;
+		/*background: pink;*/
+	}
+	/*成绩单*/
+	.secondClassMsgContent .grade_list{
+		/*display: inline-block;*/
+		/*position: relative;*/
+		/*!*width: 64%;*!*/
+		/*margin: 0 auto;*/
+		/*margin-top: 30px;*/
+		/*display: none;*/
+	}
+}
+@media screen and (max-width: 1600px){
+	.new_window input{
+		margin-bottom: 10px !important;
+	}
+	.spbox div{
+		width: 100px !important;
+		height: 137px !important;
+	}
+	table *{
+		font-size: 14px !important;
+	}
+	.secondClassMsgContent .person_analyze {
+		height: 320px !important;
+	}
+	.mynum {
+		margin-left: 65px;
+		margin-right: 30px;
+	}
+	.mynum li{
+		width: 170px;
+		margin-top: 26px;
+		position: relative;
+		font-size: 16px;
+		font-weight: bold;
+	}
+	.person_msg{
+		left:180px;
+	}
+	/*第二课堂个人信息*/
+	.secondClassMsgContent{
+		position: relative;
+		width: 1040px;
+		margin: 0 auto;
+		overflow: hidden;
+		margin-top: 40px;
+		/*background: pink;*/
+	}
+	/*成绩单*/
+	.secondClassMsgContent .grade_list{
+		display: inline-block;
+		position: relative;
+		width: 70%;
+		margin: 0 auto;
+		margin-top: 80px;
+		display: none;
+	}
+}
+
+/*非媒体查询*/
+/*返回*/
+.secondClassMsgContent .return{
+	position: relative;
+	font-size: 16px;
+	font-weight: bold;
+	color: #5c85ee;
+}
+/*个人信息*/
+.secondClassMsgContent .personMsg{
+	position: relative;
+	font-size: 16px;
+	font-weight: bold;
+	color: #5c85ee;
+	margin-left: -40px;
+	margin-bottom: -40px;
+}
+/*个人信息分析*/
+.secondClassMsgContent .person_analyze{
+	position: relative;
+	text-align: center;
+	margin-top: 50px;
+	border-bottom: 2px dotted #5c85ee;
+	height: 450px;
+}
+
+/*个人信息板块*/
+.secondClassMsgContent .person_analyze .person_MsgContent .change_filepicture:hover{
+	cursor: pointer;
+}
+/*修改信息按钮*/
+.person_MsgContent .button_style
+{
+	position: absolute;
+	font-size: 14px;
+	color: #fff;
+	background-color: #2a458c;
+	border: 0;
+}
+.person_MsgContent .button_style:hover{
+	cursor: pointer;
+}
+.person_MsgContent .changeMsg
+{
+	top: 0;
+	right: 0;
+	width: 80px;
+	height: 30px;
+}
+.person_MsgContent .change_pwd
+{
+	top: 43px;
+}
+.person_MsgContent .change_picture
+{
+	top: 86px;
+}
+.person_MsgContent .operateGrade{
+	width: 90px;
+	height: 30px;
+	left: 0;
+	bottom: 0;
+}
+.person_MsgContent .paintGrade{
+	left: 110px;
+}
+.secondClassMsgContent .person_analyze .statistical_graph img{
+	width: 355px;
+	height: 398px;
+}
+.secondClassMsgContent .person_analyze .statistical_graph .abilityModel:hover{
+	cursor: pointer;
+}
+/*成绩单*/
+.secondClassMsgContent .grade_list .grade_list_item{
+	position: relative;
+	width: 100%;
+	margin-top: 20px;
+	margin-bottom: 70px;
+	/*min-height: 280px;*/
+}
+.btn_add{
+	width: 25px !important;
+	height: 25px !important;
+	margin-top: -5px !important;
+}
+.secondClassMsgContent .grade_list .grade_list_item>input{
+	margin: 0 auto !important;
+	display: block;
+}
+/*黄色的小块*/
+.secondClassMsgContent .grade_list .grade_list_item .titleYellowBlock{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 12px;
+	height: 20px;
+	background-color: #fff799;
+}
+/*项目名称*/
+.secondClassMsgContent .grade_list .grade_list_item .itemName{
+	position: relative;
+	top: -3px;
+	font-size: 18px;
+	font-weight: bold;
+	color: #5c85ee;
+	float: left;
+	margin-left: 25px;
+}
+/*表格*/
+.secondClassMsgContent .grade_list .grade_list_item_table{
+	position: relative;
+	top: 20px;
+	width: 101%;
+	left: -0.5%;
+	border:none;
+	text-align: center;
+}
+.secondClassMsgContent .grade_list .grade_list_item_table tr,td{
+	border: 1px solid #5c85ee;
+	min-height: 47px;
+	line-height: 47px;
+}
+.secondClassMsgContent .grade_list .grade_list_item_table .table_items{
+	position: relative;
+	font-size: 16px;
+	font-weight: bold;
+	color: #fff;
+}
+.secondClassMsgContent .grade_list .grade_list_item_table .table_items td{
+	background: #5c85ee;
+}
+/*修改信息弹框*/
+.window_Greybg{
+	top: 0;
+	left: 0;
+	background-color: #000 !important;
+	opacity: 0.5 !important;
+	-ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
+	filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
+	z-index: 1000;
+	display: none;
+	position: fixed;
+	width: 100%;
+	height: 100%;
+}
+.window_changeMsg{
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	margin-left: -232px;
+	margin-top: -259.5px;
+	width: 435px;
+	height: 215px;
+	background: #fff url(../img/changepwd_bgPicture.png) no-repeat;
+	background-position: 0 100%;
+	z-index: 9999;
+	/*-webkit-transform: translate(-50%, -50%);*/
+	/*-moz-transform: translate(-50%, -50%);*/
+	/*-ms-transform: translate(-50%, -50%);*/
+	/*-o-transform: translate(-50%, -50%);*/
+	/*transform: translate(-50%, -50%);*/
+	display: none;
+}
+.window_changeMsg .input_name{
+	display: inline-block;
+	position: absolute;
+	left: 63px;
+	top: 53px;
+	font-size: 18px;
+}
+.window_changeMsg input{
+	position: absolute;
+	left: 156px;
+	top: 50px;
+	width: 220px;
+	height: 33px;
+	border: 1px solid #2a458c;
+}
+.window_changeMsg .confirm{
+	position: absolute;
+	left: 12%;
+	bottom: 47px;
+	width: 137px;
+	height: 37px;
+	border: 0;
+	color: #fff;
+	font-size: 16px;
+	background-color: #2a458c;
+}
+.window_changeMsg .confirm1{
+	position: absolute;
+	left: 55%;
+	bottom: 47px;
+	width: 137px;
+	height: 37px;
+	border: 0;
+	color: #fff;
+	font-size: 16px;
+	background-color: #2a458c;
+}
+/*修改密码弹框*/
+.window_changePwd{
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	margin-left: -232px;
+	margin-top: -259.5px;
+	width: 464px;
+	height: 335px;
+	background: #fff url(../img/changepwd_bgPicture.png) no-repeat;
+	background-position: 0 100%;
+	z-index: 9999;
+	/*-webkit-transform: translate(-50%, -50%);*/
+	/*-moz-transform: translate(-50%, -50%);*/
+	/*-ms-transform: translate(-50%, -50%);*/
+	/*-o-transform: translate(-50%, -50%);*/
+	/*transform: translate(-50%, -50%);*/
+	display: none;
+}
+.window_changePwd .input_name{
+	display: inline-block;
+	position: absolute;
+	right: 305px;
+	font-size: 18px;
+}
+.window_changePwd .beforePwd{
+	top: 55px;
+}
+.window_changePwd .newPwd{
+	top: 120px;
+}
+.window_changePwd .confirmNewPwd{
+	top: 180px;
+}
+.window_changePwd input{
+	position: absolute;
+	left: 170px;
+	width: 225px;
+	height: 33px;
+	border: 1px solid #2a458c;
+}
+.window_changePwd .beforePwd_text{
+	top: 50px;
+}
+.window_changePwd .newPwd_text{
+	top: 112px;
+}
+.window_changePwd .confirmNewPwd_text{
+	top: 170px;
+}
+.window_changePwd img{
+	position: absolute;
+	right: 25px;
+}
+.window_changePwd .confirm_true{
+	top: 55px;
+}
+.window_changePwd .confirm_false{
+	top: 115px;
+}
+.window_changePwd .confirm{
+	position: absolute;
+	left: 13%;
+	bottom: 47px;
+	width: 137px;
+	height: 37px;
+	border: 0;
+	color: #fff;
+	font-size: 16px;
+	background-color: #2a458c;
+}
+.window_changePwd .confirm1{
+	position: absolute;
+	left: 56%;
+	bottom: 47px;
+	width: 137px;
+	height: 37px;
+	border: 0;
+	color: #fff;
+	font-size: 16px;
+	background-color: #2a458c;
+}
+.window_changePicture .confirm{
+	position: absolute;
+	left: 14%;
+	bottom: 47px;
+	width: 137px;
+	height: 37px;
+	border: 0;
+	color: #fff;
+	font-size: 16px;
+	background-color: #2a458c;
+}
+.window_changePicture .confirm1{
+	position: absolute;
+	left: 59%;
+	bottom: 47px;
+	width: 137px;
+	height: 37px;
+	border: 0;
+	color: #fff;
+	font-size: 16px;
+	background-color: #2a458c;
+}
+/*选择信息框*/
+.window_selectMsg{
+	position: fixed;
+	top: 10%;
+	left: 20%;
+	width: 60%;
+	height:60%;
+	overflow: auto;
+	min-height: 367px;
+	background-color: #fff;
+	z-index: 9999;
+	border: 1px solid #2a458c;
+	text-align: center;
+	display: none;
+}
+.window_selectMsg .select_list{
+	display: inline-block;
+	position: relative;
+	margin-top: 35px;
+	margin-left: 40px;
+}
+.window_selectMsg .select_list .select_list_item{
+	display: inline-block;
+	position: relative;
+	float: left;
+	width: 125px;
+	height: 30px;
+	margin-right: 65px;
+}
+.window_selectMsg .select_list .last_item{
+	margin-right: 0px;
+}
+.window_selectMsg .select_list .select_list_item .selectItem_title{
+	display: inline-block;
+	position: relative;
+	width: 100%;
+	height: 100%;
+	background-color: #2a458c;
+}
+.window_selectMsg .select_list .select_list_item .selectItem_title:hover{
+	cursor: pointer;
+}
+.window_selectMsg .select_list .select_list_item .selectItem_title .selectItem_title_content{
+	position: relative;
+	width: 75.2%;
+	height: 100%;
+	line-height: 30px;
+	color: #fff;
+	font-size: 14px;
+	text-align: center;
+	border-right: 1px solid #fff;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.window_selectMsg .select_list .select_list_item .selectItem_title .selectItem_title_single{
+	position: absolute;
+	top: 13px;
+	right: 10px;
+	width: 0px;
+	height: 0px;
+	border-top: 8px solid #ffffff;
+	border-right: 5px solid #2a458c;
+	border-bottom: 5px solid #2a458c;
+	border-left: 5px solid #2a458c;
+	background-color: #2a458c;
+}
+.window_selectMsg .select_list .select_list_item .selectContent_list{
+	display: inline-block;
+	position: relative;
+	width: 98.5%;
+	background-color: #fff;
+	z-index: 1000;
+	display: none;
+}
+.window_selectMsg .select_list .select_list_item .selectContent_list .selectContent_list_item{
+	display: inline-block;
+	position: relative;
+	width: 100%;
+	height: 35px;
+	line-height: 35px;
+	text-align: center;
+	color: #2a458c;
+	border-right: 1px solid #2a458c;
+	border-bottom: 1px solid #2a458c;
+	border-left: 1px solid #2a458c;
+}
+.window_selectMsg .select_list .select_list_item .selectContent_list .selectContent_list_item:hover{
+	cursor: pointer;
+}
+/*选择信息框中的表格*/
+.window_selectMsg .grade_list_item_table{
+	position: relative;
+	margin-top: 40px;
+	margin-left: 68px;
+	width: 87.61%;
+	height: 30px;
+	line-height: 30px;
+	border-collapse: collapse;
+	border: 2px solid #2a458c;
+	text-align: center;
+}
+.window_selectMsg .grade_list_item_table tr,td{
+	border: 1px solid #5c85ee;
+}
+.window_selectMsg .grade_list_item_table td{
+	min-height: 31px;
+	line-height: 31px;
+}
+.window_selectMsg .grade_list_item_table .table_items{
+	position: relative;
+	width: 100%;
+	font-size: 14px;
+	font-weight: bold;
+	color: #2a458c;
+}
+/*复选框*/
+.window_selectMsg .grade_list_item_table .selectCheckbox{
+	display: inline-block;
+	position: relative;
+	width: 16px;
+	height: 16px;
+	vertical-align: middle;
+	background: url(../img/index_selectMsg_selectIcon_06.png);
+	font-size: 0;
+	z-index: 300;
+}
+.window_selectMsg .grade_list_item_table .selectCheckbox:hover{
+	cursor: pointer;
+}
+.window_selectMsg .grade_list_item_table .selectCheckbox .hidden_checkbox{
+	display: inline-block;
+	position: absolute;
+	left: -2px;
+	top: -2px;
+	opacity: 0;
+	z-index: 100;
+}
+.window_selectMsg .grade_list_item_table .selectCheckbox .hidden_checkbox:hover{
+	cursor: pointer;
+}
+/*确定按钮*/
+.window_selectMsg .window_selectMsg_confirm{
+	position: absolute;
+	left: 35%;
+	bottom: 40px;
+	width: 92px;
+	height: 30px;
+	font-size: 14px;
+	border: 0;
+	color: #FFF;
+	background-color: #2a458c;
+}
+/*取消按钮*/
+.window_selectMsg .window_selectMsg_confirm1{
+	position: absolute;
+	left: 55%;
+	bottom: 40px;
+	width: 92px;
+	height: 30px;
+	font-size: 14px;
+	border: 0;
+	color: #FFF;
+	background-color: #2a458c;
+	cursor: pointer;
+
+}
+.window_selectMsg .window_selectMsg_confirm:hover{
+	cursor: pointer;
+}
+/*修改头像弹框*/
+.window_changePicture {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	margin-left: -232px;
+	margin-top: -259.5px;
+	width: 464px;
+	height: 335px;
+	background: #fff url(../img/changepwd_bgPicture.png) no-repeat;
+	background-position: 0 100%;
+	z-index: 9999;
+	/*-webkit-transform: translate(-50%, -50%);*/
+	/*-moz-transform: translate(-50%, -50%);*/
+	/*-ms-transform: translate(-50%, -50%);*/
+	/*-o-transform: translate(-50%, -50%);*/
+	/*transform: translate(-50%, -50%);*/
+	display: none;
+}
+#hehe{
+	text-align: center;
+}
+#hehe input:nth-child(1){
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+#hehe div{
+	margin: 0 auto;
+	width: 180px;
+	margin-bottom: 30px;
+	height:180px;
+	line-height: 180px;
+	text-align: center;
+}
+#hehe div:after{
+	content: "";
+	display: inline-block;
+	width: 1px;
+	height: 100%;
+	vertical-align: middle;
+}
+#hehe div img{
+	max-width:99%;
+	max-height: 100%;
+	vertical-align: middle;
+	display: inline-block;
+}
+#hehe button{
+line-height: 30px;
+}
+
+.secondClassMsgContent .person_MsgContent .change_filepicture{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 163px;
+	height: 216px;
+	outline: none;
+	opacity: 0;
+}
+div#posi{
+	top:0 !important;
+	left:0 !important;
+}
+/*能力模型图*/
+.secondClassMsgContent .person_analyze .statistical_graph{
+	display: inline-block;
+	position: relative;
+	width: 24.8%;
+	margin: 0 auto;
+	text-align: center;
+}
+/*按钮下面的线*/
+.secondClassMsgContent .person_analyze .statistical_graph .bottomLine{
+	position: absolute;
+	bottom: 15px;
+	width: 100%;
+	border-bottom: 2px solid #2a458c;
+}
+/*能力模型按钮*/
+.secondClassMsgContent .person_analyze .statistical_graph .abilityModel{
+	position: relative;
+	width: 110px;
+	height: 35px;
+	margin-top: 35px;
+	font-size: 18px;
+	color: #fff;
+	background-color: #2a458c;
+	border: 0;
+	z-index: 100;
+}
+.secondClassMsgContent .person_analyze .person_MsgContent img{
+	position: relative;
+	width: 163px;
+	height: 216px;
+}
+.secondClassMsgContent .person_MsgContent .person_msg .person_msg_item .person_msg_style{
+	display: inline-block;
+	position: relative;
+	font-size: 14px;
+	color: #2a458c;
+	letter-spacing: 1px;
+}
+/*成绩单*/
+.secondClassMsgContent .grade_list{
+	display: inline-block;
+	position: relative;
+	width: 83%;
+	margin: 0 auto;
+	margin-top: 50px;
+	display: none;
+}
+.box{
+	margin-top: -3px;
+	float: left;
+	margin-left: 5px;
+}
+.box span,.box{
+	font-size: 18px;
+	color: #5c85ee;
+	font-weight: bold;
+	margin-left: 20px;
+}
+
+.title1{
+	position: absolute;
+	top:-47px;
+	left:0;
+	width: 100%;
+	text-indent:20px;
+	font-size: 16px;
+	color: #fff;
+	line-height:47px;
+}
+.title1 img{
+	cursor: pointer;
+	float: right;
+	margin:12px 12px 0 0;
+}
+/*table tr td:nth-of-type(1){*/
+	 /*width: 130px;*/
+/*}*/
+/*table tr td:nth-of-type(2){*/
+	 /*width: auto;*/
+/*}*/
+/*table tr td:nth-of-type(3){*/
+	 /*width: 75px;*/
+/*}*/
+/*table tr td:nth-of-type(4){*/
+	 /*width: 75px;*/
+/*}*/
+/*table tr td:nth-of-type(5){*/
+	 /*width: 90px;*/
+/*}*/
+/*table tr td:nth-of-type(6){*/
+	 /*width: auto;*/
+/*}*/
+/*table tr td:last-of-type{*/
+	 /*width: 90px;*/
+/*}*/

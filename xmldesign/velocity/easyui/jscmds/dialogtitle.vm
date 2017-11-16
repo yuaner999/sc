@@ -1,0 +1,3 @@
+#set($id=$xml.xpathobj($elem,"./@dialogid"))
+#set($title=$xml.xpathobj($elem,"./@title"))
+$('#$id').dialog({title:$title});

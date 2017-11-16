@@ -1,0 +1,78 @@
+body{
+	text-align: center;
+}
+.login{
+	display: inline-block;
+	margin-top: 276px;
+	text-align: center;
+	width: 690px;
+	height: 510px;	
+	position: relative;
+}
+.login>b{
+	width: 690px;
+	height: 510px;
+	background: #fff;
+	position: absolute;
+	top: 0;
+	left: 0;
+	opacity: 0.6;
+	border-radius: 15px;
+}
+.login>.img{
+	position: relative;
+	z-index: 10;
+	text-align: center;
+	padding-bottom: 15px;
+	border-bottom: 2px solid #0042ae;
+	width: 355px;
+	margin: 0 auto;
+	margin-top: 50px;
+	margin-bottom: 20px;
+}
+.login>.img img.first{
+	display: block;
+	margin: 0 auto 38px;
+}
+.login>.bton{
+	position: relative;
+	z-index: 10;
+	margin-bottom: 23px;
+}
+.login>.input{
+	position: relative;
+	z-index: 10;
+}
+.login>.input li{
+	margin-bottom: 26px;
+	font-weight: bold;
+}
+.login>.input li input{
+	outline: none;
+	/*border: ;*/
+	color: #666;
+	font-size: 14px;
+	padding: 3px 8px;
+	border: 1px solid #197ffe;
+	border-radius: 15px;
+}
+.login>.input li p{
+	text-align: center;
+}
+.login>.input li p a{
+	color: #1990FE;
+	font-size: 14px;
+	margin-left: -45px;
+}
+.login>.input li.sub{
+	margin-top: -15px;
+}
+.login>.input li.sub input{
+	height: 33px;
+	line-height: 25px;
+	width: 240px;
+	color: #fff;
+	font-weight: bold;
+	background: #197FFE;
+	border-radius: 10px;
+}

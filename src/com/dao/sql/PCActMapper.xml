@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.dao.interfaces.PCActDao">
+    <!--* 加载 && 筛选           and collegeID=getCollegeNameByStudentID(#{studentID})            -->
+    <select id="loadPCAct" resultType="map" parameterType="map">
+        SELECT activityId,activityImg,activityTitle,activityContent,activityArea,activityClass,
+        activityLevle,activityNature,activityPowers,activityIsInschool,activityLocation,activityParticipation,
+        activityFilterType,activityFilter,activityCreator,activityIsDelete,
+         activityCreatedate,
+        FROM_UNIXTIME(UNIX_TIMESTAMP(activityEdate),'%Y-%m-%d ') AS activityEdate,
+        FROM_UNIXTIME(UNIX_TIMESTAMP(activitySdate),'%Y-%m-%d ') AS activitySdate
+        FROM activities
+        <where>
+            <if test="activityClass != null and activityClass !='' ">
+                AND   activityClass=#{activityClass}
+            </if>
+            <if test="activityLevle != null and activityLevle !='' ">
+                AND   activityLevle=#{activityLevle}
+            </if>
+            <if test="activityNature != null and activityNature !='' ">
+                AND   activityNature=#{activityNature}
+            </if>
+            <if test="activityPowers != null and activityPowers !='' ">
+                AND   activityPowers like concat('%',#{activityPowers},'%')
+            </if>
+            <if test="activityParticipation != null and activityParticipation !='' ">
+                AND   activityParticipation=#{activityParticipation}
+            </if>
+            <if test="activityTitle != null and activityTitle !='' ">
+                AND   activityTitle like concat('%',#{activityTitle},'%')
+            </if>
+            <if test="activityArea != null and activityArea !='' ">
+                AND   activityArea=#{activityArea}
+            </if>
+            <if test="studentID != null and studentID !='' ">
+                AND (activityFilterType = '不限'
+                or (activityFilterType = '年级' and activityFilter like concat('%',(select stuGradeName FROM student where studentID = #{studentID}),'%')  )
+                or (activityFilterType = '学院' and activityFilter like concat('%',(select stuCollageName FROM student where studentID = #{studentID}),'%')  )
+                or (activityFilterType = '年级|学院' and activityFilter like concat('%',(select stuGradeName FROM student where studentID = #{studentID}),'%') and activityFilter like concat('%',(select stuCollageName FROM student where studentID = #{studentID}),'%')  )  )
+            </if>
+            and ((activityArea="学校" or activityArea="职能部门") or (activityArea="学院" AND getCollegeNameByStudentID(#{studentID})=activityCreator))
+            AND activityIsDelete='0'
+        </where>
+        AND activityClass!="6"
+        AND activityEdate!=activitySdate
+        ORDER BY activityCreatedate DESC
+    </select>
+    <!--加载详情-->
+    <select id="loadActDetail" resultType="map" parameterType="string">
+        SELECT activityImg,activityTitle,activityContent,activityArea,activityClass,
+        activityLevle,activityNature,activityPowers,activityIsInschool,activityLocation,activityParticipation,
+        activityFilterType,activityFilter,activityCreator,activityIsDelete,
+        FROM_UNIXTIME(UNIX_TIMESTAMP(activityCreatedate),'%Y-%m-%d ') AS activityCreatedate,
+        FROM_UNIXTIME(UNIX_TIMESTAMP(activityEdate),'%Y-%m-%d ') AS activityEdate,
+        FROM_UNIXTIME(UNIX_TIMESTAMP(activitySdate),'%Y-%m-%d ') AS activitySdate,
+        FROM_UNIXTIME(UNIX_TIMESTAMP(activityApplyEdate),'%Y-%m-%d ') AS activityApplyEdates
+        FROM activities
+        WHERE activityId = #{0}
+    </select>
+    <!--判断是否重复申请-->
+    <select id="validatePCApply" resultType="map" parameterType="map">
+        SELECT * FROM activityapply WHERE applyStudentId = #{studentid} and applyActivityId = #{actid}
+    </select>
+    <!--新增申请信息-->
+    <insert id="applyPCAct"  parameterType="map">
+        <![CDATA[
+         INSERT INTO activityapply (
+                      applyId,
+                      applyActivityId,
+                      applyStudentId,
+                      applyAuditStatus,
+                      applyAuditStatusDate,
+                      applyDate,regimentAuditStatus,collegeAuditStatus,schoolAuditStaus
+                    )
+                    VALUES
+                      (
+                        UUID(),
+                        #{actid},
+                        #{studentid},
+                        '已通过',
+                        NOW(),
+                        NOW(),
+                        '待审核', '待审核', '待审核'
+                      )
+                    ]]>
+    </insert>
+</mapper>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="supermvc" class="com.supermvc.urlmatchers.StatemachineUrlMatcher">
+        <property name="urlStatemachineMap">
+            <map>
+
+                <!--[region adminpages start]-->
+                <!--[region adminpages end]-->
+                <!--系统功能-->
+                <entry key="/views/admin/login.form" value="jspstatemachine"/>
+                <entry key="/views/admin/menu.form" value="menu"/>
+                <entry key="/views/admin/sysaboutnavy.form" value="jspstatemachine"/>
+                <entry key="/views/admin/sysmenumanage.form" value="jspstatemachine"/>
+                <entry key="/views/admin/sysroleauthoritymanage.form" value="jspstatemachine"/>
+                <entry key="/views/admin/sysrolemanage.form" value="jspstatemachine"/>
+                <entry key="/views/admin/sysusermanage.form" value="sysusermanage"/>
+
+                <!--后台管理-->
+                <entry key="/views/admin/CollegeManage.form" value="jspstatemachine"/>
+                <entry key="/views/admin/MajorManage.form" value="MajorManage"/>
+                <entry key="/views/admin/GradeManage.form" value="jspstatemachine"/>
+                <entry key="/views/admin/ClassManage.form" value="ClassManage"/>
+                <entry key="/views/admin/studentManager.form" value="jspstatemachine"/>
+
+              <!-- 用户页面-->
+
+                <!--[region statemachine start]-->
+<entry key="/views/menu.form" value="menu"/>
+<entry key="/views/sysusermanage.form" value="sysusermanage"/>
+<entry key="/views/MajorManage.form" value="MajorManage"/>
+<entry key="/views/ClassManage.form" value="ClassManage"/>
+<entry key="/views/InstructorManage.form" value="InstructorManage"/>
+
+                <!--[region statemachine end]-->
+
+            </map>
+        </property>
+    </bean>
+
+
+</beans>

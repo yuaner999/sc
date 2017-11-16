@@ -1,0 +1,23 @@
+#set($from=$xml.xpathobj($elem,"./@from",""))
+#set($to=$xml.xpathobj($elem,"./@to",""))
+#set($on=$xml.xpathobj($elem,"./@on",""))
+#set($processors=$xml.xpathobjs($elem,"./processors/*"))
+#set($condition=$xml.xpathobj($elem,"./condition/*"))
+<bean p:from="$from" p:to="$to" p:on="$on" p:isEnd="true" class="com.superstatemachine.web.OnTransition2">
+#if($processors.size()>0)
+    <property name="processors">
+        <list>
+            #foreach($item in $processors)##
+                $velocity.render("${basedir}/xmldesign/velocity/websm/${item.name}.vm",{
+                    "elem":$item
+                })
+            #end
+        </list>
+    </property>#end
+#if($condition)
+    <property name="condition">
+        $velocity.render("${basedir}/xmldesign/velocity/websm/${condition.name}.vm",{
+            "elem":$condition
+        })
+    </property>#end
+</bean>

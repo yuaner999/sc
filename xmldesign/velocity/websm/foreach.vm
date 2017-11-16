@@ -1,0 +1,14 @@
+#set($var=$xml.xpathobj($elem,"./@var"))
+#set($items=$xml.xpathobj($elem,"./@items"))
+#set($processors=$xml.xpathobjs($elem,"./*"))
+<bean p:var="${var}" p:items="${items}" class="com.superstatemachine.logic.ForeachProcessor">
+    <property name="processors">
+        <list>
+        #foreach($item in $processors)##
+            $velocity.render("${basedir}/xmldesign/velocity/websm/${item.name}.vm",{
+                "elem":$item
+            })
+        #end
+        </list>
+    </property>
+</bean>

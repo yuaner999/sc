@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.dao.interfaces.AddClassManagerDao">
+
+    <!--* 添加班级管理员-->
+    <insert id="addClassManager" parameterType="string">
+        INSERT INTO r_sysuser_class (id,sysuserId,className) VALUES (uuid(),#{0},#{1})
+    </insert>
+
+    <!--* 添加用户表中的班级管理员-->
+    <insert id="addSysuser" parameterType="string">
+        INSERT INTO sysuser
+        (sysuser_id,username,password,sysrole_id,is_sysadmin,remark,create_date) VALUES
+          (#{0},#{1},'14E1B600B1FD579F47433B88E8D85291','class','否',#{1},now())
+
+    </insert>
+
+    <!--* 加载已存在在班级管理员的班级-->
+    <select id="loadManagerClass" resultType="string">
+      SELECT className FROM r_sysuser_class WHERE sysuserId IN (
+        SELECT sysuser_id FROM sysuser WHERE sysrole_id='class' )
+    </select>
+
+    <!--* 加载所有的班级名字-->
+    <select id="loadClassName" resultType="string">
+        SELECT DISTINCT stuClassName FROM student
+    </select>
+</mapper>

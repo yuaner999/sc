@@ -1,0 +1,61 @@
+
+/*弹框的输入信息区域样式设置*/
+.inputMsgArea{
+    padding: 0 !important;
+    width: 400px;
+    margin: 0 auto;
+    margin-top: 80px;
+}
+.inputMsgArea li{
+    height: 28px;
+    line-height: 28px;
+}
+.inputMsgArea>li{
+    margin-bottom: 60px !important;
+}
+.inputMsgArea>li>span{
+    width: 100px;
+    height: 28px;
+    line-height: 28px;
+    text-align: left;
+    word-break: keep-all;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: 10px;
+}
+.inputMsgArea input{
+    padding: 0 !important;
+    position: absolute;
+}
+/*表单验证提示信息*/
+.Validform_wrong{
+    position: absolute !important;
+    right: -70px !important;
+    width: 105px !important;
+}
+.modelSelect{
+    position: absolute;
+    top: 0;
+    left: 110px;
+    width: 238px;
+    height: 26px;
+    border: 1px solid #1990fe;
+}
+.modelSelect>select{
+    position: absolute;
+    width: 238px;
+    height: 29px;
+    background-color: #1990fe;
+    cursor: pointer;
+}
+/*弹窗的按钮样式设置*/
+.new_buttons>input{
+    height: 38px !important;
+    color: #1990FE !important;
+    background-color: #e9f6ff !important;
+}
+.new_buttons>input:hover{
+    background-color: #1990FE !important;
+    color: #FFFFFF !important;
+}

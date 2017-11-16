@@ -1,0 +1,13 @@
+#set($jxpathCondition=$xml.xpathobj($elem,"./@jxpathCondition"))
+#set($processors=$xml.xpathobjs($elem,"./*"))
+<bean p:jxpathCondition="${jxpathCondition}" class="com.superstatemachine.logic.IfProcessor">
+    <property name="processors">
+        <list>
+        #foreach($item in $processors)##
+            $velocity.render("${basedir}/xmldesign/velocity/websm/${item.name}.vm",{
+                "elem":$item
+            })
+        #end
+        </list>
+    </property>
+</bean>

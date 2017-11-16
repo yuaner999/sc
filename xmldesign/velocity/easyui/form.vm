@@ -1,0 +1,13 @@
+#*
+elem:
+    <form id="frm" method="post" url="a/b.form"
+          fieldsql="select * from table" />
+
+* *#
+#set($id=$xml.xpathobj($elem,"./@id"))
+#set($sqlstr=$xml.xpathobj($elem,"./@fieldsql"))
+<form id="$id" method="post">
+    $velocity.render("${basedir}/xmldesign/velocity/easyui/fieldtable.vm",{
+        "sqlstr":$sqlstr
+    })##
+</form>

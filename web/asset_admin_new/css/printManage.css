@@ -1,0 +1,70 @@
+.pagingTurn .currentPageNum{
+    height: 19px !important;
+    width: 35px !important;
+    margin-bottom: 2px;
+}
+
+/*功能栏样式设置*/
+.function_inputSearch{
+    width: 190px !important;
+    border: 1px solid #1990fe;
+    -webkit-border-radius:10px;
+    -moz-border-radius:10px;
+    border-radius:10px;
+    behavior: url(../js/PIE.htc);
+}
+.function_inputSearch>input{
+    padding: 0 !important;
+    margin-left: 6px;
+    width: 175px;
+    height: 24px;
+    line-height: 24px;
+    border: 0px !important;
+    outline: none;
+}
+.function_inputSearch>span{
+    top: 1px !important;
+}
+.function>p{
+    display: block;
+    margin-top: 10px;
+    color: #ff0000;
+    font-size: 14px;
+}
+.function_auditPass,.function_auditNotPass,.function_paintGrade{
+    background-position: 5px 3px !important;
+    border-radius: 6px;
+    width: 90px;
+}
+.function_auditNotPass,.function_paintGrade{
+    width: 105px;
+}
+.function_auditPass{
+    background-image: url(../img/icon_passAdult.png)!important;
+    background-repeat: no-repeat !important;
+    background-color: #71d83e !important;
+}
+.function_auditPass>span,.function_auditNotPass>span,.function_paintGrade>span{
+    color: #FFFFFF !important;
+    margin-left: 27px !important;
+    line-height: 22px;
+}
+.function_auditNotPass{
+    background-image: url(../img/icon_notPassAdult.png)!important;
+    background-repeat: no-repeat !important;
+    background-color: #fe4f19 !important;
+}
+.function_auditEdit {
+    /*background-image: url(/asset_font_new/img/edit_ico.png)!important;*/
+    background-repeat: no-repeat !important;
+    background-color: #d8c90c !important;
+    border-radius: 6px;
+    width: 100px;
+    font-size: 12px !important;
+    color: white;
+}
+.function_paintGrade{
+    background-image: url(../img/icon_printReportCard.png)!important;
+    background-repeat: no-repeat !important;
+    background-color: #1990fe !important;
+}

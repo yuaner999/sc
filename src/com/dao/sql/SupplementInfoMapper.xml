@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.dao.interfaces.SupplementInfoDao">
+
+    <select id="loadSupplemenlClass" resultType="map" parameterType="map">
+        SELECT studentID, studentPwd, studentName, studentUsedName, studentPhoto, studentGender, studentNation, studentBirthday, studentNativePlace, studentFamilyAddress, studentFamilyPostcode, studentIdCard, studentPhone, studentQQ, studentEmail, foreignLanguage, faith, politicsStatus, politicsStatusDate, usiCampus, usiClassId, usiBuilding, usiRoomNumber, entranceDate, educationLength, trainingMode, orientationUnit, enrollType, schoolRollStatus, studentLeader, ceeOrigin, ceeNumber, ceeProvince, ceeCity, ceeHighSchool, stuClassName, stuMajorName, stuMajorClass, stuGradeName, stuCollageName, id, supStudentId, supClass, supActivityTitle, supPowers, supNature, supLevle, supCredit, supAward, workClass, worklevel, orgcollege, orgname, workName, scienceClass, scienceName, shipType, shipName, supPhoto, regimentAuditStatus,collegeAuditStatus, collegeAuditStatusDate, schoolAuditStaus, schoolAuditStausDate, isNewAdd, supType
+        ,FROM_UNIXTIME(UNIX_TIMESTAMP(takeDate),'%Y-%m-%d') AS takeDate,
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(regimentAuditStatusDate),'%Y-%m-%d') AS regimentAuditStatusDate,
+                    FROM_UNIXTIME(UNIX_TIMESTAMP(supDate),'%Y-%m-%d') AS supDate,a.dict_mean  AS supClasses FROM sw_supp_student_view
+                    LEFT JOIN sysdict a on a.dict_key = 'supClass' and a.dict_value=supClass
+        where 1=1
+        AND CASE WHEN #{sqlStr} IS NOT NULL AND #{sqlStr}&lt;&gt;'' THEN studentName LIKE CONCAT('%', #{sqlStr},'%') ELSE 1=1 END
+        AND case when #{gradeId} is not null and #{gradeId}&lt;&gt;'' then stuGradeName  = #{gradeId} else 1=1 end
+        AND case when #{supActivityTitle} is not null and #{supActivityTitle}&lt;&gt;'' then supActivityTitle LIKE CONCAT('%', #{supActivityTitle},'%') else 1=1 end
+        AND case when #{supStudentId} is not null and #{supStudentId}&lt;&gt;'' then supStudentId = #{supStudentId} else 1=1 end
+        AND case when #{studentName} is not null and #{studentName}&lt;&gt;'' then studentName LIKE CONCAT('%', #{studentName},'%') else 1=1 end
+        AND case when #{regimentAuditStatus} is not null and #{regimentAuditStatus}&lt;&gt;'' then regimentAuditStatus = #{regimentAuditStatus} else 1=1 end
+        AND case when #{stuCollageName} is not null and #{stuCollageName}&lt;&gt;'' then stuCollageName = #{stuCollageName} else 1=1 end
+        AND case when #{stuMajorName} is not null and #{stuMajorName}&lt;&gt;'' then stuMajorName = #{stuMajorName} else 1=1 end
+        AND case when #{stuGradeName} is not null and #{stuGradeName}&lt;&gt;'' then stuGradeName = #{stuGradeName} else 1=1 end
+        AND case when #{stuClassName} is not null and #{stuClassName}&lt;&gt;'' then stuClassName = #{stuClassName} else 1=1 end
+        AND case when #{supClass} is not null and #{supClass}&lt;&gt;'' then supClass = #{supClass} else 1=1 end
+        AND stuClassName  = #{classId}
+        ORDER BY
+        CASE WHEN #{orderByName}='班级' and  #{sequence}='1' then stuClassName end desc,
+        CASE WHEN #{orderByName}='姓名' and  #{sequence}='0' then studentName end asc ,
+        CASE WHEN #{orderByName}='姓名' and  #{sequence}='1' then studentName end desc,
+        CASE WHEN #{orderByName}='学号' and  #{sequence}='0' then studentID end asc ,
+        CASE WHEN #{orderByName}='学号' and  #{sequence}='1' then studentID end desc,
+        CASE WHEN #{orderByName}='活动名称' and  #{sequence}='0' then supActivityTitle end asc ,
+        CASE WHEN #{orderByName}='活动名称' and  #{sequence}='1' then supActivityTitle end desc,
+        CASE WHEN #{orderByName}='团支部' and  #{sequence}='0' then regimentAuditStatus end asc ,
+        CASE WHEN #{orderByName}='团支部' and  #{sequence}='1' then regimentAuditStatus end desc,
+        CASE WHEN #{orderByName}='学院团委' and  #{sequence}='0' then collegeAuditStatus end asc ,
+        CASE WHEN #{orderByName}='学院团委' and  #{sequence}='1' then collegeAuditStatus end desc,
+        CASE WHEN #{orderByName}='校团委' and  #{sequence}='0' then schoolAuditStaus end asc ,
+        CASE WHEN #{orderByName}='校团委' and  #{sequence}='1' then schoolAuditStaus end desc
+    </select>
+
+    <select id="loadSupplemenlCollege" resultType="map" parameterType="map">
+        SELECT studentID, studentPwd, studentName, studentUsedName, studentPhoto, studentGender, studentNation,
+        studentBirthday, studentNativePlace, studentFamilyAddress, studentFamilyPostcode, studentIdCard, studentPhone,
+        studentQQ, studentEmail, foreignLanguage, faith, politicsStatus, politicsStatusDate, usiCampus, usiClassId,
+        usiBuilding, usiRoomNumber, entranceDate, educationLength, trainingMode, orientationUnit, enrollType,
+        schoolRollStatus, studentLeader, ceeOrigin, ceeNumber, ceeProvince, ceeCity, ceeHighSchool, stuClassName,
+        stuMajorName, stuMajorClass, stuGradeName, stuCollageName, id, supStudentId, supClass, supActivityTitle,
+        supPowers, supNature, supLevle, supCredit, supAward, workClass, worklevel, orgcollege, orgname, workName,
+        scienceClass, scienceName, shipType, shipName, supPhoto, regimentAuditStatus,collegeAuditStatus,
+        schoolAuditStaus, schoolAuditStausDate, isNewAdd, supType
+        ,FROM_UNIXTIME(UNIX_TIMESTAMP(takeDate),'%Y-%m-%d') AS takeDate,
+        FROM_UNIXTIME(UNIX_TIMESTAMP(collegeAuditStatusDate),'%Y-%m-%d') AS collegeAuditStatusDate,
+        FROM_UNIXTIME(UNIX_TIMESTAMP(regimentAuditStatusDate),'%Y-%m-%d') AS regimentAuditStatusDate,
+        FROM_UNIXTIME(UNIX_TIMESTAMP(supDate),'%Y-%m-%d') AS supDate, a.dict_mean  AS supClasses FROM sw_supp_student_view
+        LEFT JOIN sysdict a on a.dict_key = 'supClass' and a.dict_value=supClass
+        where 1=1
+        AND CASE WHEN #{sqlStr} IS NOT NULL AND #{sqlStr}&lt;&gt;'' THEN studentName LIKE CONCAT('%', #{sqlStr},'%') ELSE 1=1
+        END
+        AND case when #{gradeId} is not null and #{gradeId}&lt;&gt;'' then stuGradeName = #{gradeId} else 1=1 end
+        AND case when #{collegeId} is not null and #{collegeId}&lt;&gt;'' then stuCollageName = #{collegeId} else 1=1 end
+        AND case when #{supActivityTitle} is not null and #{supActivityTitle}&lt;&gt;'' then supActivityTitle LIKE CONCAT('%',
+        #{supActivityTitle},'%') else 1=1 end
+        AND case when #{supStudentId} is not null and #{supStudentId}&lt;&gt;'' then supStudentId = #{supStudentId} else 1=1
+        end
+        AND case when #{studentName} is not null and #{studentName}&lt;&gt;'' then studentName LIKE CONCAT('%',
+        #{studentName},'%') else 1=1 end
+        AND case when #{regimentAuditStatus} is not null and #{regimentAuditStatus}&lt;&gt;'' then collegeAuditStatus =
+        #{regimentAuditStatus} else 1=1 end
+        AND case when #{stuCollageName} is not null and #{stuCollageName}&lt;&gt;'' then stuCollageName = #{stuCollageName}
+        else 1=1 end
+        AND case when #{supClass} is not null and #{supClass}&lt;&gt;'' then supClass = #{supClass} else 1=1 end
+        AND case when #{stuMajorName} is not null and #{stuMajorName}&lt;&gt;'' then stuMajorName = #{stuMajorName} else 1=1
+        end
+        AND case when #{stuGradeName} is not null and #{stuGradeName}&lt;&gt;'' then stuGradeName = #{stuGradeName} else 1=1
+        end
+        AND case when #{stuClassName} is not null and #{stuClassName}&lt;&gt;'' then stuClassName = #{stuClassName} else 1=1
+        end
+        ORDER BY
+        CASE WHEN #{orderByName}='班级' and  #{sequence}='1' then stuClassName end desc,
+        CASE WHEN #{orderByName}='姓名' and  #{sequence}='0' then studentName end asc ,
+        CASE WHEN #{orderByName}='姓名' and  #{sequence}='1' then studentName end desc,
+        CASE WHEN #{orderByName}='学号' and  #{sequence}='0' then studentID end asc ,
+        CASE WHEN #{orderByName}='学号' and  #{sequence}='1' then studentID end desc,
+        CASE WHEN #{orderByName}='活动名称' and  #{sequence}='0' then supActivityTitle end asc ,
+        CASE WHEN #{orderByName}='活动名称' and  #{sequence}='1' then supActivityTitle end desc,
+        CASE WHEN #{orderByName}='团支部' and  #{sequence}='0' then regimentAuditStatus end asc ,
+        CASE WHEN #{orderByName}='团支部' and  #{sequence}='1' then regimentAuditStatus end desc,
+        CASE WHEN #{orderByName}='学院团委' and  #{sequence}='0' then collegeAuditStatus end asc ,
+        CASE WHEN #{orderByName}='学院团委' and  #{sequence}='1' then collegeAuditStatus end desc,
+        CASE WHEN #{orderByName}='校团委' and  #{sequence}='0' then schoolAuditStaus end asc ,
+        CASE WHEN #{orderByName}='校团委' and  #{sequence}='1' then schoolAuditStaus end desc
+    </select>
+
+    <select id="loadSupplementSchool" resultType="map" parameterType="map">
+        SELECT studentID, studentPwd, studentName, studentUsedName, studentPhoto, studentGender, studentNation,
+        studentBirthday, studentNativePlace, studentFamilyAddress, studentFamilyPostcode, studentIdCard, studentPhone,
+        studentQQ, studentEmail, foreignLanguage, faith, politicsStatus, politicsStatusDate, usiCampus, usiClassId,
+        usiBuilding, usiRoomNumber, entranceDate, educationLength, trainingMode, orientationUnit, enrollType,
+        schoolRollStatus, studentLeader, ceeOrigin, ceeNumber, ceeProvince, ceeCity, ceeHighSchool, stuClassName,
+        stuMajorName, stuMajorClass, stuGradeName, stuCollageName, id, supStudentId, supClass, supActivityTitle,
+        supPowers, supNature, supLevle, supCredit, supAward, workClass, worklevel, orgcollege, orgname, workName,
+        scienceClass, scienceName, shipType, shipName, supPhoto, regimentAuditStatus,collegeAuditStatus,
+        schoolAuditStaus, schoolAuditStausDate, isNewAdd, supType
+        ,FROM_UNIXTIME(UNIX_TIMESTAMP(takeDate),'%Y-%m-%d') AS takeDate,
+        FROM_UNIXTIME(UNIX_TIMESTAMP(schoolAuditStausDate),'%Y-%m-%d') AS schoolAuditStausDate,
+        FROM_UNIXTIME(UNIX_TIMESTAMP(collegeAuditStatusDate),'%Y-%m-%d') AS collegeAuditStatusDate,
+        FROM_UNIXTIME(UNIX_TIMESTAMP(regimentAuditStatusDate),'%Y-%m-%d') AS regimentAuditStatusDate,
+        FROM_UNIXTIME(UNIX_TIMESTAMP(supDate),'%Y-%m-%d') AS supDate ,a.dict_mean AS supClasses FROM sw_supp_student_view
+        LEFT JOIN sysdict a on a.dict_key = 'supClass' and a.dict_value=supClass
+        where 1=1
+        AND CASE WHEN #{supClass} IS NOT NULL AND #{supClass}&lt;&gt;'' THEN supClass =#{supClass}  ELSE 1=1 END
+        AND CASE WHEN #{sqlStr} IS NOT NULL AND #{sqlStr}&lt;&gt;'' THEN studentName LIKE CONCAT('%', #{sqlStr},'%') ELSE 1=1 END
+        AND case when #{gradeId} is not null and #{gradeId}&lt;&gt;'' then stuGradeName  = #{gradeId} else 1=1 end
+        AND case when #{supActivityTitle} is not null and #{supActivityTitle}&lt;&gt;'' then supActivityTitle LIKE CONCAT('%', #{supActivityTitle},'%') else 1=1 end
+        AND case when #{supStudentId} is not null and #{supStudentId}&lt;&gt;'' then supStudentId = #{supStudentId} else 1=1 end
+        AND case when #{studentName} is not null and #{studentName}&lt;&gt;'' then studentName LIKE CONCAT('%', #{studentName},'%') else 1=1 end
+        AND case when #{regimentAuditStatus} is not null and #{regimentAuditStatus}&lt;&gt;'' then schoolAuditStaus = #{regimentAuditStatus} else 1=1 end
+        AND case when #{stuCollageName} is not null and #{stuCollageName}&lt;&gt;'' then stuCollageName = #{stuCollageName} else 1=1 end
+        AND case when #{collegeId} is not null and #{collegeId}&lt;&gt;'' then stuCollageName = #{collegeId} else 1=1 end
+        AND case when #{stuMajorName} is not null and #{stuMajorName}&lt;&gt;'' then stuMajorName = #{stuMajorName} else 1=1 end
+        AND case when #{stuGradeName} is not null and #{stuGradeName}&lt;&gt;'' then stuGradeName = #{stuGradeName} else 1=1 end
+        AND case when #{stuClassName} is not null and #{stuClassName}&lt;&gt;'' then stuClassName = #{stuClassName} else 1=1 end
+        AND CASE WHEN #{sqlStr} IS NOT NULL AND #{sqlStr}&lt;&gt;'' THEN studentName LIKE CONCAT('%', #{sqlStr},'%') ELSE 1=1 END
+        AND case when #{supClass} is not null and #{supClass}&lt;&gt;'' then supClass = #{supClass} else 1=1 end
+        ORDER BY
+        CASE WHEN #{orderByName}='班级' and  #{sequence}='1' then stuClassName end desc,
+        CASE WHEN #{orderByName}='姓名' and  #{sequence}='0' then studentName end asc ,
+        CASE WHEN #{orderByName}='姓名' and  #{sequence}='1' then studentName end desc,
+        CASE WHEN #{orderByName}='学号' and  #{sequence}='0' then studentID end asc ,
+        CASE WHEN #{orderByName}='学号' and  #{sequence}='1' then studentID end desc,
+        CASE WHEN #{orderByName}='活动名称' and  #{sequence}='0' then supActivityTitle end asc ,
+        CASE WHEN #{orderByName}='活动名称' and  #{sequence}='1' then supActivityTitle end desc,
+        CASE WHEN #{orderByName}='团支部' and  #{sequence}='0' then regimentAuditStatus end asc ,
+        CASE WHEN #{orderByName}='团支部' and  #{sequence}='1' then regimentAuditStatus end desc,
+        CASE WHEN #{orderByName}='学院团委' and  #{sequence}='0' then collegeAuditStatus end asc ,
+        CASE WHEN #{orderByName}='学院团委' and  #{sequence}='1' then collegeAuditStatus end desc,
+        CASE WHEN #{orderByName}='校团委' and  #{sequence}='0' then schoolAuditStaus end asc ,
+        CASE WHEN #{orderByName}='校团委' and  #{sequence}='1' then schoolAuditStaus end desc
+    </select>
+
+</mapper>

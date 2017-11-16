@@ -1,0 +1,7 @@
+#*
+<tree id="" url="" />
+* *#
+#set($id=$xml.xpathobj($elem,"./@id"))
+#set($url=$xml.xpathobj($elem,"./@url"))
+<ul id="$id" class="easyui-tree" url="$url">
+</ul>

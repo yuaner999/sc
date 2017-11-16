@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.dao.interfaces.SixpointDao">
+
+    <!-- 传入学生姓名，查询六项能力得分-->
+
+    <select id="getsixpoint"  resultType="map" parameterType="map">
+        select * from wh_sixele_student_view student,(select max(pointYear) as p, studentid as s from sixelementpoint group by studentid) t1
+            <where>
+                1=1
+                <if test="studentID != null and studentID !='' ">
+                     AND  student.studentID=#{studentID}
+                </if>
+                <if test="studentName != null and studentName !='' ">
+                    AND  student.studentName=#{studentName}
+                </if>
+                <if test="stuCollageName != null and stuCollageName !='' ">
+                    AND  student.stuCollageName=#{stuCollageName}
+                </if>
+                <if test="usiCampus != null and usiCampus !='' ">
+                    AND  student.usiCampus=#{usiCampus}
+                </if>
+                <if test="stuClassName != null and stuClassName !='' ">
+                    AND  student.stuClassName=#{stuClassName}
+                </if>
+                <if test="stuGradeName != null and stuGradeName !='' ">
+                    AND  student.stuGradeName=#{stuGradeName}
+                </if>
+            </where>
+        and student.pointYear=t1.p and student.studentID=t1.s
+    </select>
+
+</mapper>

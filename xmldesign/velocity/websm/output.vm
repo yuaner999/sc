@@ -1,0 +1,28 @@
+#*
+elem:<setvar key="rows" jsonJxpath="." mapJxpath="./list"/>
+* *#
+#set($jxpath=$xml.xpathobj($elem,"./@jxpath"))
+#set($items=$xml.xpathobjs($elem,"./*"))
+#if($jxpath)
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+    <property name="doc">
+        <bean p:jxpath="$jxpath" class="com.superstatemachine.json.JsonField" />
+    </property>
+</bean>
+#else
+<bean class="com.superstatemachine.json.JsonOutputProcessor">
+<property name="doc">
+    <bean  class="com.superstatemachine.json.JsonField">
+        <property name="subFields">
+            <list>
+            #foreach($item in $items)##
+                $velocity.render("${basedir}/xmldesign/velocity/jsonsm/jsonfield.vm",{
+                    "elem":$item
+                })
+            #end##
+            </list>
+        </property>
+    </bean>
+</property>
+</bean>
+#end

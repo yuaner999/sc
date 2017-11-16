@@ -1,0 +1,18 @@
+#set($field=$xml.xpathobj($elem,"./@field"))
+#set($property=$xml.xpathobj($elem,"./@property"))
+#set($subsettings=$xml.xpathobjs($elem,"./*"))
+#if($subsettings.size()>0)
+<bean p:propertyName="$property" class="com.supermapping.objectmapping.PropertyMappingSetting" p:type="list">
+    <property name="subProperties">
+        <list>
+#foreach($item in $subsettings)##
+            $velocity.render("${basedir}/xmldesign/velocity/jsonsm/propertymappingsetting.vm",{
+                "elem":$item
+            })
+#end##
+        </list>
+    </property>
+</bean>
+#else
+    <bean p:fieldName="$field" p:propertyName="$property" class="com.supermapping.objectmapping.PropertyMappingSetting" />
+#end

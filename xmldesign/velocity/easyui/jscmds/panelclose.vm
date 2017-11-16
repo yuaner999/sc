@@ -1,0 +1,2 @@
+#set($id=$xml.xpathobj($elem,"./@panelid"))
+$('#$id').panel('close');

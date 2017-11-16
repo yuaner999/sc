@@ -1,0 +1,440 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.dao.interfaces.ActivitiesDao">
+    <!--* 加载 && 筛选-->
+    <select id="loadActivities" resultType="map" parameterType="map">
+        SELECT activityTitle,activityContent,activityImg,activityId,
+        FROM_UNIXTIME(UNIX_TIMESTAMP(activityCreatedate),'%Y-%m-%d ') AS activityCreatedate,
+        FROM_UNIXTIME(UNIX_TIMESTAMP(activityEdate),'%Y-%m-%d ') AS activityEdate,
+        FROM_UNIXTIME(UNIX_TIMESTAMP(activitySdate),'%Y-%m-%d ') AS activitySdate
+        FROM activities
+        <where>
+            <if test="activityClass != null and activityClass !='' ">
+                AND   activityClass=#{activityClass}
+            </if>
+            <if test="activityLevle != null and activityLevle !='' ">
+                AND   activityLevle=#{activityLevle}
+            </if>
+            <if test="activityNature != null and activityNature !='' ">
+                AND   activityNature=#{activityNature}
+            </if>
+            <if test="activityPowers != null and activityPowers !='' ">
+                AND   activityPowers like concat('%',#{activityPowers},'%')
+            </if>
+            <if test="activityParticipation != null and activityParticipation !='' ">
+                AND   activityParticipation=#{activityParticipation}
+            </if>
+            AND activityIsDelete='0'
+            AND activityEdate!=activitySdate
+        </where>
+        ORDER BY activitySdate DESC
+    </select>
+    <!--* 加载 && 搜索-->
+    <!--以下标注是活动后台查询用到的-->
+    <select id="newLoadactivities" resultType="com.model.ActivityQuery" parameterType="map">
+
+        select activityTitle,activityContent,activityId,activityLocation,activityParticipation,signUpStatus,regimentAuditStatus,collegeAuditStatus,schoolAuditStaus,
+        activityPowers,studentID,studentName,stuCollageName,stuClassName,stuMajorName,activityCredit,stuGradeName,activityArea,activityCreator,applyStudentId,
+        FROM_UNIXTIME(UNIX_TIMESTAMP(activityCreatedate),'%Y-%m-%d ') AS activityCreatedate,
+        FROM_UNIXTIME(UNIX_TIMESTAMP(activitySdate),'%Y-%m-%d ') AS activitySdate,
+        FROM_UNIXTIME(UNIX_TIMESTAMP(activityEdate),'%Y-%m-%d ') AS activityEdate,
+        FROM_UNIXTIME(UNIX_TIMESTAMP(signUpTime),'%Y-%m-%d ') AS signUpTime,
+        FROM_UNIXTIME(UNIX_TIMESTAMP(applyDate),'%Y-%m-%d ') AS applyDate,
+        FROM_UNIXTIME(UNIX_TIMESTAMP(regimentAuditStatusDate),'%Y-%m-%d ') AS regimentAuditStatusDates,
+        FROM_UNIXTIME(UNIX_TIMESTAMP(regimentAuditStatusDate),'%Y-%m-%d ') AS collegeAuditStatusDates,
+        FROM_UNIXTIME(UNIX_TIMESTAMP(regimentAuditStatusDate),'%Y-%m-%d ') AS schoolAuditStausDates,
+        dict('activityClass',activityClass) AS activityClassMean,
+        dict('activityLevle',activityLevle) AS activityLevleMean,
+        dict('activityNature',activityNature) AS activityNatureMean,
+        activityAward AS activityAwardMean,
+        activityIsDelete,
+        online,
+        principal,
+        activityNature,
+        activityClass,
+        activityLevle
+        from gq_apply_activity_student_view a
+        <where>
+            activityIsDelete='0'
+            <if test="collegeId != null and collegeId != '' ">
+                AND   stuCollageName  = #{collegeId}
+            </if>
+            <if test="classId != null and classId != '' ">
+                AND   stuClassName  = #{classId}
+            </if>
+            <!--* 单选 -->
+            <!--* 1 活动标题 -->
+            <if test="activityTitle != null and activityTitle != '' ">
+                AND   activityTitle like concat('%',#{activityTitle},'%')
+            </if>
+
+            <!--* 2 起始时间 -->
+            <if test="activitySdate != null and activitySdate !='' ">
+                AND  DateDiff(activitySdate,#{activitySdate}) >=0
+            </if>
+            <!--* 3 结束时间 -->
+            <if test="activityEdate != null and activityEdate !='' ">
+                AND    DateDiff(#{activityEdate},activityEdate) >=0
+            </if>
+
+            <!--* 4 学号 -->
+            <if test="studentID != null and studentID !='' ">
+                AND   studentID  = #{studentID}
+            </if>
+            <!--* 5姓名 -->
+            <if test="studentName != null and studentName !='' ">
+                AND   studentName  = #{studentName}
+            </if>
+
+            <!--* 线上线下 -->
+            <if test="online != null and online !='' ">
+                AND   online  = #{online}
+            </if>
+            <!--* 负责人 -->
+            <if test="principal != null and principal !='' ">
+                AND   principal  = #{principal}
+            </if>
+
+            <!--* 多选 -->
+            <!--* 1 活动类别 -->
+
+            <if test="activityClass != null and activityClass !=''" >
+                <foreach collection="activityClass" item="item" open="AND  activityClass in (" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+
+            <!--* 2 活动级别 -->
+            <if test="activityLevle != null and activityLevle !=''">
+                <foreach collection="activityLevle" item="item" open="AND  activityLevle in (" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <!--* 3 增加的能力 -->
+            <if test="activityPowers != null and activityPowers != ''">
+                <foreach collection="activityPowers" item="item" open="AND  activityPowers like concat ('%'," separator="," close=",'%')">
+                    #{item}
+                </foreach>
+            </if>
+            <!--* 4 活动性质 -->
+            <if test="activityNature != null and activityNature !=''">
+                <foreach collection="activityNature" item="item" open="AND  activityNature in (" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <!--* 5 参与形式 -->
+            <if test="activityParticipation != null and activityParticipation !=''">
+                <foreach collection="activityParticipation" item="item" open="AND  activityParticipation in (" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <!--* 6 创建人 -->
+            <if test="activityCreator != null and activityCreator !=''">
+                <foreach collection="activityCreator" item="item" open="AND  activityCreator in (" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <!--* 7 学院 -->
+            <if test="stuCollageName != null and stuCollageName !=''">
+                <foreach collection="stuCollageName" item="item" open="AND  stuCollageName in (" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="stuMajorName != null and stuMajorName !=''">
+                <foreach collection="stuMajorName" item="item" open="AND  stuMajorName in (" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <!--* 8 年级 -->
+            <if test="stuGradeName != null and stuGradeName !=''">
+                <foreach collection="stuGradeName" item="item" open="AND  stuGradeName in (" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <!--* 9 班级 -->
+            <if test="stuClassName != null and stuClassName !=''">
+                <foreach collection="stuClassName" item="item" open="AND  stuClassName in (" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+
+        </where>
+        union
+        SELECT * from supactivity_view
+        <where>
+            activityIsDelete='0'
+            <if test="collegeId != null and collegeId != '' ">
+                AND   stuCollageName  = #{collegeId}
+            </if>
+            <if test="classId != null and classId != '' ">
+                AND   stuClassName  = #{classId}
+            </if>
+            <!--* 单选 -->
+            <!--* 1 活动标题 -->
+            <if test="activityTitle != null and activityTitle != '' ">
+                AND   activityTitle like concat('%',#{activityTitle},'%')
+            </if>
+
+            <!--* 2 起始时间 -->
+            <if test="activitySdate != null and activitySdate !='' ">
+                AND  DateDiff(activitySdate,#{activitySdate}) >=0
+            </if>
+            <!--* 3 结束时间 -->
+            <if test="activityEdate != null and activityEdate !='' ">
+                AND    DateDiff(#{activityEdate},activityEdate) >=0
+            </if>
+
+            <!--* 4 学号 -->
+            <if test="studentID != null and studentID !='' ">
+                AND   studentID  = #{studentID}
+            </if>
+            <!--* 5姓名 -->
+            <if test="studentName != null and studentName !='' ">
+                AND   studentName  = #{studentName}
+            </if>
+
+            <!--* 线上线下 -->
+            <if test="online != null and online !='' ">
+                AND   online  = #{online}
+            </if>
+            <!--* 负责人 -->
+            <if test="principal != null and principal !='' ">
+                AND   principal  = #{principal}
+            </if>
+
+            <!--* 多选 -->
+            <!--* 1 活动类别 -->
+
+            <if test="activityClass != null and activityClass !=''" >
+                <foreach collection="activityClass" item="item" open="AND  activityClass in (" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+
+            <!--* 2 活动级别 -->
+            <if test="activityLevle != null and activityLevle !=''">
+                <foreach collection="activityLevle" item="item" open="AND  activityLevle in (" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <!--* 3 增加的能力 -->
+            <if test="activityPowers != null and activityPowers != ''">
+                <foreach collection="activityPowers" item="item" open="AND  activityPowers like concat ('%'," separator="," close=",'%')">
+                    #{item}
+                </foreach>
+            </if>
+            <!--* 4 活动性质 -->
+            <if test="activityNature != null and activityNature !=''">
+                <foreach collection="activityNature" item="item" open="AND  activityNature in (" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <!--* 5 参与形式 -->
+            <if test="activityParticipation != null and activityParticipation !=''">
+                <foreach collection="activityParticipation" item="item" open="AND  activityParticipation in (" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <!--* 6 创建人 -->
+            <if test="activityCreator != null and activityCreator !=''">
+                <foreach collection="activityCreator" item="item" open="AND  activityCreator in (" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <!--* 7 学院 -->
+            <if test="stuCollageName != null and stuCollageName !=''">
+                <foreach collection="stuCollageName" item="item" open="AND  stuCollageName in (" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="stuMajorName != null and stuMajorName !=''">
+                <foreach collection="stuMajorName" item="item" open="AND  stuMajorName in (" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <!--* 8 年级 -->
+            <if test="stuGradeName != null and stuGradeName !=''">
+                <foreach collection="stuGradeName" item="item" open="AND  stuGradeName in (" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <!--* 9 班级 -->
+            <if test="stuClassName != null and stuClassName !=''">
+                <foreach collection="stuClassName" item="item" open="AND  stuClassName in (" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+
+        </where>
+
+    </select>
+    <!--* 加载——创建者-->
+    <select id="loadactivityCreator" resultType="string">
+        select activityCreator from activities group by activityCreator order by activityCreator
+    </select>
+    <!-- <if test="sact != null and sact != '' ">
+         AND   supActivityTitle like concat('%',#{sact},'%')
+     </if>-->
+    <select id="loadCheckAct" resultType="map" parameterType="map">
+        SELECT * ,FROM_UNIXTIME(UNIX_TIMESTAMP(takeDate),'%Y-%m-%d') AS takeDate1,
+        FROM_UNIXTIME(UNIX_TIMESTAMP(supDate),'%Y-%m-%d') AS supDate1 from zy_supplement_stu
+        <where>
+            1=1
+            <if test="sname != null and sname != '' ">
+                AND (studentName=#{sname}
+                OR  supActivityTitle like concat('%',#{sname},'%')
+                OR  workName like concat('%',#{sname},'%')
+                OR  shipName like concat('%',#{sname},'%')
+                OR  scienceName like concat('%',#{sname},'%')
+                OR  studentID=#{sname})
+            </if>
+            <if test="scollege != null and scollege != '' ">
+                AND   stuCollageName=#{scollege}
+            </if>
+            <if test="smajor != null and smajor != '' ">
+                AND   stuMajorName=#{smajor}
+            </if>
+            <if test="sgrade != null and sgrade != '' ">
+                AND   stuGradeName=#{sgrade}
+            </if>
+            <if test="sclass != null and sclass != '' ">
+                AND   stuClassName=#{sclass}
+            </if>
+        </where>
+        AND regimentAuditStatus='已通过'
+        AND collegeAuditStatus='已通过'
+        AND schoolAuditStaus='已通过'
+        AND datediff(now(),schoolAuditStausDate)&lt;30
+        ORDER BY takeDate DESC
+    </select>
+    <!--加载已通过的活动申请-->
+    <select id="loadCheckActivities" resultType="map" parameterType="map">
+        select *,FROM_UNIXTIME(UNIX_TIMESTAMP(signUpTime),'%Y-%m-%d ') AS signUpTime1
+        ,FROM_UNIXTIME(UNIX_TIMESTAMP(activitySdate),'%Y-%m-%d ') AS activitySdate1 ,
+        FROM_UNIXTIME(UNIX_TIMESTAMP(activityEdate),'%Y-%m-%d ') AS activityEdate1
+        FROM gq_check_team
+        <where>
+            1=1
+            <if test="sname != null and sname != '' ">
+                AND (studentID=#{sname}
+                OR  activityTitle like concat('%',#{sname},'%')
+                OR  studentName=#{sname})
+            </if>
+            <if test="scollege != null and scollege != '' ">
+                AND   stuCollageName=#{scollege}
+            </if>
+            <if test="smajor != null and smajor != '' ">
+                AND   stuMajorName=#{smajor}
+            </if>
+            <if test="sgrade != null and sgrade != '' ">
+                AND   stuGradeName=#{sgrade}
+            </if>
+            <if test="sclass != null and sclass != '' ">
+                AND   stuClassName=#{sclass}
+            </if>
+        </where>
+        AND activityIsDelete='0'
+        AND signUpStatus='已签到'
+        and activityClass !='6'
+        AND schoolAuditStaus='已通过'
+        ORDER BY applyDate DESC
+    </select>
+    <!--审核公示学院-->
+    <select id="loadCheckCollege" resultType="string">
+        SELECT activityFilter FROM gq_activity_notice  WHERE activityFilter !='|'  GROUP BY activityFilter ORDER BY activityFilter
+    </select>
+    <!--活动标题-->
+    <select id="loadActivityTitle" resultType="string">
+        SELECT activityTitle FROM activities WHERE activityClass!='6' AND activitySdate!=activityEdate order by activityTitle
+    </select>
+    <!--六大类活动总分数-->
+    <select id="loadActivityScoreTotal" resultType="com.model.Dict">
+        SELECT * FROM sysdict WHERE dict_key='activityClass'
+    </select>
+    <!--六大类活动已得到分数-->
+    <select id="loadActivityScoreGet" resultType="com.model.Dict" parameterType="map">
+        SELECT a.signUpStatus,a.`applyStudentId`,b.activityId,b.activityCredit,c.dict_mean,b.`worktime`
+        FROM activityapply AS a,activities AS b,sysdict AS c
+        WHERE a.`applyActivityId`=b.`activityId` AND b.`activityClass`=c.`dict_value` AND c.`dict_key`='activityClass'
+        AND a.signUpStatus='已签到' and  applyStudentId=#{loginId} and a.schoolAuditStaus='已通过'
+        AND  (a.isDel is null or a.isDel = '1')
+    </select>
+    <!--六大类活动已得到分数(学生自己添加)-->
+    <select id="loadActivityScoreGets" resultType="map" parameterType="string">
+        SELECT * FROM supplement,sysdict  WHERE supStudentId=#{id} AND schoolAuditStaus = '已通过' AND supplement.supClass=sysdict.`dict_value` AND sysdict.dict_key='activityClass'  AND  (isDel is null or isDel = '1')
+    </select>
+    <!--活动管理 报名查看 （需要分页）-->
+    <select id="loadSchoolActivityapply" resultType="map" parameterType="map">
+        SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(applyDate),'%Y-%m-%d') AS applyDates,
+        FROM_UNIXTIME(UNIX_TIMESTAMP(signUpTime),'%Y-%m-%d') AS signUpTimes,
+        activityAward AS activityAwardMean
+        FROM pjj_student_activityapply_activities_view
+        <where>
+            1=1
+            <if test="sqlActivityId != null and sqlActivityId != '' ">
+                and applyActivityId = #{sqlActivityId}
+            </if>
+            <if test="classId != null and classId != '' ">
+                and  stuClassName=#{classId}
+            </if>
+            <if test="deptId != null and deptId != '' ">
+                AND   deptId=#{deptId}
+            </if>
+            <if test="collegeId != null and collegeId != '' ">
+                AND   stuCollageName=#{collegeId}
+            </if>
+            <if test="gradeId != null and gradeId != '' ">
+                AND   stuGradeName=#{gradeId}
+            </if>
+        </where>
+        ORDER BY activityAward,applyDate desc
+    </select>
+
+    <select id="loadSupplementSchoolmybatis" resultType="map" parameterType="map" >
+        SELECT *,FROM_UNIXTIME(UNIX_TIMESTAMP(takeDate),'%Y-%m-%d') AS takeDates,
+        FROM_UNIXTIME(UNIX_TIMESTAMP(schoolAuditStausDate),'%Y-%m-%d') AS schoolAuditStausDates,
+        FROM_UNIXTIME(UNIX_TIMESTAMP(collegeAuditStatusDate),'%Y-%m-%d') AS collegeAuditStatusDates,
+        FROM_UNIXTIME(UNIX_TIMESTAMP(regimentAuditStatusDate),'%Y-%m-%d') AS regimentAuditStatusDates,
+        FROM_UNIXTIME(UNIX_TIMESTAMP(supDate),'%Y-%m-%d') AS supDates  FROM sw_supp_student_view
+        <where>
+            <if test="supClass != null and supClass != '' ">
+                AND   supClass =#{supClass}
+            </if>
+            <if test="sqlStr != null and sqlStr != '' ">
+                AND   studentName LIKE CONCAT('%', #{sqlStr},'%')
+            </if>
+            <if test="gradeId != null and gradeId != '' ">
+                AND   stuGradeName =#{gradeId}
+            </if>
+            <if test="supActivityTitle != null and supActivityTitle != '' ">
+                AND   supActivityTitle LIKE CONCAT('%', #{supActivityTitle},'%')
+            </if>
+            <if test="supStudentId != null and supStudentId != '' ">
+                AND   supStudentId =#{supStudentId}
+            </if>
+            <if test="studentName != null and studentName != '' ">
+                AND   studentName LIKE CONCAT('%', #{studentName},'%')
+            </if>
+            <if test="regimentAuditStatus != null and regimentAuditStatus != '' ">
+                AND   schoolAuditStaus =#{regimentAuditStatus}
+            </if>
+            <if test="stuCollageName != null and stuCollageName != '' ">
+                AND   stuCollageName =#{stuCollageName}
+            </if>
+            <if test="collegeId != null and collegeId != '' ">
+                AND   stuCollageName =#{collegeId}
+            </if>
+            <if test="stuMajorName != null and stuMajorName != '' ">
+                AND   stuMajorName =#{stuMajorName}
+            </if>
+            <if test="stuGradeName != null and stuGradeName != '' ">
+                AND   stuGradeName =#{stuGradeName}
+            </if>
+            <if test="stuClassName != null and stuClassName != '' ">
+                AND   stuClassName =#{stuClassName}
+            </if>
+        </where>
+
+    </select>
+</mapper>

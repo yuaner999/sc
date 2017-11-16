@@ -1,0 +1,6 @@
+#*
+<datagridselected datagridid="" var="" />
+* *#
+#set($id=$xml.xpathobj($elem,"./@datagridid"))
+#set($var=$xml.xpathobj($elem,"./@var"))
+$var = $("#$id").datagrid('getSelected');

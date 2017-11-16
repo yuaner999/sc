@@ -1,0 +1,113 @@
+.publicPeople {
+  background: #fff;
+  border-top: 1px solid transparent;
+  padding: 8px 10%;
+  margin-bottom: 5px;
+}
+.publicPeople .title {
+  margin: 0 0 13px;
+  height: 35px;
+  line-height: 35px;
+  color: #5c85ee;
+  font-size: 15px;
+}
+.publicPeople .title:before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  width: 60px;
+  height: 4px;
+  background: #5C85EE;
+  bottom: 0;
+  margin-left: -60px;
+}
+.publicPeople .title:after {
+  content: '';
+  position: absolute;
+  right: 50%;
+  width: 60px;
+  height: 4px;
+  background: #b7c8f1;
+  bottom: 0;
+  margin-right: -60px;
+}
+.publicPeople .info {
+  line-height: 30px;
+}
+.publicPeople .info b {
+  color: #5C85EE;
+  margin-right: 2px;
+}
+.publicPeople .info > div {
+  position: relative;
+  overflow: hidden;
+}
+.publicPeople .info > div > * {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.publicPeople .info span {
+  position: relative;
+  display: block;
+  padding-left: 65px;
+}
+.activityInfo {
+  padding: 8px 10%;
+  background: #fff;
+  margin-bottom: 17px;
+  line-height: 30px;
+}
+.activityInfo a {
+  color: #df5643;
+  margin: 4px;
+}
+.activityInfo b {
+  color: #5C85EE;
+  margin-right: 2px;
+}
+.activityInfo > div {
+  position: relative;
+  overflow: hidden;
+}
+.activityInfo > div > * {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.activityInfo span {
+  position: relative;
+  display: block;
+  padding-left: 85px;
+}
+.container > .padding .blue-btn {
+  height: 40px;
+  line-height: 40px;
+}
+.query {
+  background: #fff;
+  margin-bottom: 17px;
+  padding-bottom: 25px;
+}
+.query .queryrow {
+  line-height: 47px;
+  border-bottom: 1px solid #DEDEDE;
+}
+.query .queryrow:last-of-type {
+  border-bottom: none;
+}
+.query .queryrow a {
+  color: #df5643;
+}
+.query .queryrow input {
+  border: none;
+}
+.query .queryrow textarea {
+  display: block;
+  width: 100%;
+  border: 1px solid #dedede;
+  resize: none;
+  padding: 7px;
+  height: 180px;
+}
+/*# sourceMappingURL=showDetail.css.map */

@@ -1,0 +1,34 @@
+.act-item {
+  margin-top: 5px;
+  height: 140px;
+  background: url(../images/active_banner_1_01.jpg) bottom;
+  background-size: cover;
+}
+.act-item:nth-of-type(2) {
+  background-image: url(../images/active_banner_2_02.jpg);
+}
+.act-item:nth-of-type(3) {
+  background-image: url(../images/active_banner_3_02.jpg);
+}
+.act-item .icon {
+  margin: 40px 0 8px;
+  width: 40px;
+  height: 32px;
+  background-image: url(../images/activeicon_02.png);
+  background-size: 100% auto;
+}
+.act-item .icon.info {
+  width: 36px;
+  height: 33px;
+  background-position: 0 -31px;
+}
+.act-item .icon.signin {
+  width: 35px;
+  height: 33px;
+  background-position: 0px -62px;
+}
+.act-item p {
+  color: #fff;
+  font-weight: bold;
+}
+/*# sourceMappingURL=activity.css.map */

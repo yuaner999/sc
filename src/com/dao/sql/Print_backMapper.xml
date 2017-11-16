@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.dao.interfaces.Print_backDao">
+
+    <!--* 加载所有的打印申请，如果有学号，则只加载该学号的申请-->
+    <select id="getPrint" parameterType="string" resultType="com.model.Print">
+        SELECT studentId,studentName,stuClassName,studentPhone,printAuditstatus,printStatus,printId,
+        FROM_UNIXTIME(UNIX_TIMESTAMP(createDate),'%Y-%m-%d ') AS createDate,
+        FROM_UNIXTIME(UNIX_TIMESTAMP(printDate),'%Y-%m-%d ') AS printDate,
+        FROM_UNIXTIME(UNIX_TIMESTAMP(printAuditdate),'%Y-%m-%d ') AS printAuditdate
+        FROM wh_print_student_info
+          <where>
+               1=1
+              <if test="studentID != null and studentID !='' ">
+                  AND studentID=#{studentID}
+              </if>
+              <if test="studentIdCard != null and studentIdCard !='' ">
+                  AND studentIdCard=#{studentIdCard}
+              </if>
+              <if test="studentName != null and studentName !='' ">
+                  AND studentName=#{studentName}
+              </if>
+              <if test="studentPhone != null and studentPhone !='' ">
+                  AND studentPhone=#{studentPhone}
+              </if>
+              <if test="usiCampus != null and usiCampus !='' ">
+                  AND usiCampus=#{usiCampus}
+              </if>
+              <if test="studentPhone != null and studentPhone !='' ">
+                  AND studentPhone=#{studentPhone}
+              </if>
+              <if test="usiCampus != null and usiCampus !='' ">
+                  AND usiCampus=#{usiCampus}
+              </if>
+              <if test="stuGradeName != null and stuGradeName !='' ">
+                  AND stuGradeName=#{stuGradeName}
+              </if>
+              <if test="usiBuilding != null and usiBuilding !='' ">
+                  AND usiBuilding=#{usiBuilding}
+              </if>
+              <if test="trainingMode != null and trainingMode !='' ">
+                  AND trainingMode=#{trainingMode}
+              </if>
+              <if test="usiRoomNumber != null and usiRoomNumber !='' ">
+                  AND usiRoomNumber=#{usiRoomNumber}
+              </if>
+              <if test="enrollType != null and enrollType !='' ">
+                  AND enrollType=#{enrollType}
+              </if>
+              <if test="studentGender != null and studentGender !='' ">
+                  AND studentGender=#{studentGender}
+              </if>
+              <if test="stuCollageName != null and stuCollageName !='' ">
+                  AND stuCollageName=#{stuCollageName}
+              </if>
+              <if test="schoolRollStatus != null and schoolRollStatus !='' ">
+                  AND schoolRollStatus=#{schoolRollStatus}
+              </if>
+              <if test="studentNation != null and studentNation !='' ">
+                  AND studentNation=#{studentNation}
+              </if>
+              <if test="stuMajorName != null and stuMajorName !='' ">
+                  AND stuMajorName=#{stuMajorName}
+              </if>
+              <if test="educationLength != null and educationLength !='' ">
+                  AND educationLength=#{educationLength}
+              </if>
+              <if test="stuClassName != null and stuClassName !='' ">
+                  AND stuClassName=#{stuClassName}
+              </if>
+          </where>
+                 and studentId is not null
+        ORDER BY createDate DESC
+    </select>
+
+    <!--* 修改审核状态-->
+    <update id="changeAuditStatus" parameterType="string">
+        UPDATE print SET printAuditstatus=#{1},printAuditdate=now(),printStatus='待打印' WHERE printId=#{0}
+    </update>
+
+    <!--* 修改打印状态   打印状态只有  已打印  和 空值   空值即表示未打印-->
+    <update id="changePrintStatus" parameterType="string">
+        UPDATE print SET printStatus='已打印',printDate=now() WHERE printId=#{0}
+    </update>
+    <!--* 更新顺序-->
+
+</mapper>

@@ -1,0 +1,77 @@
+<app title="商品管理" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../schemas/easyui.xsd">
+    <combobox id="test" url="a.form"/>
+    <datagrid id="dg" title="商品列表" url="jsons/shopproducts.form">
+        <headers sql="select * from product"/>
+        <toolbar>
+            <toolbarline>
+                <button id="btnadd">
+                    <dialogopen dialogid="dlgcreate"/>
+                </button>
+                <button id="btnedit">
+                    <datagridselected datagridid="dg" var="data"/>
+                    <if condition="data">
+                        <dialogopen dialogid="dlgedit"/>
+                        <formloaddata formid="frmedit" var="data"/>
+                    </if>
+                    <else>
+                        <alert text="请选择要操作的数据"/>
+                    </else>
+                </button>
+                <button id="btndelete">
+                    <datagridselected datagridid="dg" var="data"/>
+                    <if condition="data">
+                        <alert text="ajax code:delete"/>
+                    </if>
+                    <else>
+                        <alert text="请选择要操作的数据"/>
+                    </else>
+                </button>
+            </toolbarline>
+        </toolbar>
+    </datagrid>
+
+    <dialog id="dlgcreate" title="添加商品">
+        <buttons>
+            <button id="dlgcreateok">
+                <formsubmit formid="frmcreate" url="jsons/shopaddproduct.form" >
+                    <alert text="数据已提交"/>
+                    <dialogclose dialogid="dlgcreate" />
+                    <datagridreload datagridid="dg"/>
+                </formsubmit>
+            </button>
+            <button id="dlgcreatecancel">
+                <dialogclose dialogid="dlgcreate"/>
+            </button>
+        </buttons>
+        <content>
+            <form id="frmcreate" method="post" fieldsql="select * from product" />
+        </content>
+    </dialog>
+
+    <dialog id="dlgedit" title="添加商品">
+        <buttons>
+            <button id="dlgeditok">
+                <formsubmit formid="frmedit" url="jsons/shopeditproduct.form" >
+                    <alert text="数据已提交"/>
+                    <dialogclose dialogid="dlgedit" />
+                    <datagridreload datagridid="dg"/>
+                </formsubmit>
+            </button>
+            <button id="dlgeditcancel">
+                <dialogclose dialogid="dlgedit"/>
+            </button>
+        </buttons>
+        <content>
+            <form id="frmedit" method="post" fieldsql="select * from product" />
+        </content>
+
+    </dialog>
+
+    <javascript>
+        <startup>
+            <dialogclose dialogid="dlgcreate"/>
+            <dialogclose dialogid="dlgedit"/>
+        </startup>
+    </javascript>
+
+</app>

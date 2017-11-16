@@ -1,0 +1,3 @@
+#set($id=$xml.xpathobj($elem,"./@formid"))
+#set($url=$xml.xpathobj($elem,"./@url"))
+$("#$id").form("load","${pageContext.request.contextPath}/$url");

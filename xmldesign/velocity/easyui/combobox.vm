@@ -1,0 +1,7 @@
+#*
+elem:
+<combobox id="combo_taskstatus" url=""/>
+* *#
+#set($id=$xml.xpathobj($elem,"./@id"))
+<input id="$id" class="easyui-combobox"
+       data-options="valueField:'dictvalue',textField:'dictmean'" />
